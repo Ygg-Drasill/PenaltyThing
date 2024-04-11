@@ -1,4 +1,5 @@
 import { Box, Typography } from "@mui/material";
+import Navbar from "../components/navbar";
 
 export function LoginForm() {
   return (
@@ -18,6 +19,7 @@ export function LoginForm() {
         mt: "10vh", // Optionally, adjusts the top margin to vertically center the box somewhat
       }}
     >
+      <Navbar />
       <Typography variant="h5">Login</Typography>
       <input
         type="text"

@@ -20,6 +20,9 @@ export default function Navbar() {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           Rules
         </Typography>
+        <Button color="inherit" onClick={() => navigate("/wheel")}>
+          Wheel
+        </Button>
         <Button color="inherit" onClick={() => navigate("/login")}>
           Login
         </Button>
