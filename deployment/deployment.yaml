@@ -1,0 +1,21 @@
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: penaltything-frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: penaltything-frontend
+  template:
+    metadata:
+      labels:
+        app: penaltything-frontend
+    spec:
+      containers:
+      - name: penaltything-frontend
+        image: ghcr.io/Ygg-Drasill/PenaltyThing:v0.0.1
+        ports:
+        - containerPort: 80
