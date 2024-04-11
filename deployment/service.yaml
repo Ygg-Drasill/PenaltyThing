@@ -1,0 +1,31 @@
+# Frontend service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: penaltything-frontend-service
+spec:
+  selector:
+    app: penaltything-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 31355
+  type: NodePort
+
+# Backend service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: penaltything-backend-service
+spec:
+  selector:
+    app: penaltything-backend
+  ports:
+    - protocol: TCP
+      port: 9000
+      targetPort: 9000
+      nodePort: 31356
+  type: NodePort
