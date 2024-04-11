@@ -39,6 +39,82 @@ const docTemplate = `{
                 }
             }
         },
+        "/law/create": {
+            "post": {
+                "description": "create law",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "law"
+                ],
+                "summary": "Create new law",
+                "operationId": "createLaw",
+                "parameters": [
+                    {
+                        "description": "query params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.CreateLawRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Law"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/law/getAllByTeam": {
+            "get": {
+                "description": "get all laws in a team by teamId",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "law"
+                ],
+                "summary": "Get laws",
+                "operationId": "getLaws",
+                "parameters": [
+                    {
+                        "description": "query params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.GetLawsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Law"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/team/create": {
             "post": {
                 "description": "Create a new team",
@@ -146,6 +222,9 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "handlers.CreateLawRequest": {
+            "type": "object"
+        },
         "handlers.CreateTeamRequest": {
             "type": "object",
             "properties": {
@@ -156,6 +235,9 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "handlers.GetLawsRequest": {
+            "type": "object"
         },
         "handlers.RegisterUserRequest": {
             "type": "object",
@@ -174,10 +256,10 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
-                "foreignkey": {
+                "id": {
                     "type": "string"
                 },
-                "id": {
+                "teamId": {
                     "type": "string"
                 },
                 "title": {
@@ -204,6 +286,9 @@ const docTemplate = `{
                 },
                 "law": {
                     "$ref": "#/definitions/models.Law"
+                },
+                "lawId": {
+                    "type": "string"
                 },
                 "userId": {
                     "type": "string"

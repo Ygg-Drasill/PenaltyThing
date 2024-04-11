@@ -1,10 +1,14 @@
 definitions:
+  handlers.CreateLawRequest:
+    type: object
   handlers.CreateTeamRequest:
     properties:
       name:
         type: string
       userId:
         type: string
+    type: object
+  handlers.GetLawsRequest:
     type: object
   handlers.RegisterUserRequest:
     properties:
@@ -17,9 +21,9 @@ definitions:
     properties:
       description:
         type: string
-      foreignkey:
-        type: string
       id:
+        type: string
+      teamId:
         type: string
       title:
         type: string
@@ -37,6 +41,8 @@ definitions:
         type: string
       law:
         $ref: '#/definitions/models.Law'
+      lawId:
+        type: string
       userId:
         type: string
     type: object
@@ -89,6 +95,56 @@ paths:
       summary: Add penalty to team member
       tags:
       - penalty
+  /law/create:
+    post:
+      consumes:
+      - application/json
+      description: create law
+      operationId: createLaw
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.CreateLawRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Law'
+            type: array
+      summary: Create new law
+      tags:
+      - law
+  /law/getAllByTeam:
+    get:
+      consumes:
+      - application/json
+      description: get all laws in a team by teamId
+      operationId: getLaws
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.GetLawsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Law'
+            type: array
+      summary: Get laws
+      tags:
+      - law
   /team/create:
     post:
       consumes:
