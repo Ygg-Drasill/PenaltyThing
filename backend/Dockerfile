@@ -4,8 +4,7 @@ FROM golang:1.22.1-alpine3.19
 WORKDIR /app
 
 # Copy go.mod and go.sum files to the workspace
-COPY go.mod ./
-#COPY go.sum ./
+COPY go.mod go.sum ./
 
 # Download all dependencies
 RUN go mod download
