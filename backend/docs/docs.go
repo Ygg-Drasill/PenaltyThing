@@ -17,7 +17,8 @@ const docTemplate = `{
     "paths": {
         "/example/helloworld": {
             "get": {
-                "description": "do ping",
+                "description": "testtesttest",
+				"operationId": "helloworld",
                 "consumes": [
                     "application/json"
                 ],
@@ -27,14 +28,24 @@ const docTemplate = `{
                 "tags": [
                     "example"
                 ],
-                "summary": "ping example",
+                "summary": "Monkey example",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.User"
                         }
                     }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.User": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
                 }
             }
         }
