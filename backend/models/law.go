@@ -6,3 +6,7 @@ type Law struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
 }
+
+type LawProposal struct {
+	Id string `json:"id" gorm:"primarykey"`
+}

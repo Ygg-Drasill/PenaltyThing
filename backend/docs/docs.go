@@ -29,6 +29,17 @@ const docTemplate = `{
                 ],
                 "summary": "Add penalty to team member",
                 "operationId": "addUser",
+                "parameters": [
+                    {
+                        "description": "query params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.AddPenaltyRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -222,6 +233,9 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "handlers.AddPenaltyRequest": {
+            "type": "object"
+        },
         "handlers.CreateLawRequest": {
             "type": "object"
         },
@@ -283,6 +297,9 @@ const docTemplate = `{
             "properties": {
                 "id": {
                     "type": "string"
+                },
+                "isNew": {
+                    "type": "boolean"
                 },
                 "law": {
                     "$ref": "#/definitions/models.Law"

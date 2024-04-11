@@ -1,4 +1,6 @@
 definitions:
+  handlers.AddPenaltyRequest:
+    type: object
   handlers.CreateLawRequest:
     type: object
   handlers.CreateTeamRequest:
@@ -39,6 +41,8 @@ definitions:
     properties:
       id:
         type: string
+      isNew:
+        type: boolean
       law:
         $ref: '#/definitions/models.Law'
       lawId:
@@ -85,6 +89,13 @@ paths:
       - application/json
       description: register new user
       operationId: addUser
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.AddPenaltyRequest'
       produces:
       - application/json
       responses:
