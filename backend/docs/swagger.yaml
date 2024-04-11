@@ -1,18 +1,38 @@
-basePath: /api/v1
 definitions:
+  handlers.RegisterUserRequest:
+    properties:
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  models.Member:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
   models.User:
     properties:
       id:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      teamId:
         type: string
     type: object
 info:
   contact: {}
 paths:
-  /example/helloworld:
-    get:
+  /addPenalty:
+    post:
       consumes:
       - application/json
-      description: testtesttest
+      description: register new user
+      operationId: addUser
       produces:
       - application/json
       responses:
@@ -20,7 +40,53 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.User'
-      summary: Monkey example
+      summary: Add user
       tags:
-      - example
+      - penalty
+  /getUser:
+    get:
+      consumes:
+      - application/json
+      description: get user
+      operationId: getUser
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.RegisterUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Member'
+      summary: Get user
+      tags:
+      - user
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      description: register new user
+      operationId: registerUser
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.RegisterUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Add user
+      tags:
+      - user
 swagger: "2.0"

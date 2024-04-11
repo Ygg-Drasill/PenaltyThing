@@ -1,6 +1,20 @@
 package models
 
-// swagger:model
 type User struct {
-	ID string `gorm:"primarykey"`
+	Id       string `json:"id" gorm:"primarykey"`
+	Name     string `json:"name"`
+	Password string `json:"password"`
+	TeamId   string `json:"teamId"`
+}
+
+type Member struct {
+	Id   string `json:"id"`
+	Name string `json:"name"`
+}
+
+func (user User) ToMember() Member {
+	return Member{
+		Id:   user.Id,
+		Name: user.Name,
+	}
 }
