@@ -1,4 +1,11 @@
 definitions:
+  handlers.CreateTeamRequest:
+    properties:
+      name:
+        type: string
+      userId:
+        type: string
+    type: object
   handlers.RegisterUserRequest:
     properties:
       name:
@@ -6,10 +13,45 @@ definitions:
       password:
         type: string
     type: object
+  models.Law:
+    properties:
+      description:
+        type: string
+      foreignkey:
+        type: string
+      id:
+        type: string
+      title:
+        type: string
+    type: object
   models.Member:
     properties:
       id:
         type: string
+      name:
+        type: string
+    type: object
+  models.PenaltyEntry:
+    properties:
+      id:
+        type: string
+      law:
+        $ref: '#/definitions/models.Law'
+      userId:
+        type: string
+    type: object
+  models.Team:
+    properties:
+      id:
+        type: string
+      laws:
+        items:
+          $ref: '#/definitions/models.Law'
+        type: array
+      members:
+        items:
+          $ref: '#/definitions/models.User'
+        type: array
       name:
         type: string
     type: object
@@ -21,6 +63,10 @@ definitions:
         type: string
       password:
         type: string
+      penalties:
+        items:
+          $ref: '#/definitions/models.PenaltyEntry'
+        type: array
       teamId:
         type: string
     type: object
@@ -40,10 +86,33 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.User'
-      summary: Add user
+      summary: Add penalty to team member
       tags:
       - penalty
-  /getUser:
+  /team/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new team
+      operationId: createTeam
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.CreateTeamRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Team'
+      summary: Create new team
+      tags:
+      - team
+  /user/get:
     get:
       consumes:
       - application/json

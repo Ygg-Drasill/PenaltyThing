@@ -27,7 +27,7 @@ const docTemplate = `{
                 "tags": [
                     "penalty"
                 ],
-                "summary": "Add user",
+                "summary": "Add penalty to team member",
                 "operationId": "addUser",
                 "responses": {
                     "200": {
@@ -39,7 +39,42 @@ const docTemplate = `{
                 }
             }
         },
-        "/getUser": {
+        "/team/create": {
+            "post": {
+                "description": "Create a new team",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "team"
+                ],
+                "summary": "Create new team",
+                "operationId": "createTeam",
+                "parameters": [
+                    {
+                        "description": "query params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.CreateTeamRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Team"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/get": {
             "get": {
                 "description": "get user",
                 "consumes": [
@@ -111,6 +146,17 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "handlers.CreateTeamRequest": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
         "handlers.RegisterUserRequest": {
             "type": "object",
             "properties": {
@@ -122,11 +168,65 @@ const docTemplate = `{
                 }
             }
         },
+        "models.Law": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "foreignkey": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Member": {
             "type": "object",
             "properties": {
                 "id": {
                     "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.PenaltyEntry": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "law": {
+                    "$ref": "#/definitions/models.Law"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Team": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "laws": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Law"
+                    }
+                },
+                "members": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.User"
+                    }
                 },
                 "name": {
                     "type": "string"
@@ -144,6 +244,12 @@ const docTemplate = `{
                 },
                 "password": {
                     "type": "string"
+                },
+                "penalties": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.PenaltyEntry"
+                    }
                 },
                 "teamId": {
                     "type": "string"

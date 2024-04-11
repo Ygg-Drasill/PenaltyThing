@@ -21,6 +21,10 @@ func main() {
 			user.GET("/get", dbContext.GetUser)
 			user.POST("/register", dbContext.RegisterUser)
 		}
+		team := v1.Group("/team")
+		{
+			team.POST("create", dbContext.CreateTeam)
+		}
 	}
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	router.Run(":9000")

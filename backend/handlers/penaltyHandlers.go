@@ -6,7 +6,7 @@ import (
 )
 
 // AddPenalty
-// @Summary	Add user
+// @Summary	Add penalty to team member
 // @Id			addUser
 // @Schemes
 // @Description	register new user

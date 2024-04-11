@@ -49,7 +49,7 @@ type GetUserRequest struct {
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{object}	models.Member
-//	@Router			/getUser [get]
+//	@Router			/user/get [get]
 func (db *DbContext) GetUser(ctx *gin.Context) {
 	req := GetUserRequest{}
 	if err := ctx.BindJSON(&req); err != nil {
