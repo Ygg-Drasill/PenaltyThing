@@ -2,22 +2,20 @@ on:
     push:
       tags:
         - "v*.*.*"
-      paths-ignore:
-        - "**/README.md"
 
-  env:
+env:
     REGISTRY: ghcr.io
     IMAGE_NAME: ${{ github.repository }}
 
-  jobs:
+jobs:
     build-and-push-image:
-      if: startsWith(github.ref, 'refs/tags/v')
-      runs-on: ubuntu-latest
-      permissions:
-        contents: read
-        packages: write
-  
-      steps:
+        if: startsWith(github.ref, 'refs/tags/v')
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            packages: write
+
+        steps:
         - name: Checkout Repository
           uses: actions/checkout@v4
         
@@ -33,13 +31,13 @@ on:
             registry: ${{ env.REGISTRY }}
             username: ${{ secrets.BERTHA_NAME }}
             password: ${{ secrets.BERTHA_TOKEN }}
-  
+
         - name: Extract metadata (tags, labels) for Docker
           id: meta
           uses: docker/metadata-action@v4
           with:
             images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-  
+
         - name: Build and push Docker image
           uses: docker/build-push-action@v5
           with:
@@ -48,5 +46,3 @@ on:
             push: true
             tags: ${{ steps.meta.outputs.tags }}
             labels: ${{ steps.meta.outputs.labels }}
-  
-  
