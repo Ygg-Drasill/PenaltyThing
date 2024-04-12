@@ -5,11 +5,11 @@ RUN npm cache clear --force
 
 WORKDIR /app
 
-COPY package*.json /app
+COPY ./frontend/package*.json /app
 
 RUN npm i -f
 
-COPY . .
+COPY ./frontend .
 
 RUN npm run build
 
