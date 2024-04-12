@@ -21,15 +21,18 @@ func main() {
 			user.GET("/get", dbContext.GetUser)
 			user.POST("/register", dbContext.RegisterUser)
 		}
+
 		team := v1.Group("/team")
 		{
 			team.POST("/create", dbContext.CreateTeam)
 		}
+
 		law := v1.Group("/law")
 		{
 			law.GET("/getLaws", dbContext.GetLaws)
 			law.POST("/createLaw", dbContext.CreateLaw)
 		}
+
 		penalty := v1.Group("/penalty")
 		{
 			penalty.POST("/addPenalty", dbContext.AddPenalty)

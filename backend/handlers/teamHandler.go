@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/Ygg-Drasill/PenaltyThing/backend/models"
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"net/http"
 )
 
@@ -27,14 +26,47 @@ type CreateTeamRequest struct {
 func (db *DbContext) CreateTeam(ctx *gin.Context) {
 	req := CreateTeamRequest{}
 	if err := ctx.BindJSON(&req); err != nil {
-		fmt.Println(err.Error())
+		ctx.String(http.StatusBadRequest, err.Error())
+		return
 	}
-	newTeam := models.Team{
-		Id:      uuid.New().String(),
-		Name:    req.Name,
-		Members: make([]models.User, 0),
+
+	var err error
+	var newTeam *models.Team
+	newTeam, err = db.repo.AddTeam(req.Name)
+	err = db.repo.AddUserToTeam(req.UserId, newTeam.Id)
+	if err != nil {
+		ctx.String(http.StatusInternalServerError, err.Error())
+		return
 	}
-	requestingUser := db.repo.GetUserById(req.UserId)
-	newTeam.Members = append(newTeam.Members, requestingUser)
-	ctx.JSON(http.StatusOK, newTeam)
+	ctx.JSON(http.StatusOK, *newTeam)
+}
+
+type AddUserToTeamRequest struct {
+	userId string
+	teamId string
+}
+
+//AddUserToTeam
+// @Summary	Add user to team
+// @Id			addUserToTeam
+// @Schemes
+// @Description	Add user to team
+// @Tags			team
+// @Param			userId query string true "User ID"
+// @Param			teamId query string true "Team ID"
+// @Produce		json
+// @Success		200	{object}	models.Team
+// @Router			/team/addUserToTeam [post]
+
+func (db *DbContext) AddUserToTeam(ctx *gin.Context) {
+	var req AddUserToTeamRequest
+	if err := ctx.ShouldBindQuery(&req); err != nil {
+		ctx.String(http.StatusBadRequest, err.Error())
+		return
+	}
+	if err := db.repo.AddUserToTeam(req.userId, req.teamId); err != nil {
+		ctx.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+	ctx.String(http.StatusOK, fmt.Sprintf("Added user %s to team %s", req.userId, req.teamId))
 }

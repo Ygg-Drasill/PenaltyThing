@@ -4,7 +4,7 @@ type User struct {
 	Id        string         `json:"id" gorm:"primarykey"`
 	Name      string         `json:"name"`
 	Password  string         `json:"password"`
-	TeamId    string         `json:"teamId"`
+	TeamId    string         `json:"teamId" gorm:"default:null"`
 	Penalties []PenaltyEntry `json:"penalties"`
 }
 

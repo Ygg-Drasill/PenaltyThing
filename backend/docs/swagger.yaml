@@ -10,8 +10,6 @@ definitions:
       userId:
         type: string
     type: object
-  handlers.GetLawsRequest:
-    type: object
   handlers.RegisterUserRequest:
     properties:
       name:
@@ -131,19 +129,16 @@ paths:
       summary: Create new law
       tags:
       - law
-  /law/getAllByTeam:
+  /law/getLawsByTeam:
     get:
-      consumes:
-      - application/json
       description: get all laws in a team by teamId
       operationId: getLaws
       parameters:
-      - description: query params
-        in: body
-        name: request
+      - description: Team ID
+        in: query
+        name: teamId
         required: true
-        schema:
-          $ref: '#/definitions/handlers.GetLawsRequest'
+        type: string
       produces:
       - application/json
       responses:
@@ -181,17 +176,14 @@ paths:
       - team
   /user/get:
     get:
-      consumes:
-      - application/json
       description: get user
       operationId: getUser
       parameters:
-      - description: query params
-        in: body
-        name: request
+      - description: User search by id
+        in: query
+        name: id
         required: true
-        schema:
-          $ref: '#/definitions/handlers.RegisterUserRequest'
+        type: string
       produces:
       - application/json
       responses:

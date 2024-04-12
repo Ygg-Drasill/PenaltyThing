@@ -88,12 +88,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/law/getAllByTeam": {
+        "/law/getLawsByTeam": {
             "get": {
                 "description": "get all laws in a team by teamId",
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -104,13 +101,11 @@ const docTemplate = `{
                 "operationId": "getLaws",
                 "parameters": [
                     {
-                        "description": "query params",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/handlers.GetLawsRequest"
-                        }
+                        "type": "string",
+                        "description": "Team ID",
+                        "name": "teamId",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -164,9 +159,6 @@ const docTemplate = `{
         "/user/get": {
             "get": {
                 "description": "get user",
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -177,13 +169,11 @@ const docTemplate = `{
                 "operationId": "getUser",
                 "parameters": [
                     {
-                        "description": "query params",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/handlers.RegisterUserRequest"
-                        }
+                        "type": "string",
+                        "description": "User search by id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -249,9 +239,6 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
-        },
-        "handlers.GetLawsRequest": {
-            "type": "object"
         },
         "handlers.RegisterUserRequest": {
             "type": "object",
