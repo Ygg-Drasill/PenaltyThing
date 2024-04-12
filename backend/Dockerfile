@@ -10,7 +10,7 @@ COPY ./backend/go.mod ./backend/go.sum ./
 RUN go mod download
 
 # Copy the source from the current directory to the workspace
-COPY . .
+COPY ./backend .
 
 # Build the Go app
 RUN go build -o main.exe .
