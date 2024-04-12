@@ -16,9 +16,9 @@ jobs:
             matrix:
               include:
                 - dockerfile: ./frontend/Dockerfile
-                  image: ghcr.io/Ygg-Drasill/penaltything
+                  image: ghcr.io/Ygg-Drasill/penaltything/frontend
                 - dockerfile: ./backend/Dockerfile
-                  image: ghcr.io/Ygg-Drasill/penaltything
+                  image: ghcr.io/Ygg-Drasill/penaltything/backend
         permissions:
             contents: read
             packages: write
