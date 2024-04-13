@@ -10,21 +10,24 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-const address = "localhost:9000"
+const (
+	address  = "localhost:9000"
+	basePath = "/api/v1"
+)
 
 // @title			PenaltyThing API
 // @version		1.0
 // @contact.name	Tobias Bay
 // @contact.url	http://penaltything.me/support
-// @contact.email	tab@penaltything.me
+// @contact.email	tab@penaltything.social
 func main() {
 	repo := repository.ConnectToDatabase("postgres://apidev:1234@130.225.37.183:5432/penaltythingdb")
 	dbContext := handlers.NewDbContext(repo)
 	router := gin.Default()
 	router.Use(middleware.CORSMiddleware())
 	docs.SwaggerInfo.Host = address
-	docs.SwaggerInfo.BasePath = "/api/v1"
-	v1 := router.Group("/api/v1")
+	docs.SwaggerInfo.BasePath = basePath
+	v1 := router.Group(basePath)
 	{
 		user := v1.Group("/user")
 		{
