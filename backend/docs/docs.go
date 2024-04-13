@@ -9,7 +9,11 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "contact": {},
+        "contact": {
+            "name": "Tobias Bay",
+            "url": "http://penaltything.me/support",
+            "email": "tab@penaltything.me"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
@@ -44,10 +48,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/models.Law"
-                            }
+                            "$ref": "#/definitions/models.Law"
                         }
                     }
                 }
@@ -88,7 +89,7 @@ const docTemplate = `{
         },
         "/penalty/add": {
             "post": {
-                "description": "register new user",
+                "description": "Add penalty to member of team",
                 "consumes": [
                     "application/json"
                 ],
@@ -99,7 +100,7 @@ const docTemplate = `{
                     "penalty"
                 ],
                 "summary": "Add penalty to team member",
-                "operationId": "addUser",
+                "operationId": "addPenalty",
                 "parameters": [
                     {
                         "description": "query params",
@@ -188,7 +189,7 @@ const docTemplate = `{
         },
         "/user/register": {
             "post": {
-                "description": "register new user",
+                "description": "Register new user, given password will be encrypted on backend. This is subject to change",
                 "consumes": [
                     "application/json"
                 ],
@@ -198,7 +199,7 @@ const docTemplate = `{
                 "tags": [
                     "user"
                 ],
-                "summary": "Add user",
+                "summary": "Register user",
                 "operationId": "registerUser",
                 "parameters": [
                     {
@@ -224,10 +225,35 @@ const docTemplate = `{
     },
     "definitions": {
         "handlers.AddPenaltyRequest": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "comment": {
+                    "type": "string"
+                },
+                "issuerUserId": {
+                    "type": "string"
+                },
+                "lawId": {
+                    "type": "string"
+                },
+                "targetUserId": {
+                    "type": "string"
+                }
+            }
         },
         "handlers.CreateLawRequest": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "teamId": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
         },
         "handlers.CreateTeamRequest": {
             "type": "object",
@@ -276,17 +302,32 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                },
+                "penalties": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.PenaltyEntry"
+                    }
                 }
             }
         },
         "models.PenaltyEntry": {
             "type": "object",
             "properties": {
+                "comment": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
                 "isNew": {
                     "type": "boolean"
+                },
+                "issuedBy": {
+                    "type": "string"
                 },
                 "law": {
                     "$ref": "#/definitions/models.Law"
@@ -350,11 +391,11 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
+	Version:          "1.0",
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "",
+	Title:            "PenaltyThing API",
 	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

@@ -1,7 +1,23 @@
 definitions:
   handlers.AddPenaltyRequest:
+    properties:
+      comment:
+        type: string
+      issuerUserId:
+        type: string
+      lawId:
+        type: string
+      targetUserId:
+        type: string
     type: object
   handlers.CreateLawRequest:
+    properties:
+      description:
+        type: string
+      teamId:
+        type: string
+      title:
+        type: string
     type: object
   handlers.CreateTeamRequest:
     properties:
@@ -34,13 +50,23 @@ definitions:
         type: string
       name:
         type: string
+      penalties:
+        items:
+          $ref: '#/definitions/models.PenaltyEntry'
+        type: array
     type: object
   models.PenaltyEntry:
     properties:
+      comment:
+        type: string
+      createdAt:
+        type: string
       id:
         type: string
       isNew:
         type: boolean
+      issuedBy:
+        type: string
       law:
         $ref: '#/definitions/models.Law'
       lawId:
@@ -79,7 +105,12 @@ definitions:
         type: string
     type: object
 info:
-  contact: {}
+  contact:
+    email: tab@penaltything.me
+    name: Tobias Bay
+    url: http://penaltything.me/support
+  title: PenaltyThing API
+  version: "1.0"
 paths:
   /law/create:
     post:
@@ -100,9 +131,7 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/models.Law'
-            type: array
+            $ref: '#/definitions/models.Law'
       summary: Create new law
       tags:
       - law
@@ -132,8 +161,8 @@ paths:
     post:
       consumes:
       - application/json
-      description: register new user
-      operationId: addUser
+      description: Add penalty to member of team
+      operationId: addPenalty
       parameters:
       - description: query params
         in: body
@@ -198,7 +227,8 @@ paths:
     post:
       consumes:
       - application/json
-      description: register new user
+      description: Register new user, given password will be encrypted on backend.
+        This is subject to change
       operationId: registerUser
       parameters:
       - description: query params
@@ -214,7 +244,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.User'
-      summary: Add user
+      summary: Register user
       tags:
       - user
 swagger: "2.0"

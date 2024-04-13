@@ -19,6 +19,12 @@ func (repo *Repository) AddTeam(name string) (*models.Team, error) {
 	return newTeam, nil
 }
 
+func (repo *Repository) TeamExists(id string) bool {
+	var exists bool
+	repo.db.Raw("SELECT EXISTS(SELECT FROM teams WHERE id = ?)", id).Scan(&exists)
+	return exists
+}
+
 func (repo *Repository) AddUserToTeam(userId, teamId string) error {
 	var team models.Team
 	var user models.User

@@ -2,24 +2,23 @@ package handlers
 
 import (
 	"fmt"
-	"github.com/Ygg-Drasill/PenaltyThing/backend/models"
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"net/http"
 )
 
 type AddPenaltyRequest struct {
-	targetUserId string
-	issuerUserId string
-	lawId        string
+	TargetUserId string `json:"targetUserId"`
+	IssuerUserId string `json:"issuerUserId"`
+	LawId        string `json:"lawId"`
+	Comment      string `json:"comment"`
 }
 
 // AddPenalty
 //
 //	@Summary	Add penalty to team member
-//	@Id			addUser
+//	@Id			addPenalty
 //	@Schemes
-//	@Description	register new user
+//	@Description	Add penalty to member of team
 //	@Tags			penalty
 //	@Param			request	body	handlers.AddPenaltyRequest	true	"query params"
 //	@Accept			json
@@ -31,32 +30,26 @@ func (db *DbContext) AddPenalty(ctx *gin.Context) {
 	if err := ctx.BindJSON(&req); err != nil {
 		fmt.Print(err.Error())
 	}
-	if req.targetUserId == req.targetUserId {
+	if req.TargetUserId == req.IssuerUserId {
 		ctx.String(http.StatusBadRequest, "The target member must be different to the issuer")
 		return
 	}
 
-	if !db.repo.UserExists(req.issuerUserId) {
+	if !db.repo.UserExists(req.IssuerUserId) {
 		ctx.String(http.StatusBadRequest, "Unable to find existing user with given issuer id")
 		return
 	}
 
-	if !db.repo.UserExists(req.issuerUserId) {
+	if !db.repo.UserExists(req.IssuerUserId) {
 		ctx.String(http.StatusBadRequest, "Unable to find existing user with given target id")
 		return
 	}
-	law, err := db.repo.GetLawById(req.lawId)
+
+	newPenaltyEntry, err := db.repo.AddPenaltyToUser(req.TargetUserId, req.IssuerUserId, req.LawId, req.Comment)
 	if err != nil {
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	newPenalty := models.PenaltyEntry{
-		Id:     uuid.New().String(),
-		UserId: req.targetUserId,
-		LawId:  law.Id,
-		Law:    *law,
-		IsNew:  true,
-	}
-	ctx.JSON(http.StatusOK, newPenalty)
+	ctx.JSON(http.StatusOK, newPenaltyEntry)
 }

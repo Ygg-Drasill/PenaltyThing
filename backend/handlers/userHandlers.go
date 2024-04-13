@@ -16,10 +16,10 @@ type RegisterUserRequest struct {
 
 // RegisterUser
 //
-//	@Summary	Add user
+//	@Summary	Register user
 //	@Id			registerUser
 //	@Schemes
-//	@Description	register new user
+//	@Description	Register new user, given password will be encrypted on backend. This is subject to change
 //	@Tags			user
 //	@Param			request body handlers.RegisterUserRequest true "query params"
 //	@Accept			json
@@ -58,7 +58,8 @@ type GetUserRequest struct {
 //	@Tags			user
 //	@Param			id query string true "User search by id"
 //	@Produce		json
-//	@Success		200	{object}	models.Member
+//	@Success		200	{object} models.Member
+//	models.Member
 //	@Router			/user/get [get]
 func (db *DbContext) GetUser(ctx *gin.Context) {
 	query := GetUserRequest{}

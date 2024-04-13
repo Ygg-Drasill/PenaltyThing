@@ -6,6 +6,9 @@ import (
 )
 
 type CreateLawRequest struct {
+	TeamId      string `json:"teamId"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
 }
 
 // CreateLaw
@@ -18,10 +21,21 @@ type CreateLawRequest struct {
 //	@Param			request body handlers.CreateLawRequest true "query params"
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{object}	[]models.Law
+//	@Success		200	{object}	models.Law
 //	@Router			/law/create [post]
 func (db *DbContext) CreateLaw(ctx *gin.Context) {
+	var req CreateLawRequest
+	if err := ctx.BindJSON(&req); err != nil {
+		ctx.String(http.StatusBadRequest, err.Error())
+		return
+	}
 
+	law, err := db.repo.CreateLaw(req.TeamId, req.Title, req.Description, 0)
+	if err != nil {
+		ctx.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+	ctx.JSON(http.StatusOK, law)
 }
 
 type GetLawsRequest struct {

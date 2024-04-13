@@ -9,10 +9,18 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+const address = "localhost:9000"
+
+// @title			PenaltyThing API
+// @version		1.0
+// @contact.name	Tobias Bay
+// @contact.url	http://penaltything.me/support
+// @contact.email	tab@penaltything.me
 func main() {
 	repo := repository.ConnectToDatabase("postgres://apidev:1234@130.225.37.183:5432/penaltythingdb")
 	dbContext := handlers.NewDbContext(repo)
 	router := gin.Default()
+	docs.SwaggerInfo.Host = address
 	docs.SwaggerInfo.BasePath = "/api/v1"
 	v1 := router.Group("/api/v1")
 	{
@@ -30,7 +38,7 @@ func main() {
 		law := v1.Group("/law")
 		{
 			law.GET("/getByTeam", dbContext.GetLaws)
-			law.POST("/createLaw", dbContext.CreateLaw)
+			law.POST("/create", dbContext.CreateLaw)
 		}
 
 		penalty := v1.Group("/penalty")
@@ -39,5 +47,7 @@ func main() {
 		}
 	}
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-	router.Run(":9000")
+	if err := router.Run(address); err != nil {
+		panic(err)
+	}
 }
