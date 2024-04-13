@@ -30,6 +30,6 @@ spec:
     spec:
       containers:
       - name: penaltything-frontend
-        image: ghcr.io/Ygg-Drasill/PenaltyThing:v0.0.1
+        image: ghcr.io/ygg-drasill/penaltything/frontend:latest
         ports:
         - containerPort: 80
