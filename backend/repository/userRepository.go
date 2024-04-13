@@ -24,3 +24,9 @@ func (repo *Repository) GetUserById(id string) (*models.User, error) {
 	}
 	return &user, nil
 }
+
+func (repo *Repository) UserExists(id string) bool {
+	var exists bool
+	repo.db.Raw("SELECT EXISTS(SELECT FROM users WHERE id = ?)", id).Scan(&exists)
+	return exists
+}

@@ -15,41 +15,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/addPenalty": {
-            "post": {
-                "description": "register new user",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "penalty"
-                ],
-                "summary": "Add penalty to team member",
-                "operationId": "addUser",
-                "parameters": [
-                    {
-                        "description": "query params",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/handlers.AddPenaltyRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.User"
-                        }
-                    }
-                }
-            }
-        },
         "/law/create": {
             "post": {
                 "description": "create law",
@@ -88,7 +53,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/law/getLawsByTeam": {
+        "/law/getByTeam": {
             "get": {
                 "description": "get all laws in a team by teamId",
                 "produces": [
@@ -116,6 +81,41 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/models.Law"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/penalty/add": {
+            "post": {
+                "description": "register new user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "penalty"
+                ],
+                "summary": "Add penalty to team member",
+                "operationId": "addUser",
+                "parameters": [
+                    {
+                        "description": "query params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.AddPenaltyRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.PenaltyEntry"
                         }
                     }
                 }

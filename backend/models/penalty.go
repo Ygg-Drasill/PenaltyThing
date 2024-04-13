@@ -5,5 +5,5 @@ type PenaltyEntry struct {
 	UserId string `json:"userId" gorm:"foreignkey"`
 	LawId  string
 	Law    Law  `json:"law" gorm:"foreignkey=lawId"`
-	IsNew  bool `json:"isNew"`
+	IsNew  bool `json:"isNew" gorm:"default=true"`
 }

@@ -38,7 +38,7 @@ type GetLawsRequest struct {
 //	@Param			teamId query string true "Team ID"
 //	@Produce		json
 //	@Success		200	{array}	models.Law
-//	@Router			/law/getLawsByTeam [get]
+//	@Router			/law/getByTeam [get]
 func (db *DbContext) GetLaws(ctx *gin.Context) {
 	var query GetLawsRequest
 	if err := ctx.ShouldBindQuery(&query); err != nil {

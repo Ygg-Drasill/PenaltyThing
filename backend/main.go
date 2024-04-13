@@ -29,13 +29,13 @@ func main() {
 
 		law := v1.Group("/law")
 		{
-			law.GET("/getLaws", dbContext.GetLaws)
+			law.GET("/getByTeam", dbContext.GetLaws)
 			law.POST("/createLaw", dbContext.CreateLaw)
 		}
 
 		penalty := v1.Group("/penalty")
 		{
-			penalty.POST("/addPenalty", dbContext.AddPenalty)
+			penalty.POST("/add", dbContext.AddPenalty)
 		}
 	}
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))

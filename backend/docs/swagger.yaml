@@ -81,29 +81,6 @@ definitions:
 info:
   contact: {}
 paths:
-  /addPenalty:
-    post:
-      consumes:
-      - application/json
-      description: register new user
-      operationId: addUser
-      parameters:
-      - description: query params
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/handlers.AddPenaltyRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.User'
-      summary: Add penalty to team member
-      tags:
-      - penalty
   /law/create:
     post:
       consumes:
@@ -129,7 +106,7 @@ paths:
       summary: Create new law
       tags:
       - law
-  /law/getLawsByTeam:
+  /law/getByTeam:
     get:
       description: get all laws in a team by teamId
       operationId: getLaws
@@ -151,6 +128,29 @@ paths:
       summary: Get laws
       tags:
       - law
+  /penalty/add:
+    post:
+      consumes:
+      - application/json
+      description: register new user
+      operationId: addUser
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.AddPenaltyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.PenaltyEntry'
+      summary: Add penalty to team member
+      tags:
+      - penalty
   /team/create:
     post:
       consumes:
