@@ -2,10 +2,12 @@ package handlers
 
 import (
 	"fmt"
-	"github.com/Ygg-Drasill/PenaltyThing/backend/models"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 	"net/http"
 )
+
+const hashCost = 14
 
 type RegisterUserRequest struct {
 	Name     string `json:"name"`
@@ -26,10 +28,16 @@ type RegisterUserRequest struct {
 //	@Router			/user/register [post]
 func (db *DbContext) RegisterUser(ctx *gin.Context) {
 	req := RegisterUserRequest{}
-	err := ctx.BindJSON(&req)
-	var newUser models.Member
-	fmt.Printf("User by name %s added", req.Name)
-	newUser, err = db.repo.AddUser(req.Name, req.Password)
+	if err := ctx.BindJSON(&req); err != nil {
+		ctx.String(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	var err error
+	var hash []byte
+	hash, err = bcrypt.GenerateFromPassword([]byte(req.Password), hashCost)
+
+	newUser, err := db.repo.AddUser(req.Name, string(hash))
 	if err != nil {
 		fmt.Println(err)
 		ctx.String(http.StatusInternalServerError, err.Error())

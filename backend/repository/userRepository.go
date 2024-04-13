@@ -5,12 +5,12 @@ import (
 	"github.com/google/uuid"
 )
 
-func (repo *Repository) AddUser(name, password string) (models.Member, error) {
+func (repo *Repository) AddUser(name, passwordHash string) (models.Member, error) {
 	newUser := &models.User{
-		Id:       uuid.New().String(),
-		Name:     name,
-		Password: password,
-		TeamId:   "",
+		Id:           uuid.New().String(),
+		Name:         name,
+		PasswordHash: passwordHash,
+		TeamId:       "",
 	}
 	res := repo.db.Create(newUser)
 	return newUser.ToMember(), res.Error

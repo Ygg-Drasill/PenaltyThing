@@ -19,3 +19,19 @@ func (repo *Repository) GetLawsByTeam(teamId string) ([]models.Law, error) {
 	}
 	return laws, nil
 }
+
+func (repo *Repository) UpdateLaw(law models.Law) error {
+	res := repo.db.Save(&law)
+	if res.Error != nil {
+		return res.Error
+	}
+	return nil
+}
+
+func (repo *Repository) DeleteLawById(lawId string) error {
+	res := repo.db.Delete(&models.Law{}, lawId)
+	if res.Error != nil {
+		return res.Error
+	}
+	return nil
+}
