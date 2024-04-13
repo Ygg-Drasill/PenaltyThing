@@ -1,17 +1,16 @@
 import "./App.css";
-import Navbar from "./components/navbar";
-import { LoginForm } from "./pages/loginform";
 
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-// Import other components you want to route to
+import RegisterPage from "./pages/RegisterPage";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
+
   return (
     <Router>
-      <Navbar />
       <Routes>
-        <Route path="/login" element={<LoginForm />} />
-        {/* Define other routes as needed */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
       </Routes>
     </Router>
   );
