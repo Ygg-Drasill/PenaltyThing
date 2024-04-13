@@ -6,13 +6,13 @@ type User struct {
 	PasswordHash string         `json:"password"`
 	TeamId       string         `json:"teamId" gorm:"default:null"`
 	Penalties    []PenaltyEntry `json:"penalties"`
-}
+} //@name User
 
 type Member struct {
 	Id        string         `json:"id"`
 	Name      string         `json:"name"`
 	Penalties []PenaltyEntry `json:"penalties"`
-}
+} //@name Member
 
 func (user User) ToMember() Member {
 	return Member{

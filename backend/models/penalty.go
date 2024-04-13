@@ -11,4 +11,4 @@ type PenaltyEntry struct {
 	IsNew     bool `json:"isNew" gorm:"default=true"`
 	CreatedAt time.Time
 	Comment   string `json:"comment"`
-}
+} //@name PenaltyEntry

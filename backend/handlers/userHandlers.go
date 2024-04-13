@@ -59,7 +59,6 @@ type GetUserRequest struct {
 //	@Param			id query string true "User search by id"
 //	@Produce		json
 //	@Success		200	{object} models.Member
-//	models.Member
 //	@Router			/user/get [get]
 func (db *DbContext) GetUser(ctx *gin.Context) {
 	query := GetUserRequest{}

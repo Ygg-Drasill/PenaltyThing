@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/Ygg-Drasill/PenaltyThing/backend/docs"
 	"github.com/Ygg-Drasill/PenaltyThing/backend/handlers"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/middleware"
 	"github.com/Ygg-Drasill/PenaltyThing/backend/repository"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
@@ -20,6 +21,7 @@ func main() {
 	repo := repository.ConnectToDatabase("postgres://apidev:1234@130.225.37.183:5432/penaltythingdb")
 	dbContext := handlers.NewDbContext(repo)
 	router := gin.Default()
+	router.Use(middleware.CORSMiddleware())
 	docs.SwaggerInfo.Host = address
 	docs.SwaggerInfo.BasePath = "/api/v1"
 	v1 := router.Group("/api/v1")
@@ -47,7 +49,7 @@ func main() {
 		}
 	}
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-	if err := router.Run(address); err != nil {
+	if err := router.Run(":9000"); err != nil {
 		panic(err)
 	}
 }
