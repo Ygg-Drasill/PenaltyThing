@@ -1,5 +1,5 @@
 definitions:
-  handlers.AddPenaltyRequest:
+  AddPenaltyRequest:
     properties:
       comment:
         type: string
@@ -10,7 +10,7 @@ definitions:
       targetUserId:
         type: string
     type: object
-  handlers.CreateLawRequest:
+  CreateLawRequest:
     properties:
       description:
         type: string
@@ -19,21 +19,14 @@ definitions:
       title:
         type: string
     type: object
-  handlers.CreateTeamRequest:
+  CreateTeamRequest:
     properties:
       name:
         type: string
       userId:
         type: string
     type: object
-  handlers.RegisterUserRequest:
-    properties:
-      name:
-        type: string
-      password:
-        type: string
-    type: object
-  models.Law:
+  Law:
     properties:
       description:
         type: string
@@ -44,7 +37,7 @@ definitions:
       title:
         type: string
     type: object
-  models.Member:
+  Member:
     properties:
       id:
         type: string
@@ -52,10 +45,10 @@ definitions:
         type: string
       penalties:
         items:
-          $ref: '#/definitions/models.PenaltyEntry'
+          $ref: '#/definitions/PenaltyEntry'
         type: array
     type: object
-  models.PenaltyEntry:
+  PenaltyEntry:
     properties:
       comment:
         type: string
@@ -68,28 +61,35 @@ definitions:
       issuedBy:
         type: string
       law:
-        $ref: '#/definitions/models.Law'
+        $ref: '#/definitions/Law'
       lawId:
         type: string
       userId:
         type: string
     type: object
-  models.Team:
+  RegisterUserRequest:
+    properties:
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  Team:
     properties:
       id:
         type: string
       laws:
         items:
-          $ref: '#/definitions/models.Law'
+          $ref: '#/definitions/Law'
         type: array
       members:
         items:
-          $ref: '#/definitions/models.User'
+          $ref: '#/definitions/User'
         type: array
       name:
         type: string
     type: object
-  models.User:
+  User:
     properties:
       id:
         type: string
@@ -99,7 +99,7 @@ definitions:
         type: string
       penalties:
         items:
-          $ref: '#/definitions/models.PenaltyEntry'
+          $ref: '#/definitions/PenaltyEntry'
         type: array
       teamId:
         type: string
@@ -124,14 +124,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/handlers.CreateLawRequest'
+          $ref: '#/definitions/CreateLawRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Law'
+            $ref: '#/definitions/Law'
       summary: Create new law
       tags:
       - law
@@ -152,7 +152,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/models.Law'
+              $ref: '#/definitions/Law'
             type: array
       summary: Get laws
       tags:
@@ -169,14 +169,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/handlers.AddPenaltyRequest'
+          $ref: '#/definitions/AddPenaltyRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.PenaltyEntry'
+            $ref: '#/definitions/PenaltyEntry'
       summary: Add penalty to team member
       tags:
       - penalty
@@ -192,14 +192,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/handlers.CreateTeamRequest'
+          $ref: '#/definitions/CreateTeamRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Team'
+            $ref: '#/definitions/Team'
       summary: Create new team
       tags:
       - team
@@ -219,7 +219,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Member'
+            $ref: '#/definitions/Member'
       summary: Get user
       tags:
       - user
@@ -236,14 +236,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/handlers.RegisterUserRequest'
+          $ref: '#/definitions/RegisterUserRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.User'
+            $ref: '#/definitions/User'
       summary: Register user
       tags:
       - user

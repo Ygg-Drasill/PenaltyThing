@@ -10,7 +10,7 @@ import (
 type CreateTeamRequest struct {
 	UserId string `json:"userId"`
 	Name   string `json:"name"`
-}
+} //@name CreateTeamRequest
 
 // CreateTeam
 // @Summary	Create new team
@@ -18,10 +18,10 @@ type CreateTeamRequest struct {
 // @Schemes
 // @Description	Create a new team
 // @Tags			team
-// @Param			request body handlers.CreateTeamRequest true "query params"
+// @Param			request body CreateTeamRequest true "query params"
 // @Accept			json
 // @Produce		json
-// @Success		200	{object}	models.Team
+// @Success		200	{object}	Team
 // @Router			/team/create [post]
 func (db *DbContext) CreateTeam(ctx *gin.Context) {
 	req := CreateTeamRequest{}
@@ -44,7 +44,7 @@ func (db *DbContext) CreateTeam(ctx *gin.Context) {
 type AddUserToTeamRequest struct {
 	userId string
 	teamId string
-}
+} //@name AddUserToTeamRequest
 
 //AddUserToTeam
 // @Summary	Add user to team
@@ -55,7 +55,7 @@ type AddUserToTeamRequest struct {
 // @Param			userId query string true "User ID"
 // @Param			teamId query string true "Team ID"
 // @Produce		json
-// @Success		200	{object}	models.Team
+// @Success		200	{object}	Team
 // @Router			/team/addUserToTeam [post]
 
 func (db *DbContext) AddUserToTeam(ctx *gin.Context) {

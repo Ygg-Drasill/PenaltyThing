@@ -9,7 +9,7 @@ type CreateLawRequest struct {
 	TeamId      string `json:"teamId"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
-}
+} //@name CreateLawRequest
 
 // CreateLaw
 //
@@ -18,10 +18,10 @@ type CreateLawRequest struct {
 //	@Schemes
 //	@Description	create law
 //	@Tags			law
-//	@Param			request body handlers.CreateLawRequest true "query params"
+//	@Param			request body CreateLawRequest true "query params"
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{object}	models.Law
+//	@Success		200	{object}	Law
 //	@Router			/law/create [post]
 func (db *DbContext) CreateLaw(ctx *gin.Context) {
 	var req CreateLawRequest
@@ -40,7 +40,7 @@ func (db *DbContext) CreateLaw(ctx *gin.Context) {
 
 type GetLawsRequest struct {
 	TeamId string `json:"teamId" form:"teamId"`
-}
+} //@name GetLawsRequest
 
 // GetLaws
 //
@@ -51,7 +51,7 @@ type GetLawsRequest struct {
 //	@Tags			law
 //	@Param			teamId query string true "Team ID"
 //	@Produce		json
-//	@Success		200	{array}	models.Law
+//	@Success		200	{array}	Law
 //	@Router			/law/getByTeam [get]
 func (db *DbContext) GetLaws(ctx *gin.Context) {
 	var query GetLawsRequest

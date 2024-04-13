@@ -31,7 +31,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.CreateLawRequest"
+                            "$ref": "#/definitions/CreateLawRequest"
                         }
                     }
                 ],
@@ -39,7 +39,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Law"
+                            "$ref": "#/definitions/Law"
                         }
                     }
                 }
@@ -71,7 +71,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Law"
+                                "$ref": "#/definitions/Law"
                             }
                         }
                     }
@@ -99,7 +99,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.AddPenaltyRequest"
+                            "$ref": "#/definitions/AddPenaltyRequest"
                         }
                     }
                 ],
@@ -107,7 +107,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.PenaltyEntry"
+                            "$ref": "#/definitions/PenaltyEntry"
                         }
                     }
                 }
@@ -134,7 +134,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.CreateTeamRequest"
+                            "$ref": "#/definitions/CreateTeamRequest"
                         }
                     }
                 ],
@@ -142,7 +142,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Team"
+                            "$ref": "#/definitions/Team"
                         }
                     }
                 }
@@ -172,7 +172,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Member"
+                            "$ref": "#/definitions/Member"
                         }
                     }
                 }
@@ -199,7 +199,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.RegisterUserRequest"
+                            "$ref": "#/definitions/RegisterUserRequest"
                         }
                     }
                 ],
@@ -207,7 +207,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/User"
                         }
                     }
                 }
@@ -215,7 +215,7 @@
         }
     },
     "definitions": {
-        "handlers.AddPenaltyRequest": {
+        "AddPenaltyRequest": {
             "type": "object",
             "properties": {
                 "comment": {
@@ -232,7 +232,7 @@
                 }
             }
         },
-        "handlers.CreateLawRequest": {
+        "CreateLawRequest": {
             "type": "object",
             "properties": {
                 "description": {
@@ -246,7 +246,7 @@
                 }
             }
         },
-        "handlers.CreateTeamRequest": {
+        "CreateTeamRequest": {
             "type": "object",
             "properties": {
                 "name": {
@@ -257,18 +257,7 @@
                 }
             }
         },
-        "handlers.RegisterUserRequest": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.Law": {
+        "Law": {
             "type": "object",
             "properties": {
                 "description": {
@@ -285,7 +274,7 @@
                 }
             }
         },
-        "models.Member": {
+        "Member": {
             "type": "object",
             "properties": {
                 "id": {
@@ -297,12 +286,12 @@
                 "penalties": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.PenaltyEntry"
+                        "$ref": "#/definitions/PenaltyEntry"
                     }
                 }
             }
         },
-        "models.PenaltyEntry": {
+        "PenaltyEntry": {
             "type": "object",
             "properties": {
                 "comment": {
@@ -321,7 +310,7 @@
                     "type": "string"
                 },
                 "law": {
-                    "$ref": "#/definitions/models.Law"
+                    "$ref": "#/definitions/Law"
                 },
                 "lawId": {
                     "type": "string"
@@ -331,7 +320,18 @@
                 }
             }
         },
-        "models.Team": {
+        "RegisterUserRequest": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "Team": {
             "type": "object",
             "properties": {
                 "id": {
@@ -340,13 +340,13 @@
                 "laws": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.Law"
+                        "$ref": "#/definitions/Law"
                     }
                 },
                 "members": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.User"
+                        "$ref": "#/definitions/User"
                     }
                 },
                 "name": {
@@ -354,7 +354,7 @@
                 }
             }
         },
-        "models.User": {
+        "User": {
             "type": "object",
             "properties": {
                 "id": {
@@ -369,7 +369,7 @@
                 "penalties": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.PenaltyEntry"
+                        "$ref": "#/definitions/PenaltyEntry"
                     }
                 },
                 "teamId": {

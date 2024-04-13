@@ -11,7 +11,7 @@ type AddPenaltyRequest struct {
 	IssuerUserId string `json:"issuerUserId"`
 	LawId        string `json:"lawId"`
 	Comment      string `json:"comment"`
-}
+} //@name AddPenaltyRequest
 
 // AddPenalty
 //
@@ -20,10 +20,10 @@ type AddPenaltyRequest struct {
 //	@Schemes
 //	@Description	Add penalty to member of team
 //	@Tags			penalty
-//	@Param			request	body	handlers.AddPenaltyRequest	true	"query params"
+//	@Param			request	body	AddPenaltyRequest	true	"query params"
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{object}	models.PenaltyEntry
+//	@Success		200	{object}	PenaltyEntry
 //	@Router			/penalty/add [post]
 func (db *DbContext) AddPenalty(ctx *gin.Context) {
 	var req AddPenaltyRequest

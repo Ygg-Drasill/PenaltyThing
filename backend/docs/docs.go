@@ -40,7 +40,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.CreateLawRequest"
+                            "$ref": "#/definitions/CreateLawRequest"
                         }
                     }
                 ],
@@ -48,7 +48,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Law"
+                            "$ref": "#/definitions/Law"
                         }
                     }
                 }
@@ -80,7 +80,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Law"
+                                "$ref": "#/definitions/Law"
                             }
                         }
                     }
@@ -108,7 +108,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.AddPenaltyRequest"
+                            "$ref": "#/definitions/AddPenaltyRequest"
                         }
                     }
                 ],
@@ -116,7 +116,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.PenaltyEntry"
+                            "$ref": "#/definitions/PenaltyEntry"
                         }
                     }
                 }
@@ -143,7 +143,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.CreateTeamRequest"
+                            "$ref": "#/definitions/CreateTeamRequest"
                         }
                     }
                 ],
@@ -151,7 +151,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Team"
+                            "$ref": "#/definitions/Team"
                         }
                     }
                 }
@@ -181,7 +181,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Member"
+                            "$ref": "#/definitions/Member"
                         }
                     }
                 }
@@ -208,7 +208,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.RegisterUserRequest"
+                            "$ref": "#/definitions/RegisterUserRequest"
                         }
                     }
                 ],
@@ -216,7 +216,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/User"
                         }
                     }
                 }
@@ -224,7 +224,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "handlers.AddPenaltyRequest": {
+        "AddPenaltyRequest": {
             "type": "object",
             "properties": {
                 "comment": {
@@ -241,7 +241,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handlers.CreateLawRequest": {
+        "CreateLawRequest": {
             "type": "object",
             "properties": {
                 "description": {
@@ -255,7 +255,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handlers.CreateTeamRequest": {
+        "CreateTeamRequest": {
             "type": "object",
             "properties": {
                 "name": {
@@ -266,18 +266,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handlers.RegisterUserRequest": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.Law": {
+        "Law": {
             "type": "object",
             "properties": {
                 "description": {
@@ -294,7 +283,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Member": {
+        "Member": {
             "type": "object",
             "properties": {
                 "id": {
@@ -306,12 +295,12 @@ const docTemplate = `{
                 "penalties": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.PenaltyEntry"
+                        "$ref": "#/definitions/PenaltyEntry"
                     }
                 }
             }
         },
-        "models.PenaltyEntry": {
+        "PenaltyEntry": {
             "type": "object",
             "properties": {
                 "comment": {
@@ -330,7 +319,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "law": {
-                    "$ref": "#/definitions/models.Law"
+                    "$ref": "#/definitions/Law"
                 },
                 "lawId": {
                     "type": "string"
@@ -340,7 +329,18 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Team": {
+        "RegisterUserRequest": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "Team": {
             "type": "object",
             "properties": {
                 "id": {
@@ -349,13 +349,13 @@ const docTemplate = `{
                 "laws": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.Law"
+                        "$ref": "#/definitions/Law"
                     }
                 },
                 "members": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.User"
+                        "$ref": "#/definitions/User"
                     }
                 },
                 "name": {
@@ -363,7 +363,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.User": {
+        "User": {
             "type": "object",
             "properties": {
                 "id": {
@@ -378,7 +378,7 @@ const docTemplate = `{
                 "penalties": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.PenaltyEntry"
+                        "$ref": "#/definitions/PenaltyEntry"
                     }
                 },
                 "teamId": {

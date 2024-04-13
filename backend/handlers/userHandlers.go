@@ -12,7 +12,7 @@ const hashCost = 14
 type RegisterUserRequest struct {
 	Name     string `json:"name"`
 	Password string `json:"password"`
-}
+} //@name RegisterUserRequest
 
 // RegisterUser
 //
@@ -21,10 +21,10 @@ type RegisterUserRequest struct {
 //	@Schemes
 //	@Description	Register new user, given password will be encrypted on backend. This is subject to change
 //	@Tags			user
-//	@Param			request body handlers.RegisterUserRequest true "query params"
+//	@Param			request body RegisterUserRequest true "query params"
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{object}	models.User
+//	@Success		200	{object}	User
 //	@Router			/user/register [post]
 func (db *DbContext) RegisterUser(ctx *gin.Context) {
 	req := RegisterUserRequest{}
@@ -47,7 +47,7 @@ func (db *DbContext) RegisterUser(ctx *gin.Context) {
 
 type GetUserRequest struct {
 	Id string `json:"id" form:"id"`
-}
+} //@name GetUserRequest
 
 // GetUser
 //
@@ -58,7 +58,7 @@ type GetUserRequest struct {
 //	@Tags			user
 //	@Param			id query string true "User search by id"
 //	@Produce		json
-//	@Success		200	{object} models.Member
+//	@Success		200	{object} Member
 //	@Router			/user/get [get]
 func (db *DbContext) GetUser(ctx *gin.Context) {
 	query := GetUserRequest{}
