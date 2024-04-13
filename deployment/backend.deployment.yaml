@@ -29,6 +29,6 @@ spec:
     spec:
       containers:
       - name: penaltything-backend
-        image: ghcr.io/Ygg-Drasill/PenaltyThing:v0.0.1
+        image: ghcr.io/ygg-drasill/penaltything/backend:latest
         ports:
         - containerPort: 9000
