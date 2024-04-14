@@ -12,7 +12,7 @@ export default function RegisterPage() {
     const [password, setPassword] = useState("")
     const [passwordConfirm, setPasswordConfirm] = useState("")
 
-    const submitHandler = (event: SubmitEvent) => {
+    const submitHandler = (event: React.FormEvent) => {
         event.preventDefault()
         if (password != passwordConfirm) {
             return
@@ -47,11 +47,11 @@ export default function RegisterPage() {
                             <Stack direction={"row"} justifyContent={"center"} gap={2}>
                                 <Button type="submit" color="success" variant="outlined">Register</Button>
                                 <Box alignItems={"flex-start"}>
-                                    <Typography textAlign={"left"} variant="subtitle1" sx={{color: "warning.main"}}>
-                                        <AnnouncementSharp sx={{marginRight: 1}}/>
+                                    <Typography textAlign={"left"} variant="subtitle1" sx={{color: "background.default"}}>
+                                        <AnnouncementSharp sx={{marginRight: 1, color: "warning.light"}}/>
                                         Warning: This site is still under development, we do not guarantee security.
                                     </Typography>
-                                    <Typography textAlign={"left"} variant="subtitle2" sx={{color: "warning.dark"}}>
+                                    <Typography textAlign={"left"} variant="subtitle2" sx={{color: "background.default"}}>
                                         Please do not use your real password, we recommend generating one using your password manager.
                                     </Typography>
                                 </Box>

@@ -6,7 +6,12 @@ interface BasePageProps {
 }
 
 export default function BasePage(props: BasePageProps) {
-    return <Container>
+    return <Container sx={{
+            height: "100vh", 
+            alignItems: "center", 
+            justifyContent: "center",
+            paddingTop: "10vh" 
+        }}>
         {props.children}
     </Container>
 }

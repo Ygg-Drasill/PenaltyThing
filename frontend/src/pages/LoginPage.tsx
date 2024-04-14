@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Stack, TextField, Typography } from "@mui/material";
+import { Box, Card, CardContent, Stack, TextField } from "@mui/material";
 import BasePage from "./BasePage";
 
 export default function LoginPage() {
