@@ -1,13 +1,16 @@
 package main
 
 import (
+	"fmt"
 	"github.com/Ygg-Drasill/PenaltyThing/backend/docs"
 	"github.com/Ygg-Drasill/PenaltyThing/backend/handlers"
 	"github.com/Ygg-Drasill/PenaltyThing/backend/middleware"
 	"github.com/Ygg-Drasill/PenaltyThing/backend/repository"
 	"github.com/gin-gonic/gin"
+	_ "github.com/joho/godotenv/autoload"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"os"
 )
 
 const (
@@ -18,10 +21,10 @@ const (
 // @title			PenaltyThing API
 // @version		1.0
 // @contact.name	Tobias Bay
-// @contact.url	http://penaltything.me/support
+// @contact.url	http://penaltything.social/support
 // @contact.email	tab@penaltything.social
 func main() {
-	repo := repository.ConnectToDatabase("postgres://apidev:1234@130.225.37.183:5432/penaltythingdb")
+	repo := repository.ConnectToDatabase(repository.ConnectionFromEnvironment())
 	dbContext := handlers.NewDbContext(repo)
 	router := gin.Default()
 	router.Use(middleware.CORSMiddleware())
@@ -53,7 +56,7 @@ func main() {
 		}
 	}
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-	if err := router.Run(":9000"); err != nil {
+	if err := router.Run(fmt.Sprintf(":%s", os.Getenv("LISTEN_PORT"))); err != nil {
 		panic(err)
 	}
 }
