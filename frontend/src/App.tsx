@@ -10,7 +10,7 @@ import AppView from "./components/appViews/AppView";
 import PenaltiesView from "./components/appViews/PenaltiesView";
 import { useEffect } from "react";
 import Cookies from "universal-cookie";
-import { NoAccounts } from "@mui/icons-material";
+import TeamsView from "./components/appViews/TeamsView";
 
 function App() {
 
@@ -22,6 +22,7 @@ function App() {
         <Route path="app" element={<InnerApp />}>
           <Route path="home" element={<HomeView />} />
           <Route path="penalties" element={<PenaltiesView />} />
+          <Route path="teams" element={<TeamsView />} />
           <Route path="*" element={<NoView />} />
         </Route>
         <Route path="*" element={<Navigate replace to={"/app/home"}/>} />
@@ -32,7 +33,7 @@ function App() {
 
 export default App;
 
-function InnerApp() {
+function InnerApp() { //TODO: Introduce userSession context where user cookie is passed down to components inside innerApp
   const navigate = useNavigate()
   useEffect(() => {
     const cookies = new Cookies()

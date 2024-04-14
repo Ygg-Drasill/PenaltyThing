@@ -41,3 +41,12 @@ func (repo *Repository) AddUserToTeam(userId, teamId string) error {
 	team.Members = append(team.Members, user)
 	return nil
 }
+
+func (repo *Repository) GetTeamsByUserId(userId string) ([]models.Team, error) {
+	var teams []models.Team
+	result := repo.db.Find(&teams, "id = ?", userId)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return teams, nil
+}

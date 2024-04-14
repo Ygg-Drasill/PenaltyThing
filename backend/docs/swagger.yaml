@@ -10,6 +10,8 @@ definitions:
       targetUserId:
         type: string
     type: object
+  AddUserToTeamRequest:
+    type: object
   AuthenticateUserRequest:
     properties:
       password:
@@ -199,6 +201,27 @@ paths:
       summary: Add penalty to team member
       tags:
       - penalty
+  /team/addUserToTeam:
+    post:
+      description: Add user to team
+      operationId: addUserToTeam
+      parameters:
+      - description: request params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/AddUserToTeamRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Team'
+      summary: Add user to team
+      tags:
+      - team
   /team/create:
     post:
       consumes:
@@ -220,6 +243,28 @@ paths:
           schema:
             $ref: '#/definitions/Team'
       summary: Create new team
+      tags:
+      - team
+  /team/getByUserId:
+    get:
+      description: Get all teams that a user is a member of
+      operationId: getTeamsByUserId
+      parameters:
+      - description: User ID
+        in: query
+        name: userId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/Team'
+            type: array
+      summary: Get teams by user id
       tags:
       - team
   /user/authenticate:

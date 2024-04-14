@@ -73,7 +73,7 @@ type GetUserRequest struct {
 //	@Success		200	{object} Member
 //	@Router			/user/get [get]
 func (db *DbContext) GetUser(ctx *gin.Context) {
-	query := GetUserRequest{}
+	var query GetUserRequest
 	if res := ctx.ShouldBindQuery(&query); res != nil {
 		ctx.String(http.StatusInternalServerError, res.Error())
 		return

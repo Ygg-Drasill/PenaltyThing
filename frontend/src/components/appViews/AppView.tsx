@@ -1,6 +1,10 @@
 import { Divider, Paper, Typography } from "@mui/material";
 import { ReactNode } from "react";
 
+export interface BaseAppViewProps {
+  userId: string
+}
+
 function AppView(props: { title: string; children: ReactNode }) {
   return (
     <Paper

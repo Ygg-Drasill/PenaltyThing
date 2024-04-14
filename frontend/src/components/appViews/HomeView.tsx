@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import AppView from "./AppView";
 
-function HomeView() {
+function HomeView(props: BaseAppViewProps) {
 
     return (
         <AppView title="Home">
