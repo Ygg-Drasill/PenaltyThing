@@ -15,6 +15,15 @@ import {
 import React from "react";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { useUserServiceGetUser } from "./openapi/queries";
+import Cookies from "universal-cookie";
+import { Member } from "./openapi/requests";
+
+function userInitials(user: Member) {
+  const firstInitial = user.firstName?.slice(0, 1).toLocaleUpperCase() ?? ""
+  const secondInitial = user.lastName?.slice(0, 1).toLocaleUpperCase() ?? ""
+  return firstInitial + secondInitial
+}
 
 function AppTrayButton(props: { to: string, icon: React.ReactElement }) {
     return (
@@ -27,6 +36,8 @@ function AppTrayButton(props: { to: string, icon: React.ReactElement }) {
 }
 
 function AppTray() {
+  const cookies = new Cookies()
+  const user = useUserServiceGetUser({id: cookies.get("userId")})
   const [accountPopperAnchor, setAccountPopperAnchor] =
     useState<null | HTMLElement>(null);
 
@@ -61,7 +72,7 @@ function AppTray() {
             color="info"
             onClick={handleToggleAccountPopper}
           >
-            <Avatar sx={{ backgroundColor: "secondary.main" }}>AR</Avatar>
+            <Avatar sx={{ backgroundColor: "secondary.main" }}>{user.data ? userInitials(user.data) : "  "}</Avatar>
           </IconButton>
         </Box>
       </Stack>

@@ -1,17 +1,30 @@
-import { Container } from "@mui/material";
+import { Backdrop, CircularProgress, Container } from "@mui/material";
 import { ReactNode } from "react";
 
 interface BasePageProps {
-    children: ReactNode
+  loading?: boolean;
+  children: ReactNode;
 }
 
 export default function BasePage(props: BasePageProps) {
-    return <Container sx={{
-            height: "100vh", 
-            alignItems: "center", 
-            justifyContent: "center",
-            paddingTop: "10vh" 
-        }}>
+  return (
+    <>
+      <Backdrop
+        open={props.loading ?? false}
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      <Container
+        sx={{
+          height: "100vh",
+          alignItems: "center",
+          justifyContent: "center",
+          paddingTop: "10vh",
+        }}
+      >
         {props.children}
-    </Container>
+      </Container>
+    </>
+  );
 }
