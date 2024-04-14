@@ -1,23 +1,39 @@
 definitions:
-  handlers.CreateLawRequest:
+  AddPenaltyRequest:
+    properties:
+      comment:
+        type: string
+      issuerUserId:
+        type: string
+      lawId:
+        type: string
+      targetUserId:
+        type: string
     type: object
-  handlers.CreateTeamRequest:
+  AuthenticateUserRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  CreateLawRequest:
+    properties:
+      description:
+        type: string
+      teamId:
+        type: string
+      title:
+        type: string
+    type: object
+  CreateTeamRequest:
     properties:
       name:
         type: string
       userId:
         type: string
     type: object
-  handlers.GetLawsRequest:
-    type: object
-  handlers.RegisterUserRequest:
-    properties:
-      name:
-        type: string
-      password:
-        type: string
-    type: object
-  models.Law:
+  Law:
     properties:
       description:
         type: string
@@ -28,73 +44,93 @@ definitions:
       title:
         type: string
     type: object
-  models.Member:
+  Member:
     properties:
+      firstName:
+        type: string
       id:
         type: string
-      name:
+      lastName:
+        type: string
+      penalties:
+        items:
+          $ref: '#/definitions/PenaltyEntry'
+        type: array
+      username:
         type: string
     type: object
-  models.PenaltyEntry:
+  PenaltyEntry:
     properties:
+      comment:
+        type: string
+      createdAt:
+        type: string
       id:
         type: string
+      isNew:
+        type: boolean
+      issuedBy:
+        type: string
       law:
-        $ref: '#/definitions/models.Law'
+        $ref: '#/definitions/Law'
       lawId:
         type: string
       userId:
         type: string
     type: object
-  models.Team:
+  RegisterUserRequest:
     properties:
-      id:
+      firstName:
         type: string
-      laws:
-        items:
-          $ref: '#/definitions/models.Law'
-        type: array
-      members:
-        items:
-          $ref: '#/definitions/models.User'
-        type: array
-      name:
-        type: string
-    type: object
-  models.User:
-    properties:
-      id:
+      lastName:
         type: string
       name:
         type: string
       password:
         type: string
+    type: object
+  Team:
+    properties:
+      id:
+        type: string
+      laws:
+        items:
+          $ref: '#/definitions/Law'
+        type: array
+      members:
+        items:
+          $ref: '#/definitions/User'
+        type: array
+      name:
+        type: string
+    type: object
+  User:
+    properties:
+      firstName:
+        type: string
+      id:
+        type: string
+      lastName:
+        type: string
+      password:
+        type: string
       penalties:
         items:
-          $ref: '#/definitions/models.PenaltyEntry'
+          $ref: '#/definitions/PenaltyEntry'
         type: array
       teamId:
         type: string
+      username:
+        type: string
     type: object
 info:
-  contact: {}
+  contact:
+    email: tab@penaltything.social
+    name: Tobias Bay
+    url: http://penaltything.me/support
+  title: PenaltyThing API
+  version: "1.0"
 paths:
-  /addPenalty:
-    post:
-      consumes:
-      - application/json
-      description: register new user
-      operationId: addUser
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.User'
-      summary: Add penalty to team member
-      tags:
-      - penalty
   /law/create:
     post:
       consumes:
@@ -107,7 +143,27 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/handlers.CreateLawRequest'
+          $ref: '#/definitions/CreateLawRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Law'
+      summary: Create new law
+      tags:
+      - law
+  /law/getByTeam:
+    get:
+      description: get all laws in a team by teamId
+      operationId: getLaws
+      parameters:
+      - description: Team ID
+        in: query
+        name: teamId
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -115,36 +171,34 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/models.Law'
+              $ref: '#/definitions/Law'
             type: array
-      summary: Create new law
+      summary: Get laws
       tags:
       - law
-  /law/getAllByTeam:
-    get:
+  /penalty/add:
+    post:
       consumes:
       - application/json
-      description: get all laws in a team by teamId
-      operationId: getLaws
+      description: Add penalty to member of team
+      operationId: addPenalty
       parameters:
       - description: query params
         in: body
         name: request
         required: true
         schema:
-          $ref: '#/definitions/handlers.GetLawsRequest'
+          $ref: '#/definitions/AddPenaltyRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/models.Law'
-            type: array
-      summary: Get laws
+            $ref: '#/definitions/PenaltyEntry'
+      summary: Add penalty to team member
       tags:
-      - law
+      - penalty
   /team/create:
     post:
       consumes:
@@ -157,37 +211,55 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/handlers.CreateTeamRequest'
+          $ref: '#/definitions/CreateTeamRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Team'
+            $ref: '#/definitions/Team'
       summary: Create new team
       tags:
       - team
-  /user/get:
-    get:
-      consumes:
-      - application/json
-      description: get user
-      operationId: getUser
+  /user/authenticate:
+    post:
+      description: Authenticate user using username and password
+      operationId: authenticateUser
       parameters:
-      - description: query params
+      - description: User credentials
         in: body
         name: request
         required: true
         schema:
-          $ref: '#/definitions/handlers.RegisterUserRequest'
+          $ref: '#/definitions/AuthenticateUserRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Member'
+            $ref: '#/definitions/Member'
+      summary: Authenticate user
+      tags:
+      - user
+  /user/get:
+    get:
+      description: get user
+      operationId: getUser
+      parameters:
+      - description: User search by id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Member'
       summary: Get user
       tags:
       - user
@@ -195,7 +267,8 @@ paths:
     post:
       consumes:
       - application/json
-      description: register new user
+      description: Register new user, given password will be encrypted on backend.
+        This is subject to change
       operationId: registerUser
       parameters:
       - description: query params
@@ -203,15 +276,15 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/handlers.RegisterUserRequest'
+          $ref: '#/definitions/RegisterUserRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.User'
-      summary: Add user
+            $ref: '#/definitions/User'
+      summary: Register user
       tags:
       - user
 swagger: "2.0"

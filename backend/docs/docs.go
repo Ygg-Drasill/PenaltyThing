@@ -9,36 +9,16 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "contact": {},
+        "contact": {
+            "name": "Tobias Bay",
+            "url": "http://penaltything.me/support",
+            "email": "tab@penaltything.social"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/addPenalty": {
-            "post": {
-                "description": "register new user",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "penalty"
-                ],
-                "summary": "Add penalty to team member",
-                "operationId": "addUser",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.User"
-                        }
-                    }
-                }
-            }
-        },
         "/law/create": {
             "post": {
                 "description": "create law",
@@ -60,7 +40,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.CreateLawRequest"
+                            "$ref": "#/definitions/CreateLawRequest"
                         }
                     }
                 ],
@@ -68,21 +48,15 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/models.Law"
-                            }
+                            "$ref": "#/definitions/Law"
                         }
                     }
                 }
             }
         },
-        "/law/getAllByTeam": {
+        "/law/getByTeam": {
             "get": {
                 "description": "get all laws in a team by teamId",
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -93,13 +67,11 @@ const docTemplate = `{
                 "operationId": "getLaws",
                 "parameters": [
                     {
-                        "description": "query params",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/handlers.GetLawsRequest"
-                        }
+                        "type": "string",
+                        "description": "Team ID",
+                        "name": "teamId",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -108,8 +80,43 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Law"
+                                "$ref": "#/definitions/Law"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/penalty/add": {
+            "post": {
+                "description": "Add penalty to member of team",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "penalty"
+                ],
+                "summary": "Add penalty to team member",
+                "operationId": "addPenalty",
+                "parameters": [
+                    {
+                        "description": "query params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/AddPenaltyRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/PenaltyEntry"
                         }
                     }
                 }
@@ -136,7 +143,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.CreateTeamRequest"
+                            "$ref": "#/definitions/CreateTeamRequest"
                         }
                     }
                 ],
@@ -144,7 +151,39 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Team"
+                            "$ref": "#/definitions/Team"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/authenticate": {
+            "post": {
+                "description": "Authenticate user using username and password",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Authenticate user",
+                "operationId": "authenticateUser",
+                "parameters": [
+                    {
+                        "description": "User credentials",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/AuthenticateUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Member"
                         }
                     }
                 }
@@ -153,9 +192,6 @@ const docTemplate = `{
         "/user/get": {
             "get": {
                 "description": "get user",
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -166,20 +202,18 @@ const docTemplate = `{
                 "operationId": "getUser",
                 "parameters": [
                     {
-                        "description": "query params",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/handlers.RegisterUserRequest"
-                        }
+                        "type": "string",
+                        "description": "User search by id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Member"
+                            "$ref": "#/definitions/Member"
                         }
                     }
                 }
@@ -187,7 +221,7 @@ const docTemplate = `{
         },
         "/user/register": {
             "post": {
-                "description": "register new user",
+                "description": "Register new user, given password will be encrypted on backend. This is subject to change",
                 "consumes": [
                     "application/json"
                 ],
@@ -197,7 +231,7 @@ const docTemplate = `{
                 "tags": [
                     "user"
                 ],
-                "summary": "Add user",
+                "summary": "Register user",
                 "operationId": "registerUser",
                 "parameters": [
                     {
@@ -206,7 +240,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.RegisterUserRequest"
+                            "$ref": "#/definitions/RegisterUserRequest"
                         }
                     }
                 ],
@@ -214,7 +248,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/User"
                         }
                     }
                 }
@@ -222,10 +256,49 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "handlers.CreateLawRequest": {
-            "type": "object"
+        "AddPenaltyRequest": {
+            "type": "object",
+            "properties": {
+                "comment": {
+                    "type": "string"
+                },
+                "issuerUserId": {
+                    "type": "string"
+                },
+                "lawId": {
+                    "type": "string"
+                },
+                "targetUserId": {
+                    "type": "string"
+                }
+            }
         },
-        "handlers.CreateTeamRequest": {
+        "AuthenticateUserRequest": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "CreateLawRequest": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "teamId": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "CreateTeamRequest": {
             "type": "object",
             "properties": {
                 "name": {
@@ -236,21 +309,7 @@ const docTemplate = `{
                 }
             }
         },
-        "handlers.GetLawsRequest": {
-            "type": "object"
-        },
-        "handlers.RegisterUserRequest": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.Law": {
+        "Law": {
             "type": "object",
             "properties": {
                 "description": {
@@ -267,25 +326,49 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Member": {
+        "Member": {
             "type": "object",
             "properties": {
+                "firstName": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
-                "name": {
+                "lastName": {
+                    "type": "string"
+                },
+                "penalties": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PenaltyEntry"
+                    }
+                },
+                "username": {
                     "type": "string"
                 }
             }
         },
-        "models.PenaltyEntry": {
+        "PenaltyEntry": {
             "type": "object",
             "properties": {
+                "comment": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
+                "isNew": {
+                    "type": "boolean"
+                },
+                "issuedBy": {
+                    "type": "string"
+                },
                 "law": {
-                    "$ref": "#/definitions/models.Law"
+                    "$ref": "#/definitions/Law"
                 },
                 "lawId": {
                     "type": "string"
@@ -295,7 +378,24 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Team": {
+        "RegisterUserRequest": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "Team": {
             "type": "object",
             "properties": {
                 "id": {
@@ -304,13 +404,13 @@ const docTemplate = `{
                 "laws": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.Law"
+                        "$ref": "#/definitions/Law"
                     }
                 },
                 "members": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.User"
+                        "$ref": "#/definitions/User"
                     }
                 },
                 "name": {
@@ -318,13 +418,16 @@ const docTemplate = `{
                 }
             }
         },
-        "models.User": {
+        "User": {
             "type": "object",
             "properties": {
+                "firstName": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
-                "name": {
+                "lastName": {
                     "type": "string"
                 },
                 "password": {
@@ -333,10 +436,13 @@ const docTemplate = `{
                 "penalties": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.PenaltyEntry"
+                        "$ref": "#/definitions/PenaltyEntry"
                     }
                 },
                 "teamId": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 }
             }
@@ -346,11 +452,11 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
+	Version:          "1.0",
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "",
+	Title:            "PenaltyThing API",
 	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
