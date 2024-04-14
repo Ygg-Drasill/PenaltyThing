@@ -33,6 +33,7 @@ func main() {
 		{
 			user.GET("/get", dbContext.GetUser)
 			user.POST("/register", dbContext.RegisterUser)
+			user.POST("/authenticate", dbContext.AuthenticateUser)
 		}
 
 		team := v1.Group("/team")

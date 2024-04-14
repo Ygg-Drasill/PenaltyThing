@@ -10,6 +10,13 @@ definitions:
       targetUserId:
         type: string
     type: object
+  AuthenticateUserRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
   CreateLawRequest:
     properties:
       description:
@@ -39,14 +46,18 @@ definitions:
     type: object
   Member:
     properties:
+      firstName:
+        type: string
       id:
         type: string
-      name:
+      lastName:
         type: string
       penalties:
         items:
           $ref: '#/definitions/PenaltyEntry'
         type: array
+      username:
+        type: string
     type: object
   PenaltyEntry:
     properties:
@@ -69,6 +80,10 @@ definitions:
     type: object
   RegisterUserRequest:
     properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
       name:
         type: string
       password:
@@ -91,9 +106,11 @@ definitions:
     type: object
   User:
     properties:
+      firstName:
+        type: string
       id:
         type: string
-      name:
+      lastName:
         type: string
       password:
         type: string
@@ -103,10 +120,12 @@ definitions:
         type: array
       teamId:
         type: string
+      username:
+        type: string
     type: object
 info:
   contact:
-    email: tab@penaltything.me
+    email: tab@penaltything.social
     name: Tobias Bay
     url: http://penaltything.me/support
   title: PenaltyThing API
@@ -203,6 +222,27 @@ paths:
       summary: Create new team
       tags:
       - team
+  /user/authenticate:
+    post:
+      description: Authenticate user using username and password
+      operationId: authenticateUser
+      parameters:
+      - description: User credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/AuthenticateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Member'
+      summary: Authenticate user
+      tags:
+      - user
   /user/get:
     get:
       description: get user

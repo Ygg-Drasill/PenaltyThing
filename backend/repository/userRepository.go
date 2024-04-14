@@ -5,11 +5,13 @@ import (
 	"github.com/google/uuid"
 )
 
-func (repo *Repository) AddUser(name, passwordHash string) (models.Member, error) {
+func (repo *Repository) AddUser(username, passwordHash, firstName, lastName string) (models.Member, error) {
 	newUser := &models.User{
 		Id:           uuid.New().String(),
-		Name:         name,
+		Username:     username,
 		PasswordHash: passwordHash,
+		FirstName:    firstName,
+		LastName:     lastName,
 		TeamId:       "",
 	}
 	res := repo.db.Create(newUser)
@@ -25,8 +27,26 @@ func (repo *Repository) GetUserById(id string) (*models.User, error) {
 	return &user, nil
 }
 
+func (repo *Repository) GetUserByUsername(username string) (*models.User, error) {
+	var user models.User
+	res := repo.db.Find(&user, "username = ?", username)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+	return &user, nil
+}
+
 func (repo *Repository) UserExists(id string) bool {
 	var exists bool
 	repo.db.Raw("SELECT EXISTS(SELECT FROM users WHERE id = ?)", id).Scan(&exists)
 	return exists
+}
+
+func (repo *Repository) GetUserCredentials(username string) (*models.User, error) {
+	var user models.User
+	res := repo.db.Where("username = ?", username).Find(&user)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+	return &user, nil
 }

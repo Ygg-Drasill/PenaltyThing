@@ -12,7 +12,7 @@ const docTemplate = `{
         "contact": {
             "name": "Tobias Bay",
             "url": "http://penaltything.me/support",
-            "email": "tab@penaltything.me"
+            "email": "tab@penaltything.social"
         },
         "version": "{{.Version}}"
     },
@@ -157,6 +157,38 @@ const docTemplate = `{
                 }
             }
         },
+        "/user/authenticate": {
+            "post": {
+                "description": "Authenticate user using username and password",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Authenticate user",
+                "operationId": "authenticateUser",
+                "parameters": [
+                    {
+                        "description": "User credentials",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/AuthenticateUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Member"
+                        }
+                    }
+                }
+            }
+        },
         "/user/get": {
             "get": {
                 "description": "get user",
@@ -241,6 +273,17 @@ const docTemplate = `{
                 }
             }
         },
+        "AuthenticateUserRequest": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
         "CreateLawRequest": {
             "type": "object",
             "properties": {
@@ -286,10 +329,13 @@ const docTemplate = `{
         "Member": {
             "type": "object",
             "properties": {
+                "firstName": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
-                "name": {
+                "lastName": {
                     "type": "string"
                 },
                 "penalties": {
@@ -297,6 +343,9 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/PenaltyEntry"
                     }
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         },
@@ -332,6 +381,12 @@ const docTemplate = `{
         "RegisterUserRequest": {
             "type": "object",
             "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -366,10 +421,13 @@ const docTemplate = `{
         "User": {
             "type": "object",
             "properties": {
+                "firstName": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
-                "name": {
+                "lastName": {
                     "type": "string"
                 },
                 "password": {
@@ -382,6 +440,9 @@ const docTemplate = `{
                     }
                 },
                 "teamId": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 }
             }

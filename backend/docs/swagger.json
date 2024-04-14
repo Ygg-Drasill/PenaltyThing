@@ -5,7 +5,7 @@
         "contact": {
             "name": "Tobias Bay",
             "url": "http://penaltything.me/support",
-            "email": "tab@penaltything.me"
+            "email": "tab@penaltything.social"
         },
         "version": "1.0"
     },
@@ -148,6 +148,38 @@
                 }
             }
         },
+        "/user/authenticate": {
+            "post": {
+                "description": "Authenticate user using username and password",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Authenticate user",
+                "operationId": "authenticateUser",
+                "parameters": [
+                    {
+                        "description": "User credentials",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/AuthenticateUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Member"
+                        }
+                    }
+                }
+            }
+        },
         "/user/get": {
             "get": {
                 "description": "get user",
@@ -232,6 +264,17 @@
                 }
             }
         },
+        "AuthenticateUserRequest": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
         "CreateLawRequest": {
             "type": "object",
             "properties": {
@@ -277,10 +320,13 @@
         "Member": {
             "type": "object",
             "properties": {
+                "firstName": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
-                "name": {
+                "lastName": {
                     "type": "string"
                 },
                 "penalties": {
@@ -288,6 +334,9 @@
                     "items": {
                         "$ref": "#/definitions/PenaltyEntry"
                     }
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         },
@@ -323,6 +372,12 @@
         "RegisterUserRequest": {
             "type": "object",
             "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -357,10 +412,13 @@
         "User": {
             "type": "object",
             "properties": {
+                "firstName": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },
-                "name": {
+                "lastName": {
                     "type": "string"
                 },
                 "password": {
@@ -373,6 +431,9 @@
                     }
                 },
                 "teamId": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 }
             }
