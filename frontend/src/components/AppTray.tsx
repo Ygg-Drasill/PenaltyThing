@@ -15,8 +15,6 @@ import {
 import React from "react";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { useUserServiceGetUser } from "./openapi/queries";
-import Cookies from "universal-cookie";
 import { Member } from "./openapi/requests";
 
 function userInitials(user: Member) {
@@ -35,9 +33,8 @@ function AppTrayButton(props: { to: string, icon: React.ReactElement }) {
   );
 }
 
-function AppTray() {
-  const cookies = new Cookies()
-  const user = useUserServiceGetUser({id: cookies.get("userId")})
+function AppTray(props: {user?: Member}) {
+  const user = props.user
   const [accountPopperAnchor, setAccountPopperAnchor] =
     useState<null | HTMLElement>(null);
 
@@ -72,7 +69,7 @@ function AppTray() {
             color="info"
             onClick={handleToggleAccountPopper}
           >
-            <Avatar sx={{ backgroundColor: "secondary.main" }}>{user.data ? userInitials(user.data) : "  "}</Avatar>
+            <Avatar sx={{ backgroundColor: "secondary.main" }}>{user ? userInitials(user) : "  "}</Avatar>
           </IconButton>
         </Box>
       </Stack>
