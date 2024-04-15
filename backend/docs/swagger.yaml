@@ -129,7 +129,7 @@ info:
   contact:
     email: tab@penaltything.social
     name: Tobias Bay
-    url: http://penaltything.me/support
+    url: http://penaltything.social/support
   title: PenaltyThing API
   version: "1.0"
 paths:
