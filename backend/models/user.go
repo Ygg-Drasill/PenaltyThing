@@ -11,18 +11,17 @@ type User struct {
 } //@name User
 
 type Member struct {
-	Id        string         `json:"id"`
-	Username  string         `json:"username"`
-	FirstName string         `json:"firstName"`
-	LastName  string         `json:"lastName"`
-	Penalties []PenaltyEntry `json:"penalties"`
+	Id        string `json:"id"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	TeamId    string `json:"teamId"`
 } //@name Member
 
 func (user User) ToMember() Member {
 	return Member{
 		Id:        user.Id,
-		Username:  user.Username,
 		FirstName: user.FirstName,
 		LastName:  user.LastName,
+		TeamId:    user.TeamId,
 	}
 }

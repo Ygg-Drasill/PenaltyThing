@@ -406,13 +406,7 @@ const docTemplate = `{
                 "lastName": {
                     "type": "string"
                 },
-                "penalties": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/PenaltyEntry"
-                    }
-                },
-                "username": {
+                "teamId": {
                     "type": "string"
                 }
             }

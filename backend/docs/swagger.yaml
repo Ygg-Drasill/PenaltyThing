@@ -54,11 +54,7 @@ definitions:
         type: string
       lastName:
         type: string
-      penalties:
-        items:
-          $ref: '#/definitions/PenaltyEntry'
-        type: array
-      username:
+      teamId:
         type: string
     type: object
   PenaltyEntry:

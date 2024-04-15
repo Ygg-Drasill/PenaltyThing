@@ -25,6 +25,15 @@ func (repo *Repository) TeamExists(id string) bool {
 	return exists
 }
 
+func (repo *Repository) GetTeam(id string) (*models.Team, error) {
+	var team models.Team
+	res := repo.db.First(&team, "id = ?", id)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+	return &team, nil
+}
+
 func (repo *Repository) AddUserToTeam(userId, teamId string) error {
 	var team models.Team
 	var user models.User
@@ -43,10 +52,18 @@ func (repo *Repository) AddUserToTeam(userId, teamId string) error {
 }
 
 func (repo *Repository) GetTeamsByUserId(userId string) ([]models.Team, error) {
+	var user *models.User
 	var teams []models.Team
-	result := repo.db.Find(&teams, "id = ?", userId)
+	var err error
+	user, err = repo.GetUserById(userId)
+	if err != nil {
+		return nil, err
+	}
+
+	result := repo.db.Find(&teams, "id = ?", user.TeamId)
 	if result.Error != nil {
 		return nil, result.Error
 	}
+
 	return teams, nil
 }
