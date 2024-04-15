@@ -11,7 +11,7 @@ const docTemplate = `{
         "title": "{{.Title}}",
         "contact": {
             "name": "Tobias Bay",
-            "url": "http://penaltything.me/support",
+            "url": "http://penaltything.social/support",
             "email": "tab@penaltything.social"
         },
         "version": "{{.Version}}"

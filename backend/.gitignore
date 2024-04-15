@@ -21,3 +21,4 @@ traefik_changelog.md
 integration/tailscale.secret
 integration/conformance-reports/
 docs
+.env
