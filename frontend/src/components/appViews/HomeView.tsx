@@ -30,7 +30,7 @@ function BecomeMemberOfTeam() {
             <Stack direction={"row"} gap={2} justifyContent={"center"} alignItems={"center"}>
                 <Link component={RouterLink} to={"/app/team/join"}><Button variant="outlined">Join team</Button></Link>
                 <Typography>or</Typography>
-                <Link component={RouterLink} to={"/app/team/join"}><Button variant="outlined">Create team</Button></Link>
+                <Link component={RouterLink} to={"/app/team/create"}><Button variant="outlined">Create team</Button></Link>
             </Stack>
         </Stack>
     )

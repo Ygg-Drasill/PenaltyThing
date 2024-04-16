@@ -8,7 +8,7 @@ function TeamView() {
     const team = useTeamServiceGetTeamsByUserId({userId: appViewContext.user?.id ?? ""})
     return (
         <AppView title={"Team"}>
-            <Outlet context={{appViewContext, team}}/>
+            <Outlet context={[appViewContext, team]}/>
         </AppView>
     )
 }

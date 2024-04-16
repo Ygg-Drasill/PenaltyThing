@@ -11,17 +11,7 @@ type User struct {
 } //@name User
 
 type Member struct {
-	Id        string `json:"id"`
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
-	TeamId    string `json:"teamId"`
+	Id     string `json:"id"`
+	UserId string `json:"userId"`
+	TeamId string `json:"teamId"`
 } //@name Member
-
-func (user User) ToMember() Member {
-	return Member{
-		Id:        user.Id,
-		FirstName: user.FirstName,
-		LastName:  user.LastName,
-		TeamId:    user.TeamId,
-	}
-}

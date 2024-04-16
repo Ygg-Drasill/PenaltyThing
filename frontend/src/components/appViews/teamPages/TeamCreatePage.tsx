@@ -1,31 +1,37 @@
-import { Box, Button, TextField } from "@mui/material"
+import { Box, Button, CircularProgress, Stack, TextField } from "@mui/material"
 import { useTeamServiceCreateTeam } from "../../openapi/queries"
-import { useState } from "react"
-import { useTeamPageOutletContext } from "../../hooks/useTeamPageOutletContext"
+import { useContext, useState } from "react"
+import { AppContext } from "../../hooks/appContext"
 
 function TeamCreatePage() {
     const [teamName, setTeamName] = useState("") 
     const createTeamMutation = useTeamServiceCreateTeam()
-    const teamPageContext = useTeamPageOutletContext()
+    const appContext = useContext(AppContext)
 
-    const handleTeamCreateTeamSubmit = () => {
+    const handleTeamCreateSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+        if (!appContext.user?.id) {
+            return
+        }
         createTeamMutation.mutate({
             request: {
                 name: teamName,
-                userId: teamPageContext.user?.id
+                userId: appContext.user.id
             }
         })
     }
 
     return (
-        <Box component={"form"} onSubmit={handleTeamCreateTeamSubmit}>
-            <TextField
-              id="teamName"
-              label="Team name"
-              value={teamName}
-              onChange={(e) => setTeamName(e.currentTarget.value)}
-            />
-            <Button type="submit" color="success">Create</Button>
+        <Box component={"form"} onSubmit={handleTeamCreateSubmit}>
+            <Stack direction={"row"} gap={2}>
+                <TextField
+                id="teamName"
+                label="Team name"
+                value={teamName}
+                onChange={(e) => setTeamName(e.currentTarget.value)}
+                />
+                <Button type="submit" color="success">Create{createTeamMutation.isPending && <CircularProgress />}</Button>
+            </Stack>
         </Box>
     )
 }
