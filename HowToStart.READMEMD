@@ -1,0 +1,13 @@
+First download .env file from discord (channel/kode-sjov)
+
+START BACKEND
+cd backend
+npm install
+go run .
+
+START FRONTEND
+cd frontend
+npm install
+npm run generate-api
+npm run dev
+

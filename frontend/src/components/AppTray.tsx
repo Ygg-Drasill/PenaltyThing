@@ -16,13 +16,13 @@ import React from "react";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useUserServiceGetUser } from "./openapi/queries";
-import Cookies from "universal-cookie";
 import { Member } from "./openapi/requests";
+import Cookies from "universal-cookie";
 
 function userInitials(user: Member) {
-  const firstInitial = user.firstName?.slice(0, 1).toLocaleUpperCase() ?? ""
-  const secondInitial = user.lastName?.slice(0, 1).toLocaleUpperCase() ?? ""
-  return firstInitial + secondInitial
+  const firstInitial = user.firstName?.slice(0, 1).toLocaleUpperCase() ?? "";
+  const secondInitial = user.lastName?.slice(0, 1).toLocaleUpperCase() ?? "";
+  return firstInitial + secondInitial;
 }
 
 function AppTrayButton(props: { to: string, icon: React.ReactElement }) {
