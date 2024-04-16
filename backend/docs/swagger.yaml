@@ -114,6 +114,10 @@ definitions:
         items:
           $ref: '#/definitions/PenaltyEntry'
         type: array
+      teamMembers:
+        items:
+          $ref: '#/definitions/TeamMember'
+        type: array
       username:
         type: string
     type: object

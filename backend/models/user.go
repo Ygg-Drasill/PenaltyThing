@@ -7,6 +7,7 @@ type User struct {
 	FirstName    string         `json:"firstName"`
 	LastName     string         `json:"lastName"`
 	Penalties    []PenaltyEntry `json:"penalties"`
+	TeamMembers  []TeamMember   `json:"teamMembers" gorm:"foreignkey:UserId"`
 } //@name User
 
 type UserPublic struct {

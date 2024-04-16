@@ -1,12 +1,12 @@
 import { createContext } from "react";
-import { Member, Team } from "../openapi/requests";
+import { UserPublic, Team } from "../openapi/requests";
 
 type AppContext = {
-    user: Member | null | undefined,
-    team: Team[] | null | undefined,
+    user: UserPublic | null | undefined,
+    teams: Team[] | null | undefined,
 }
 
 export const AppContext = createContext<AppContext>({
     user: null,
-    team: null,
+    teams: null,
 });

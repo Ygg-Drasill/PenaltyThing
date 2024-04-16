@@ -1,12 +1,13 @@
 import { Button, Link, Stack, Typography } from "@mui/material";
 import AppView from "./AppView";
-import { useAppViewOutletContext } from "../hooks/useOutletContext";
 import { Link as RouterLink } from "react-router-dom";
+import { useContext } from "react";
+import { AppContext } from "../hooks/appContext";
 
 function HomeView() {
-    const {user} = useAppViewOutletContext()
+    const appContext = useContext(AppContext)
 
-    if (!user?.teamId) {
+    if (appContext.teams?.length == 0 || !appContext.teams) {
         return (
             <AppView title="Home">
                 <BecomeMemberOfTeam />

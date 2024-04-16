@@ -1,7 +1,9 @@
 import { Box, Button, CircularProgress, Stack, TextField } from "@mui/material"
-import { useTeamServiceCreateTeam } from "../../openapi/queries"
+import { useTeamServiceCreateTeam, useTeamServiceGetTeamsByUserIdKey } from "../../openapi/queries"
 import { useContext, useState } from "react"
 import { AppContext } from "../../hooks/appContext"
+import { queryClient } from "../../../queryClient"
+import { TeamService } from "../../openapi/requests"
 
 function TeamCreatePage() {
     const [teamName, setTeamName] = useState("") 
@@ -17,6 +19,12 @@ function TeamCreatePage() {
             request: {
                 name: teamName,
                 userId: appContext.user.id
+            }
+        }, {
+            onSuccess: () => {
+                queryClient.invalidateQueries({
+                    queryKey: [useTeamServiceGetTeamsByUserIdKey]
+                })
             }
         })
     }

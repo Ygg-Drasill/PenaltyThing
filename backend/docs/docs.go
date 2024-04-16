@@ -498,6 +498,12 @@ const docTemplate = `{
                         "$ref": "#/definitions/PenaltyEntry"
                     }
                 },
+                "teamMembers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/TeamMember"
+                    }
+                },
                 "username": {
                     "type": "string"
                 }

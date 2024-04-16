@@ -11,13 +11,14 @@ import PenaltiesView from "./components/appViews/PenaltiesView";
 import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
 import TeamView from "./components/appViews/TeamView";
-import { useTeamServiceGetTeamsByUserId, useUserServiceGetUserKey } from "./components/openapi/queries";
+import { useTeamServiceGetTeamsByUserIdKey, useUserServiceGetUserKey } from "./components/openapi/queries";
 import TeamCreatePage from "./components/appViews/teamPages/TeamCreatePage";
 import TeamJoinPage from "./components/appViews/teamPages/TeamJoinPage";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { AppContext } from "./components/hooks/appContext";
-import { UserService } from "./components/openapi/requests";
+import { TeamService, UserService } from "./components/openapi/requests";
 import { useQuery } from "@tanstack/react-query";
+import TeamListPage from "./components/appViews/teamPages/TeamListPage";
 
 function App() {
 
@@ -33,7 +34,7 @@ function App() {
             <Route path="team" element={<TeamView />}>
               <Route path="create" element={<TeamCreatePage />} />
               <Route path="join" element={<TeamJoinPage />} />
-              <Route path="scoreboard" element={<TeamCreatePage />} />
+              <Route path="list" element={<TeamListPage />} />
             </Route>
             <Route path="*" element={<NoView />} />
           </Route>
@@ -50,7 +51,6 @@ export default App;
 function InnerApp() { //TODO: Introduce userSession context where user cookie is passed down to components inside innerApp
   const navigate = useNavigate()
   const [userId, setUserId] = useState("")
-  const team = useTeamServiceGetTeamsByUserId({userId: userId})
   
   const {data: user} = useQuery({
     queryKey: [useUserServiceGetUserKey],
@@ -59,7 +59,14 @@ function InnerApp() { //TODO: Introduce userSession context where user cookie is
     },
     enabled: !!userId
   })
-  const appContext = {user: user, team: team.data}
+
+  const {data: teams} = useQuery({
+    queryKey: [useTeamServiceGetTeamsByUserIdKey],
+    queryFn: () => {
+      return TeamService.getTeamsByUserId({userId: userId})
+    },
+    enabled: !!userId
+  })
   
   useEffect(() => {
     const cookies = new Cookies()
@@ -73,7 +80,7 @@ function InnerApp() { //TODO: Introduce userSession context where user cookie is
   }, [])
 
   return (
-    <AppContext.Provider value={appContext}>
+    <AppContext.Provider value={{user: user, teams: teams}}>
       <Stack direction={"row"} height={"100vh"} padding={4} gap={4} boxSizing={"border-box"}>
         <AppTray user={user} isLoading={!!user}/>
         <Outlet context={{user}} />
