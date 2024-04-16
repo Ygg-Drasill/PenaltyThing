@@ -1,0 +1,37 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: penaltything-frontend-service
+  namespace: penaltything
+spec:
+  selector:
+    app: penaltything-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30000
+  type: NodePort
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: penaltything-frontend
+  namespace: penaltything
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: penaltything-frontend
+  template:
+    metadata:
+      labels:
+        app: penaltything-frontend
+    spec:
+      containers:
+      - name: penaltything-frontend
+        image: ghcr.io/ygg-drasill/penaltything/frontend:latest
+        ports:
+        - containerPort: 80

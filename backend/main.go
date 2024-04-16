@@ -3,47 +3,60 @@ package main
 import (
 	"fmt"
 	"github.com/Ygg-Drasill/PenaltyThing/backend/docs"
-	"github.com/Ygg-Drasill/PenaltyThing/backend/models"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/handlers"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/middleware"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/repository"
 	"github.com/gin-gonic/gin"
+	_ "github.com/joho/godotenv/autoload"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
-	"net/http"
+	"os"
 )
 
-//	@BasePath	/api/v1
+const (
+	address  = "localhost:9000"
+	basePath = "/api/v1"
+)
 
-// PingExample godoc
-//
-//	@Summary	Monkey example
-//	@Schemes
-//	@Description	testtesttest
-//	@Tags			example
-//	@Accept			json
-//	@Produce		json
-//	@Success		200	{object}	models.User
-//	@OperationId	helloWorld
-//	@Router			/example/helloworld [get]
-func Helloworld(g *gin.Context) {
-	g.JSON(http.StatusOK, models.User{})
-}
-
+// @title			PenaltyThing API
+// @version		1.0
+// @contact.name	Tobias Bay
+// @contact.url	http://penaltything.social/support
+// @contact.email	tab@penaltything.social
 func main() {
-	_, err := gorm.Open(postgres.Open("postgres://apidev:1234@130.225.37.183:5432/penaltythingdb"))
-	if err != nil {
-		fmt.Println(err)
-	}
-	r := gin.Default()
-	docs.SwaggerInfo.BasePath = "/api/v1"
-	v1 := r.Group("/api/v1")
+	repo := repository.ConnectToDatabase(repository.ConnectionFromEnvironment())
+	dbContext := handlers.NewDbContext(repo)
+	router := gin.Default()
+	router.Use(middleware.CORSMiddleware())
+	docs.SwaggerInfo.Host = address
+	docs.SwaggerInfo.BasePath = basePath
+	v1 := router.Group(basePath)
 	{
-		eg := v1.Group("/example")
+		user := v1.Group("/user")
 		{
-			eg.GET("/helloworld", Helloworld)
+			user.GET("/get", dbContext.GetUser)
+			user.POST("/register", dbContext.RegisterUser)
+			user.POST("/authenticate", dbContext.AuthenticateUser)
+		}
+
+		team := v1.Group("/team")
+		{
+			team.POST("/create", dbContext.CreateTeam)
+		}
+
+		law := v1.Group("/law")
+		{
+			law.GET("/getByTeam", dbContext.GetLaws)
+			law.POST("/create", dbContext.CreateLaw)
+		}
+
+		penalty := v1.Group("/penalty")
+		{
+			penalty.POST("/add", dbContext.AddPenalty)
 		}
 	}
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-	r.Run(":8080")
-
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	if err := router.Run(fmt.Sprintf(":%s", os.Getenv("LISTEN_PORT"))); err != nil {
+		panic(err)
+	}
 }

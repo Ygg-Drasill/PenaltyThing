@@ -1,0 +1,36 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: penaltything-backend-service
+  namespace: penaltything
+spec:
+  selector:
+    app: penaltything-backend
+  ports:
+    - protocol: TCP
+      port: 9000
+      targetPort: 9000
+      nodePort: 30001
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: penaltything-backend
+  namespace: penaltything
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: penaltything-backend
+  template:
+    metadata:
+      labels:
+        app: penaltything-backend
+    spec:
+      containers:
+      - name: penaltything-backend
+        image: ghcr.io/ygg-drasill/penaltything/backend:latest
+        ports:
+        - containerPort: 9000
