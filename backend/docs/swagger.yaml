@@ -80,11 +80,11 @@ definitions:
     properties:
       id:
         type: string
-      laws:
+      law:
         items:
           $ref: '#/definitions/Law'
         type: array
-      members:
+      member:
         items:
           $ref: '#/definitions/TeamMember'
         type: array

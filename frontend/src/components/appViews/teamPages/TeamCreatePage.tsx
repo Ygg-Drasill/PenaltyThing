@@ -3,8 +3,6 @@ import { useTeamServiceCreateTeam, useTeamServiceGetTeamsByUserIdKey } from "../
 import { useContext, useState } from "react"
 import { AppContext } from "../../hooks/appContext"
 import { queryClient } from "../../../queryClient"
-import { TeamService } from "../../openapi/requests"
-
 function TeamCreatePage() {
     const [teamName, setTeamName] = useState("") 
     const createTeamMutation = useTeamServiceCreateTeam()

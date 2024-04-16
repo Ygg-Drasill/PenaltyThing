@@ -446,13 +446,13 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "laws": {
+                "law": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/Law"
                     }
                 },
-                "members": {
+                "member": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/TeamMember"
