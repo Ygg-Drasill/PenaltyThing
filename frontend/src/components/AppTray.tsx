@@ -15,9 +15,9 @@ import {
 import React from "react";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { Member } from "./openapi/requests";
+import { UserPublic } from "./openapi/requests";
 
-function userInitials(user: Member) {
+function userInitials(user: UserPublic) {
   const firstInitial = user.firstName?.slice(0, 1).toLocaleUpperCase() ?? ""
   const secondInitial = user.lastName?.slice(0, 1).toLocaleUpperCase() ?? ""
   return firstInitial + secondInitial
@@ -33,7 +33,7 @@ function AppTrayButton(props: { to: string, icon: React.ReactElement }) {
   );
 }
 
-function AppTray(props: {user?: Member, isLoading: boolean}) {
+function AppTray(props: {user?: UserPublic, isLoading: boolean}) {
   const user = props.user
   const [accountPopperAnchor, setAccountPopperAnchor] =
     useState<null | HTMLElement>(null);

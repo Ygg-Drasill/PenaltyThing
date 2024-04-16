@@ -1,7 +1,7 @@
 import { useOutletContext } from "react-router-dom";
-import { Member } from "../openapi/requests";
+import { UserPublic } from "../openapi/requests";
 
-type AppViewOutletContext = { user: Member | null };
+type AppViewOutletContext = { user: UserPublic | null };
 
 export function useAppViewOutletContext() {
     return useOutletContext<AppViewOutletContext>();

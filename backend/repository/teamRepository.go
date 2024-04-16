@@ -9,7 +9,7 @@ func (repo *Repository) AddTeam(name string) (*models.Team, error) {
 	newTeam := &models.Team{
 		Id:      uuid.New().String(),
 		Name:    name,
-		Members: make([]models.User, 0),
+		Members: make([]models.TeamMember, 0),
 		Laws:    make([]models.Law, 0),
 	}
 	res := repo.db.Create(newTeam)
@@ -36,9 +36,10 @@ func (repo *Repository) GetTeam(id string) (*models.Team, error) {
 
 func (repo *Repository) AddUserToTeam(userId, teamId string) error {
 	var team models.Team
-	var user models.User
+	var user models.TeamMember
 	teamResult := repo.db.Find(&team, "id = ?", teamId)
 	userResult := repo.db.Find(&user, "id = ?", userId)
+	member, memberError := repo.AddMember(team.Id, user.Id)
 
 	if teamResult.Error != nil {
 		return teamResult.Error
@@ -46,13 +47,18 @@ func (repo *Repository) AddUserToTeam(userId, teamId string) error {
 	if userResult.Error != nil {
 		return userResult.Error
 	}
+	if memberError != nil {
+		return memberError
+	}
 
-	team.Members = append(team.Members, user)
+	team.Members = append(team.Members, *member)
+	repo.db.Save(&team)
 	return nil
 }
 
 func (repo *Repository) GetTeamsByUserId(userId string) ([]models.Team, error) {
 	var user *models.User
+	var members []models.TeamMember
 	var teams []models.Team
 	var err error
 	user, err = repo.GetUserById(userId)
@@ -60,9 +66,17 @@ func (repo *Repository) GetTeamsByUserId(userId string) ([]models.Team, error) {
 		return nil, err
 	}
 
-	result := repo.db.Find(&teams, "id = ?", user.TeamId)
-	if result.Error != nil {
+	if result := repo.db.Find(&members, "userId = ?", user.Id); result.Error != nil {
 		return nil, result.Error
+	}
+
+	for _, member := range members {
+		var team models.Team
+		result := repo.db.First(&team, "id = ?", member.TeamId)
+		if result.Error != nil {
+			return nil, result.Error
+		}
+		teams = append(teams, team)
 	}
 
 	return teams, nil

@@ -70,7 +70,7 @@ type GetUserRequest struct {
 //	@Tags			user
 //	@Param			id query string true "User search by id"
 //	@Produce		json
-//	@Success		200	{object} Member
+//	@Success		200	{object} UserPublic
 //	@Router			/user/get [get]
 func (db *DbContext) GetUser(ctx *gin.Context) {
 	var query GetUserRequest
@@ -84,7 +84,7 @@ func (db *DbContext) GetUser(ctx *gin.Context) {
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
-	ctx.JSON(http.StatusOK, user.ToMember())
+	ctx.JSON(http.StatusOK, *user.ToUserResponse())
 }
 
 type AuthenticateUserRequest struct {
@@ -101,7 +101,7 @@ type AuthenticateUserRequest struct {
 //	@Tags			user
 //	@Param			request body AuthenticateUserRequest true "User credentials"
 //	@Produce		json
-//	@Success		200	{object} Member
+//	@Success		200	{object} UserPublic
 //	@Router			/user/authenticate [post]
 func (db *DbContext) AuthenticateUser(ctx *gin.Context) {
 	var req AuthenticateUserRequest
@@ -118,5 +118,5 @@ func (db *DbContext) AuthenticateUser(ctx *gin.Context) {
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
-	ctx.JSON(http.StatusOK, user.ToMember())
+	ctx.JSON(http.StatusOK, user.ToUserResponse())
 }

@@ -46,17 +46,6 @@ definitions:
       title:
         type: string
     type: object
-  Member:
-    properties:
-      firstName:
-        type: string
-      id:
-        type: string
-      lastName:
-        type: string
-      teamId:
-        type: string
-    type: object
   PenaltyEntry:
     properties:
       comment:
@@ -97,9 +86,18 @@ definitions:
         type: array
       members:
         items:
-          $ref: '#/definitions/User'
+          $ref: '#/definitions/TeamMember'
         type: array
       name:
+        type: string
+    type: object
+  TeamMember:
+    properties:
+      id:
+        type: string
+      teamId:
+        type: string
+      userId:
         type: string
     type: object
   User:
@@ -116,9 +114,18 @@ definitions:
         items:
           $ref: '#/definitions/PenaltyEntry'
         type: array
-      teamId:
-        type: string
       username:
+        type: string
+    type: object
+  UserPublic:
+    properties:
+      firstName:
+        type: string
+      id:
+        type: string
+      lastName:
+        type: string
+      userName:
         type: string
     type: object
 info:
@@ -280,7 +287,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/Member'
+            $ref: '#/definitions/UserPublic'
       summary: Authenticate user
       tags:
       - user
@@ -300,7 +307,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/Member'
+            $ref: '#/definitions/UserPublic'
       summary: Get user
       tags:
       - user

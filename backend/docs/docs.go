@@ -248,7 +248,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Member"
+                            "$ref": "#/definitions/UserPublic"
                         }
                     }
                 }
@@ -278,7 +278,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Member"
+                            "$ref": "#/definitions/UserPublic"
                         }
                     }
                 }
@@ -394,23 +394,6 @@ const docTemplate = `{
                 }
             }
         },
-        "Member": {
-            "type": "object",
-            "properties": {
-                "firstName": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "lastName": {
-                    "type": "string"
-                },
-                "teamId": {
-                    "type": "string"
-                }
-            }
-        },
         "PenaltyEntry": {
             "type": "object",
             "properties": {
@@ -472,10 +455,24 @@ const docTemplate = `{
                 "members": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/User"
+                        "$ref": "#/definitions/TeamMember"
                     }
                 },
                 "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "TeamMember": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "teamId": {
+                    "type": "string"
+                },
+                "userId": {
                     "type": "string"
                 }
             }
@@ -501,10 +498,24 @@ const docTemplate = `{
                         "$ref": "#/definitions/PenaltyEntry"
                     }
                 },
-                "teamId": {
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "UserPublic": {
+            "type": "object",
+            "properties": {
+                "firstName": {
                     "type": "string"
                 },
-                "username": {
+                "id": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "userName": {
                     "type": "string"
                 }
             }

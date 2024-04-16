@@ -16,7 +16,7 @@ import TeamCreatePage from "./components/appViews/teamPages/TeamCreatePage";
 import TeamJoinPage from "./components/appViews/teamPages/TeamJoinPage";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { AppContext } from "./components/hooks/appContext";
-import { OpenAPI, UserService } from "./components/openapi/requests";
+import { UserService } from "./components/openapi/requests";
 import { useQuery } from "@tanstack/react-query";
 
 function App() {
