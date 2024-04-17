@@ -1,12 +1,14 @@
 First download .env file from discord (channel/kode-sjov)
 
-START BACKEND
-cd backend
-go run .
+## START BACKEND
 
-START FRONTEND
-cd frontend
-npm install
-npm run generate-api
-npm run dev
-For find home page, change url to "localhost:8080/app/home"
+`cd backend`
+`go run .`
+
+## START FRONTEND
+`cd frontend`
+`npm ci`
+`npm run generate-api`
+`npm run dev`
+
+ The homepage can be accessed at: localhost:8080/app/home
