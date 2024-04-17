@@ -1,4 +1,4 @@
-First download .env file from discord (channel/kode-sjov)
+# First download .env file from discord (channel/kode-sjov)
 
 ## START BACKEND
 
