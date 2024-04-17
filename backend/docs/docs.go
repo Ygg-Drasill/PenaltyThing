@@ -191,20 +191,20 @@ const docTemplate = `{
         },
         "/team/getByUserId": {
             "get": {
-                "description": "Get all teams that a user is a member of",
+                "description": "Get team",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "team"
                 ],
-                "summary": "Get teams by user id",
-                "operationId": "getTeamsByUserId",
+                "summary": "Get team id",
+                "operationId": "getTeamById",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "User ID",
-                        "name": "userId",
+                        "description": "Team ID",
+                        "name": "teamId",
                         "in": "query",
                         "required": true
                     }
@@ -213,10 +213,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Team"
-                            }
+                            "$ref": "#/definitions/Team"
                         }
                     }
                 }

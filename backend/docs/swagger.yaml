@@ -254,12 +254,12 @@ paths:
       - team
   /team/getByUserId:
     get:
-      description: Get all teams that a user is a member of
-      operationId: getTeamsByUserId
+      description: Get team
+      operationId: getTeamById
       parameters:
-      - description: User ID
+      - description: Team ID
         in: query
-        name: userId
+        name: teamId
         required: true
         type: string
       produces:
@@ -268,10 +268,8 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/Team'
-            type: array
-      summary: Get teams by user id
+            $ref: '#/definitions/Team'
+      summary: Get team id
       tags:
       - team
   /user/authenticate:
