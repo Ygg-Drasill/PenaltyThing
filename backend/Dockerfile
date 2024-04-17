@@ -11,6 +11,16 @@ COPY ./backend .
 
 EXPOSE 9000
 
+RUN --mount=type=secret,id=db_hostname
+
+ENV DB_HOSTNAME=db_hostname
+ENV DB_PORT=db_port
+ENV DB_USERNAME=db_username
+ENV DB_PASSWORD=db_password
+ENV DB_NAME=db_name
+ENV LISTEN_PORT=listen_port
+
+
 RUN go build -o main.exe .
 
 # STAGE 2: Deploy
