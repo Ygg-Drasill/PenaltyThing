@@ -22,7 +22,7 @@ ENV DB_HOSTNAME=db_hostname
 ENV DB_PORT=db_port
 ENV DB_USER=db_user
 ENV DB_PASSWORD=db_password
-ENV DB_NAME=db_name
+ENV DB_NAME=$db_name
 ENV LISTEN_PORT=listen_port
 
 RUN echo $DB_NAME

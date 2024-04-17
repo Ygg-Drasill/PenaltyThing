@@ -47,12 +47,12 @@ jobs:
             tags: ${{ steps.meta.outputs.tags }}
             labels: ${{ steps.meta.outputs.labels }}
             secrets: |
-              db_hostname=${{ secrets.DB_HOSTNAME }}
-              db_port=${{ secrets.DB_PORT }}
-              db_username=${{ secrets.DB_USER }}
-              db_password=${{ secrets.DB_PASSWORD }}
-              db_name=${{ secrets.DB_NAME }}
-              listen_port=${{ secrets.LISTEN_PORT }}
+              "db_hostname=${{ secrets.DB_HOSTNAME }}"
+              "db_port=${{ secrets.DB_PORT }}"
+              "db_username=${{ secrets.DB_USER }}"
+              "db_password=${{ secrets.DB_PASSWORD }}"
+              "db_name=${{ secrets.DB_NAME }}"
+              "listen_port=${{ secrets.LISTEN_PORT }}"
 
     build-and-push-frontend:
       if: startsWith(github.ref, 'refs/tags/vTEST')
