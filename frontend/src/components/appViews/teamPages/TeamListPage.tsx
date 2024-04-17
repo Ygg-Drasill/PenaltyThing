@@ -1,7 +1,8 @@
 import { useContext } from "react"
 import { AppContext } from "../../hooks/appContext"
-import { Box, Typography } from "@mui/material"
+import { Box, Link, Typography } from "@mui/material"
 import { Team } from "../../openapi/requests"
+import { Link as RouterLink } from "react-router-dom"
 
 function TeamListPage() {
     const appContext = useContext(AppContext)
@@ -16,7 +17,7 @@ function TeamListPage() {
 function TeamListItem(props: {team: Team}) {
 
     return (
-        <Typography variant="h1">{props.team.name ?? "name not found"}</Typography>
+        <Link component={RouterLink} to={`../${props.team.id}`}><Typography variant="h1">{props.team.name ?? "name not found"}</Typography></Link>
     )
 }
 

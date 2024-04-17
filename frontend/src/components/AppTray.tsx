@@ -9,7 +9,6 @@ import {
   Button,
   Card,
   ClickAwayListener,
-  Divider,
   Fade,
   IconButton,
   Link,

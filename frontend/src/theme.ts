@@ -40,10 +40,19 @@ export const PenaltyThingTheme = createTheme({
                     "& label.Mui-focused": {
                         color: theme.palette.secondary.light,
                     },
-                    "& .MuiOutlinedInput-root": {
+                    "&.MuiOutlinedInput-root": {
                         "&.Mui-focused fieldset": {
                             borderColor: theme.palette.secondary.light,
                         }
+                    }
+                })
+            }
+        },
+        MuiLinearProgress: {
+            styleOverrides: {
+                root: ({theme}) => ({
+                    "& .MuiLinearProgress-root": {
+                        backgroundColor: theme.palette.background
                     }
                 })
             }
