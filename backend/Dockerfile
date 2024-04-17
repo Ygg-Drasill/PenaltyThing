@@ -12,28 +12,19 @@ COPY ./backend .
 EXPOSE 9000
 
 RUN --mount=type=secret,id=db_hostname \
-    DB_HOSTNAME=$(cat /run/secrets/db_hostname)
-
-RUN --mount=type=secret,id=db_port
+    echo DB_HOSTNAME=$(cat /run/secrets/db_hostname) >> env.list
+RUN --mount=type=secret,id=db_port \
+    echo DB_PORT=$(cat /run/secrets/db_port) >> env.list
 RUN --mount=type=secret,id=db_user \
-    DB_NAME=$(cat /run/secrets/db_user)
-
-RUN --mount=type=secret,id=db_password
+    echo DB_USER=$(cat /run/secrets/db_user) >> env.list
+RUN --mount=type=secret,id=db_password \
+    echo DB_PASSWORD=$(cat /run/secrets/db_password) >> env.list
 RUN --mount=type=secret,id=db_name \
-    DB_NAME=$(cat /run/secrets/db_name)
-RUN --mount=type=secret,id=listen_port
+    echo DB_NAME=$(cat /run/secrets/db_name) >> env.list
+RUN --mount=type=secret,id=listen_port \
+    echo LISTEN_PORT=$(cat /run/secrets/listen_port) >> env.list
 
-RUN echo "$DB_USER"
-
-ENV DB_HOSTNAME=db_hostname
-ENV DB_PORT=db_port
-ENV DB_USER=db_user
-ENV DB_PASSWORD=db_password
-ENV DB_NAME=db_name
-ENV LISTEN_PORT=listen_port
-
-
-RUN echo "$DB_NAME"
+RUN set -a && . ./env.list && set +a
 
 
 RUN go build -o main.exe .
