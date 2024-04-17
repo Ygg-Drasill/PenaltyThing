@@ -1,9 +1,15 @@
-import { HouseSharp, RequestQuoteSharp, WorkspacesSharp } from "@mui/icons-material";
+import {
+  HouseSharp,
+  RequestQuoteSharp,
+  WorkspacesSharp,
+} from "@mui/icons-material";
 import {
   Avatar,
   Box,
   Button,
   Card,
+  ClickAwayListener,
+  Divider,
   Fade,
   IconButton,
   Link,
@@ -15,29 +21,26 @@ import {
 import React from "react";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { useUserServiceGetUser } from "./openapi/queries";
-import Cookies from "universal-cookie";
-import { Member } from "./openapi/requests";
+import { UserPublic } from "./openapi/requests";
 
-function userInitials(user: Member) {
-  const firstInitial = user.firstName?.slice(0, 1).toLocaleUpperCase() ?? ""
-  const secondInitial = user.lastName?.slice(0, 1).toLocaleUpperCase() ?? ""
-  return firstInitial + secondInitial
+function userInitials(user: UserPublic) {
+  const firstInitial = user.firstName?.slice(0, 1).toLocaleUpperCase() ?? "";
+  const secondInitial = user.lastName?.slice(0, 1).toLocaleUpperCase() ?? "";
+  return firstInitial + secondInitial;
 }
 
-function AppTrayButton(props: { to: string, icon: React.ReactElement }) {
-    return (
-    <Link component={RouterLink} to={props.to}>
-        <Button variant="outlined" color="secondary" sx={{ height: "4rem" }}>
+function AppTrayButton(props: { to: string; icon: React.ReactElement }) {
+  return (
+    <Link component={RouterLink} to={props.to} draggable={false}>
+      <Button variant="outlined" color="secondary" sx={{ height: "4rem" }}>
         {props.icon}
-        </Button>
+      </Button>
     </Link>
   );
 }
 
-function AppTray() {
-  const cookies = new Cookies()
-  const user = useUserServiceGetUser({id: cookies.get("userId")})
+function AppTray(props: { user?: UserPublic; isLoading: boolean }) {
+  const user = props.user;
   const [accountPopperAnchor, setAccountPopperAnchor] =
     useState<null | HTMLElement>(null);
 
@@ -58,7 +61,7 @@ function AppTray() {
         <Stack height={"100%"} minWidth={"1rem"} padding={1} gap={1}>
           <AppTrayButton to="/app/home" icon={<HouseSharp />} />
           <AppTrayButton to="/app/penalties" icon={<RequestQuoteSharp />} />
-          <AppTrayButton to="/app/teams" icon={<WorkspacesSharp />} />
+          <AppTrayButton to="/app/team" icon={<WorkspacesSharp />} />
         </Stack>
         <Box
           display={"flex"}
@@ -67,17 +70,19 @@ function AppTray() {
           alignItems={"center"}
           justifyContent={"center"}
         >
-          <IconButton
-            type="button"
-            color="info"
-            onClick={handleToggleAccountPopper}
-          >
-            <Avatar sx={{ backgroundColor: "secondary.main" }}>{user.data ? userInitials(user.data) : "  "}</Avatar>
-          </IconButton>
+          <ClickAwayListener onClickAway={() => setAccountPopperAnchor(null)}>
+            <IconButton
+              type="button"
+              color="info"
+              onClick={handleToggleAccountPopper}
+            >
+              <Avatar sx={{ backgroundColor: "secondary.main" }}>
+                {user ? userInitials(user) : "  "}
+              </Avatar>
+            </IconButton>
+          </ClickAwayListener>
         </Box>
       </Stack>
-
-
 
       <Popper
         open={accountPopperOpen}
@@ -87,13 +92,20 @@ function AppTray() {
       >
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={100}>
-            <Card sx={{marginLeft: "2rem"}}>
-                <Stack direction={"column"} padding={2} gap={2}>
-                    <Typography>Account</Typography>
-                    <Link component={RouterLink} to={"/login"}>
-                        <Button variant="contained" color="error">Logout</Button>
-                    </Link>
+            <Card sx={{ marginLeft: "2rem" }}>
+              <Stack direction={"column"} padding={2} gap={2}>
+                <Stack direction={"row"} gap={2}>
+                  <Typography variant="subtitle1" color={"primary.light"}>
+                    Account
+                  </Typography>
+                  <Link component={RouterLink} to={"/login"}>
+                    <Button variant="contained" color="error">
+                      Logout
+                    </Button>
+                  </Link>
                 </Stack>
+                <Typography variant="subtitle2">{`${user?.firstName} ${user?.lastName}`}</Typography>
+              </Stack>
             </Card>
           </Fade>
         )}

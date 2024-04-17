@@ -1,11 +1,10 @@
 import { Typography } from "@mui/material";
-import AppView from "./AppView";
+import AppView from "./AppView"
 
-function PenaltiesView() {
-
+function PenaltiesView() {    
     return (
         <AppView title="Incoming Penalties">
-            <Typography>Home</Typography>
+            <Typography>Penalties</Typography>
         </AppView>
     )
 }

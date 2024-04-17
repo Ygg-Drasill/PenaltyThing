@@ -2,6 +2,11 @@ import { createTheme, Shadows } from "@mui/material";
 
 export const PenaltyThingTheme = createTheme({
     shadows: Array(25).fill('none') as Shadows,
+    typography: {
+        allVariants: {
+            color: "#f0ede9"
+        }
+    },
     palette: {
         primary: {
             main: "#86604c",

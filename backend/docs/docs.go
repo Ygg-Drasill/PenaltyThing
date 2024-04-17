@@ -122,6 +122,38 @@ const docTemplate = `{
                 }
             }
         },
+        "/team/addUserToTeam": {
+            "post": {
+                "description": "Add user to team",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "team"
+                ],
+                "summary": "Add user to team",
+                "operationId": "addUserToTeam",
+                "parameters": [
+                    {
+                        "description": "request params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/AddUserToTeamRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Team"
+                        }
+                    }
+                }
+            }
+        },
         "/team/create": {
             "post": {
                 "description": "Create a new team",
@@ -157,6 +189,39 @@ const docTemplate = `{
                 }
             }
         },
+        "/team/getByUserId": {
+            "get": {
+                "description": "Get all teams that a user is a member of",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "team"
+                ],
+                "summary": "Get teams by user id",
+                "operationId": "getTeamsByUserId",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "userId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Team"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/user/authenticate": {
             "post": {
                 "description": "Authenticate user using username and password",
@@ -183,7 +248,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Member"
+                            "$ref": "#/definitions/UserPublic"
                         }
                     }
                 }
@@ -213,7 +278,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Member"
+                            "$ref": "#/definitions/UserPublic"
                         }
                     }
                 }
@@ -273,6 +338,9 @@ const docTemplate = `{
                 }
             }
         },
+        "AddUserToTeamRequest": {
+            "type": "object"
+        },
         "AuthenticateUserRequest": {
             "type": "object",
             "properties": {
@@ -322,29 +390,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "Member": {
-            "type": "object",
-            "properties": {
-                "firstName": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "lastName": {
-                    "type": "string"
-                },
-                "penalties": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/PenaltyEntry"
-                    }
-                },
-                "username": {
                     "type": "string"
                 }
             }
@@ -401,19 +446,33 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "laws": {
+                "law": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/Law"
                     }
                 },
-                "members": {
+                "member": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/User"
+                        "$ref": "#/definitions/TeamMember"
                     }
                 },
                 "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "TeamMember": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "teamId": {
+                    "type": "string"
+                },
+                "userId": {
                     "type": "string"
                 }
             }
@@ -439,10 +498,30 @@ const docTemplate = `{
                         "$ref": "#/definitions/PenaltyEntry"
                     }
                 },
-                "teamId": {
-                    "type": "string"
+                "teamMembers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/TeamMember"
+                    }
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "UserPublic": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "userName": {
                     "type": "string"
                 }
             }

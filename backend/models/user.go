@@ -6,22 +6,20 @@ type User struct {
 	PasswordHash string         `json:"password"`
 	FirstName    string         `json:"firstName"`
 	LastName     string         `json:"lastName"`
-	TeamId       string         `json:"teamId" gorm:"default:null"`
 	Penalties    []PenaltyEntry `json:"penalties"`
+	TeamMembers  []TeamMember   `json:"teamMembers" gorm:"foreignkey:UserId"`
 } //@name User
 
-type Member struct {
-	Id        string         `json:"id"`
-	Username  string         `json:"username"`
-	FirstName string         `json:"firstName"`
-	LastName  string         `json:"lastName"`
-	Penalties []PenaltyEntry `json:"penalties"`
-} //@name Member
+type UserPublic struct {
+	Id        string `json:"id"`
+	UserName  string `json:"userName"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+} //@name UserPublic
 
-func (user User) ToMember() Member {
-	return Member{
+func (user User) ToUserResponse() *UserPublic {
+	return &UserPublic{
 		Id:        user.Id,
-		Username:  user.Username,
 		FirstName: user.FirstName,
 		LastName:  user.LastName,
 	}

@@ -1,8 +1,8 @@
 package models
 
 type Team struct {
-	Id      string `gorm:"primarykey"`
-	Name    string
-	Members []User `gorm:"foreignKey:TeamId"`
-	Laws    []Law  `gorm:"foreignKey:TeamId"`
+	Id      string       `json:"id" gorm:"primarykey"`
+	Name    string       `json:"name"`
+	Members []TeamMember `json:"member" gorm:"foreignKey:TeamId"`
+	Laws    []Law        `json:"law" gorm:"foreignKey:TeamId"`
 } //@name Team

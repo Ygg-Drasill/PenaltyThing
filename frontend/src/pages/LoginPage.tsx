@@ -33,7 +33,9 @@ export default function LoginPage() {
     }, {
       onSuccess: (data) => {
         const cookies = new Cookies()
-        cookies.set("userId", data.id)
+        cookies.set("userId", data.id, {
+          path: "app/"
+        })
         navigate("/app/home")
       }
     });

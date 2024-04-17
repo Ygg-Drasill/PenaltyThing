@@ -41,7 +41,9 @@ func main() {
 
 		team := v1.Group("/team")
 		{
+			team.GET("/getByUserId", dbContext.GetTeamsByUserId)
 			team.POST("/create", dbContext.CreateTeam)
+			team.POST("/addUser", dbContext.AddUserToTeam)
 		}
 
 		law := v1.Group("/law")

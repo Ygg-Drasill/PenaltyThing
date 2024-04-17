@@ -1,7 +1,7 @@
-import { Divider, Paper, Typography } from "@mui/material";
+import { Divider, Paper, Stack, Typography } from "@mui/material";
 import { ReactNode } from "react";
 
-function AppView(props: { title: string; children: ReactNode }) {
+function AppView(props: { title: string; children: ReactNode; barComponent?: ReactNode }) {
   return (
     <Paper
       sx={{
@@ -10,9 +10,12 @@ function AppView(props: { title: string; children: ReactNode }) {
         padding: "2rem",
       }}
     >
-      <Typography variant="h4" color={"secondary"}>
-        {props.title}
-      </Typography>
+      <Stack direction={"row"}>
+        <Typography variant="h4" color={"secondary"}>
+          {props.title}
+        </Typography>
+        {props.barComponent}
+      </Stack>
       <Divider />
       {props.children}
     </Paper>
