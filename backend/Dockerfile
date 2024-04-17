@@ -25,6 +25,8 @@ ENV DB_PASSWORD=db_password
 ENV DB_NAME=db_name
 ENV LISTEN_PORT=listen_port
 
+RUN echo $DB_NAME
+
 
 RUN go build -o main.exe .
 
