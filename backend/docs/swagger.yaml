@@ -84,7 +84,7 @@ definitions:
         items:
           $ref: '#/definitions/Law'
         type: array
-      member:
+      members:
         items:
           $ref: '#/definitions/TeamMember'
         type: array
@@ -128,8 +128,6 @@ definitions:
       id:
         type: string
       lastName:
-        type: string
-      userName:
         type: string
     type: object
 info:
@@ -332,6 +330,31 @@ paths:
           schema:
             $ref: '#/definitions/UserPublic'
       summary: Get user
+      tags:
+      - user
+  /user/getList:
+    get:
+      description: get multiple user by their id
+      operationId: getUserList
+      parameters:
+      - collectionFormat: csv
+        description: User search by id
+        in: query
+        items:
+          type: string
+        name: ids
+        required: true
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/UserPublic'
+            type: array
+      summary: Get users
       tags:
       - user
   /user/register:

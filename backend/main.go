@@ -35,6 +35,7 @@ func main() {
 		user := v1.Group("/user")
 		{
 			user.GET("/get", dbContext.GetUser)
+			user.GET("getList", dbContext.GetUserList)
 			user.POST("/register", dbContext.RegisterUser)
 			user.POST("/authenticate", dbContext.AuthenticateUser)
 		}
@@ -42,6 +43,7 @@ func main() {
 		team := v1.Group("/team")
 		{
 			team.GET("/getByUserId", dbContext.GetTeamsByUserId)
+			team.GET("/get", dbContext.GetTeamById)
 			team.POST("/create", dbContext.CreateTeam)
 			team.POST("/addUser", dbContext.AddUserToTeam)
 		}

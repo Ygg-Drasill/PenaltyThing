@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
+	"strings"
 )
 
 const hashCost = 14
@@ -119,4 +120,24 @@ func (db *DbContext) AuthenticateUser(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, user.ToUserResponse())
+}
+
+// GetUserList
+//
+//	@Summary	Get users
+//	@Id			getUserList
+//	@Schemes
+//	@Description	get multiple user by their id
+//	@Tags			user
+//	@Param			ids query []string true "User search by id"
+//	@Produce		json
+//	@Success		200	{array} UserPublic
+//	@Router			/user/getList [get]
+func (db *DbContext) GetUserList(ctx *gin.Context) {
+	ids := strings.Split(ctx.Query("ids"), ",")
+	userList, err := db.repo.GetUsersByIds(ids)
+	if err != nil {
+		ctx.String(http.StatusBadRequest, err.Error())
+	}
+	ctx.JSON(http.StatusOK, userList)
 }

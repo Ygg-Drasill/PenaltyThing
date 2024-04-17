@@ -12,7 +12,6 @@ type User struct {
 
 type UserPublic struct {
 	Id        string `json:"id"`
-	UserName  string `json:"userName"`
 	FirstName string `json:"firstName"`
 	LastName  string `json:"lastName"`
 } //@name UserPublic

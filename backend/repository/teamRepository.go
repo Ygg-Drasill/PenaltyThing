@@ -3,6 +3,7 @@ package repository
 import (
 	"github.com/Ygg-Drasill/PenaltyThing/backend/models"
 	"github.com/google/uuid"
+	"gorm.io/gorm/clause"
 )
 
 func (repo *Repository) AddTeam(name string) (*models.Team, error) {
@@ -27,7 +28,7 @@ func (repo *Repository) TeamExists(id string) bool {
 
 func (repo *Repository) GetTeam(id string) (*models.Team, error) {
 	var team models.Team
-	res := repo.db.First(&team, "id = ?", id)
+	res := repo.db.Preload(clause.Associations).Find(&team, "id = ?", id)
 	if res.Error != nil {
 		return nil, res.Error
 	}

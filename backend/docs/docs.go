@@ -313,6 +313,43 @@ const docTemplate = `{
                 }
             }
         },
+        "/user/getList": {
+            "get": {
+                "description": "get multiple user by their id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Get users",
+                "operationId": "getUserList",
+                "parameters": [
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "User search by id",
+                        "name": "ids",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/UserPublic"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/user/register": {
             "post": {
                 "description": "Register new user, given password will be encrypted on backend. This is subject to change",
@@ -481,7 +518,7 @@ const docTemplate = `{
                         "$ref": "#/definitions/Law"
                     }
                 },
-                "member": {
+                "members": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/TeamMember"
@@ -548,9 +585,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "lastName": {
-                    "type": "string"
-                },
-                "userName": {
                     "type": "string"
                 }
             }

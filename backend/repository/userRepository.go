@@ -1,8 +1,10 @@
 package repository
 
 import (
+	"fmt"
 	"github.com/Ygg-Drasill/PenaltyThing/backend/models"
 	"github.com/google/uuid"
+	"strings"
 )
 
 func (repo *Repository) AddUser(username, passwordHash, firstName, lastName string) (*models.User, error) {
@@ -48,4 +50,21 @@ func (repo *Repository) GetUserCredentials(username string) (*models.User, error
 		return nil, res.Error
 	}
 	return &user, nil
+}
+
+func (repo *Repository) GetUsersByIds(idList []string) ([]models.UserPublic, error) {
+	for i, id := range idList {
+		idList[i] = fmt.Sprintf("'%s'", id)
+	}
+	idListString := strings.Join(idList, ", ")
+	users := make([]models.User, len(idList))
+	usersPublic := make([]models.UserPublic, len(idList))
+	result := repo.db.Raw(fmt.Sprintf("SELECT * FROM users WHERE id IN (%s)", idListString)).Scan(&users)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	for i, user := range users {
+		usersPublic[i] = *user.ToUserResponse()
+	}
+	return usersPublic, nil
 }
