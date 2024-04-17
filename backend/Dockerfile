@@ -12,6 +12,11 @@ COPY ./backend .
 EXPOSE 9000
 
 RUN --mount=type=secret,id=db_hostname
+RUN --mount=type=secret,id=db_port
+RUN --mount=type=secret,id=db_username
+RUN --mount=type=secret,id=db_password
+RUN --mount=type=secret,id=db_name
+RUN --mount=type=secret,id=listen_port
 
 ENV DB_HOSTNAME=db_hostname
 ENV DB_PORT=db_port
