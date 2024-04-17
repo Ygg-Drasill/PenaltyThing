@@ -116,15 +116,14 @@ func (db *DbContext) GetTeamsByUserId(ctx *gin.Context) {
 
 // GetTeamById GetTeam
 //
-//	@Summary	Get team id
-//	@Id			getTeamById
+//	@Id	getTeamById
 //	@Schemes
 //	@Description	Get team
 //	@Tags			team
 //	@Param			teamId	query	string	true	"Team ID"
 //	@Produce		json
 //	@Success		200	{object}	Team
-//	@Router			/team/getByUserId [get]
+//	@Router			/team/get [get]
 func (db *DbContext) GetTeamById(ctx *gin.Context) {
 	teamId := ctx.Query("teamId")
 	team, err := db.repo.GetTeam(teamId)

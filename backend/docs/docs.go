@@ -189,7 +189,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/team/getByUserId": {
+        "/team/get": {
             "get": {
                 "description": "Get team",
                 "produces": [
@@ -198,7 +198,6 @@ const docTemplate = `{
                 "tags": [
                     "team"
                 ],
-                "summary": "Get team id",
                 "operationId": "getTeamById",
                 "parameters": [
                     {
@@ -214,6 +213,39 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/Team"
+                        }
+                    }
+                }
+            }
+        },
+        "/team/getByUserId": {
+            "get": {
+                "description": "Get all teams that a user is a member of",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "team"
+                ],
+                "summary": "Get teams by user id",
+                "operationId": "getTeamsByUserId",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "userId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Team"
+                            }
                         }
                     }
                 }
