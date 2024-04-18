@@ -1,8 +1,8 @@
-import { Box, CircularProgress, LinearProgress, Stack, Typography } from "@mui/material";
+import { Box, LinearProgress, Stack, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { useTeamServiceGetTeamById, useTeamServiceGetTeamByIdKey, useUserServiceGetUserList, useUserServiceGetUserListKey } from "../../openapi/queries";
+import { useTeamServiceGetTeamByIdKey, useUserServiceGetUserListKey } from "../../openapi/queries";
 import { useQuery } from "@tanstack/react-query";
-import { TeamMember, TeamService, UserPublic, UserService } from "../../openapi/requests";
+import { TeamService, UserPublic, UserService } from "../../openapi/requests";
 
 function TeamOverviewPage() {
     const teamId = useParams().teamId
@@ -15,7 +15,7 @@ function TeamOverviewPage() {
 
     const {data: members, isLoading: membersLoading} = useQuery({
         queryKey: [useUserServiceGetUserListKey],
-        queryFn: () => UserService.getUserList({ids: team?.members?.map(m => m.userId) ?? []}),
+        queryFn: () => UserService.getUserList({ids: team?.members?.map(m => m.userId ?? "") ?? []}),
         enabled: !!team
     })
 

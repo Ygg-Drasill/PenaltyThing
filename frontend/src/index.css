@@ -3,3 +3,12 @@ body {
     padding: 0px;
     background: linear-gradient(120deg, #23262b, #34393f 90%);
 }
+
+@keyframes flex-grow {
+    0% {
+        flex-grow: 0;
+    }
+    100% {
+        flex-grow: 2;
+    }
+}

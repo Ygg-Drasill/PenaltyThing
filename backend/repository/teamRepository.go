@@ -75,7 +75,7 @@ func (repo *Repository) GetTeamsByUserId(userId string) ([]models.Team, error) {
 
 	for _, member := range members {
 		var team models.Team
-		result := repo.db.First(&team, "id = ?", member.TeamId)
+		result := repo.db.Preload(clause.Associations).First(&team, "id = ?", member.TeamId)
 		if result.Error != nil {
 			return nil, result.Error
 		}
