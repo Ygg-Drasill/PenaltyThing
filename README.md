@@ -1,9 +1,9 @@
-# Configuration for .env file
-Get a .env file with the following configuration:
-DB_HOSTNAME= //DB Ip address
-DB_PORT= //DB port number
-DB_USER= //DB Username
-DB_PASSWORD= //DB password in single qoutes
+## Configuration for .env file
+Get a .env file with the following configuration: <br>
+DB_HOSTNAME= //DB Ip address <br>
+DB_PORT= //DB port number <br>
+DB_USER= //DB Username <br>
+DB_PASSWORD= //DB password in single qoutes <br>
 DB_NAME= //Name for the DB
 
 LISTEN_PORT= //DB port number
