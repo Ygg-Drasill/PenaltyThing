@@ -7,7 +7,8 @@ function AppView(props: { title: string; children: ReactNode; barComponent?: Rea
       sx={{
         backgroundColor: "background.default",
         flexGrow: 1,
-        padding: "2rem",
+        padding: "1rem",
+
       }}
     >
       <Stack direction={"row"}>
