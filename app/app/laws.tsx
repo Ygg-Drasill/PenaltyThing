@@ -7,13 +7,17 @@ const laws = () => {
   return (
     <View style={styles.container}>
         <ImageBackground source={image} style={styles.image}>
-        <Text style={styles.title}>The Jungle LawsS</Text>
-
-            <Link href="/" asChild>
-              <Pressable style= {styles.bananaButton}>
-                <Text style={styles.bananaText}>Back</Text>
+        <Link href="/" asChild>
+              <Pressable style= {styles.backButton}>
+                <Text>Back</Text>
               </Pressable>   
             </Link>  
+
+
+
+        <Text style={styles.title}>The Jungle Laws</Text>
+
+
 
         </ImageBackground>
     </View>
@@ -26,8 +30,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
+
     },
     main: {
       flex: 1,
@@ -36,7 +39,7 @@ const styles = StyleSheet.create({
       marginHorizontal: "auto",
     },
     title: {
-        fontSize: 64,
+        fontSize: 40,
         fontWeight: "bold",
         color: '#ffe135',
         textAlign: 'center',
@@ -65,8 +68,17 @@ const styles = StyleSheet.create({
     },
     image: {
       flex: 1,
-      justifyContent: 'center',
       resizeMode: 'stretch',
       width: "100%"
     },
+    backButton: {
+      verticalAlign: 'top',
+      backgroundColor: '#ffe135',
+      borderRadius: 10,
+      padding: 5,
+      fontSize: 10,
+      width: '10%',
+      marginTop: 10,
+      marginLeft: 10,
+    }
   });

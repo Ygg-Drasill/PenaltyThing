@@ -1,21 +1,28 @@
 import { StyleSheet, Text, View , ImageBackground, Pressable} from "react-native";
 import { Link } from "expo-router";
+import React from "react";
+import IconButton from '@mui/material/IconButton';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
+
 
 const badmonkey = () => {
-    const image = {uri: 'https://wallpapers-clan.com/wp-content/uploads/2023/11/cartoon-forest-path-art-wallpaper.jpg'}
+  const image = {uri: 'https://wallpapers-clan.com/wp-content/uploads/2023/11/cartoon-forest-path-art-wallpaper.jpg'}
+
 
   return (
     <View style={styles.container}>
-        <ImageBackground source={image} style={styles.image}>
-        <Text style={styles.title}>Bad Monkey Page</Text>
-        
-            <Link href="/" asChild>
-              <Pressable style= {styles.bananaButton}>
-                <Text style={styles.bananaText}>Back</Text>
+      <ImageBackground source={image} style={styles.image}>
+      <Link href="/" asChild> 
+              <Pressable style= {styles.backButton}>
+                <Text>Back</Text>
               </Pressable>   
             </Link>  
+  
+        <Text style={styles.title}>Bad Monkey Page</Text>
 
-        </ImageBackground>
+      </ImageBackground>
+
     </View>
   )
 }
@@ -24,10 +31,9 @@ export default badmonkey
 
 const styles = StyleSheet.create({
     container: {
+      backgroundColor: '#34393f',
       flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
+
     },
     main: {
       flex: 1,
@@ -36,10 +42,11 @@ const styles = StyleSheet.create({
       marginHorizontal: "auto",
     },
     title: {
-        fontSize: 64,
+        fontSize: 40,
         fontWeight: "bold",
         color: '#ffe135',
         textAlign: 'center',
+        verticalAlign: 'top',
       },
     subtitle: {
       fontSize: 36,
@@ -65,8 +72,18 @@ const styles = StyleSheet.create({
     },
     image: {
       flex: 1,
-      justifyContent: 'center',
       resizeMode: 'stretch',
       width: "100%"
     },
+    backButton: {
+      verticalAlign: 'top',
+      backgroundColor: '#ffe135',
+      borderRadius: 10,
+      padding: 5,
+      fontSize: 10,
+      width: '10%',
+      marginTop: 10,
+      marginLeft: 10,
+    }
+
   });
