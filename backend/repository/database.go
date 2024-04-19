@@ -43,6 +43,11 @@ func ConnectToDatabase(dsn string) *Repository {
 	err = db.AutoMigrate(&models.Law{})
 	err = db.AutoMigrate(&models.PenaltyEntry{})
 	err = db.AutoMigrate(&models.TeamMember{})
+	err = db.AutoMigrate(&models.Notification{})
+
+	//Events
+	err = db.AutoMigrate(&models.PenaltyEvent{})
+	err = db.AutoMigrate(&models.InvitationEvent{})
 	return &Repository{
 		db: db,
 	}

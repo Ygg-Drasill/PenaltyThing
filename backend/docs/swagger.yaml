@@ -40,6 +40,13 @@ definitions:
       userId:
         type: string
     type: object
+  InviteUserToTeamRequest:
+    properties:
+      teamId:
+        type: string
+      userId:
+        type: string
+    type: object
   Law:
     properties:
       description:
@@ -296,6 +303,28 @@ paths:
               $ref: '#/definitions/Team'
             type: array
       summary: Get teams by user id
+      tags:
+      - team
+  /team/inviteUser:
+    post:
+      consumes:
+      - application/json
+      description: Invite user to team
+      operationId: inviteUser
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/InviteUserToTeamRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Team'
       tags:
       - team
   /user/authenticate:

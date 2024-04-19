@@ -254,6 +254,40 @@ const docTemplate = `{
                 }
             }
         },
+        "/team/inviteUser": {
+            "post": {
+                "description": "Invite user to team",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "team"
+                ],
+                "operationId": "inviteUser",
+                "parameters": [
+                    {
+                        "description": "Request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/InviteUserToTeamRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Team"
+                        }
+                    }
+                }
+            }
+        },
         "/user/authenticate": {
             "post": {
                 "description": "Authenticate user using username and password",
@@ -447,6 +481,17 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "name": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "InviteUserToTeamRequest": {
+            "type": "object",
+            "properties": {
+                "teamId": {
                     "type": "string"
                 },
                 "userId": {

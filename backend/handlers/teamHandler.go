@@ -115,7 +115,7 @@ func (db *DbContext) GetTeamsByUserId(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, teams)
 }
 
-// GetTeamById GetTeam
+// GetTeamById
 //
 //	@Id	getTeamById
 //	@Schemes
@@ -132,4 +132,29 @@ func (db *DbContext) GetTeamById(ctx *gin.Context) {
 		ctx.String(http.StatusBadRequest, err.Error())
 	}
 	ctx.JSON(http.StatusOK, team)
+}
+
+type InviteUserToTeamRequest struct {
+	UserId string `json:"userId"`
+	TeamId string `json:"teamId"`
+} //@name InviteUserToTeamRequest
+
+// InviteUserToTeam
+//
+//	@Id	inviteUser
+//	@Schemes
+//	@Description	Invite user to team
+//	@Tags			team
+//	@Param			request	body	InviteUserToTeamRequest	true	"Request body"
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	Team
+//	@Router			/team/inviteUser [post]
+func (db *DbContext) InviteUserToTeam(ctx *gin.Context) {
+	var req InviteUserToTeamRequest
+	if err := ctx.BindJSON(&req); err != nil {
+		ctx.String(http.StatusBadRequest, err.Error())
+		return
+	}
+	db.repo.CreateNotification()
 }
