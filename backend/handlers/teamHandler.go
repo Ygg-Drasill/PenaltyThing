@@ -47,8 +47,8 @@ func (db *DbContext) CreateTeam(ctx *gin.Context) {
 }
 
 type AddUserToTeamRequest struct {
-	userId string
-	teamId string
+	UserId string `json:"userId"`
+	TeamId string `json:"teamId"`
 } //@name AddUserToTeamRequest
 
 // AddUserToTeam
@@ -59,31 +59,32 @@ type AddUserToTeamRequest struct {
 //	@Description	Add user to team
 //	@Tags			team
 //	@Param			request	body	AddUserToTeamRequest	true	"request params"
+//	@Accept			json
 //	@Produce		json
 //	@Success		200	{object}	Team
-//	@Router			/team/addUserToTeam [post]
+//	@Router			/team/addUser [post]
 func (db *DbContext) AddUserToTeam(ctx *gin.Context) {
 	var req AddUserToTeamRequest
-	if err := ctx.ShouldBindQuery(&req); err != nil {
+	if err := ctx.BindJSON(&req); err != nil {
 		ctx.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	if !db.repo.TeamExists(req.teamId) {
+	if !db.repo.TeamExists(req.TeamId) {
 		ctx.String(http.StatusNotFound, "team does not exist")
 		return
 	}
 
-	if !db.repo.UserExists(req.userId) {
+	if !db.repo.UserExists(req.UserId) {
 		ctx.String(http.StatusNotFound, "user does not exist")
 		return
 	}
 
-	if err := db.repo.AddUserToTeam(req.userId, req.teamId); err != nil {
+	if err := db.repo.AddUserToTeam(req.UserId, req.TeamId); err != nil {
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
-	ctx.String(http.StatusOK, fmt.Sprintf("Added user %s to team %s", req.userId, req.teamId))
+	ctx.String(http.StatusOK, fmt.Sprintf("Added user %s to team %s", req.UserId, req.TeamId))
 }
 
 // GetTeamsByUserId

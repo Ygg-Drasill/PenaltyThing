@@ -122,9 +122,12 @@ const docTemplate = `{
                 }
             }
         },
-        "/team/addUserToTeam": {
+        "/team/addUser": {
             "post": {
                 "description": "Add user to team",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -405,7 +408,15 @@ const docTemplate = `{
             }
         },
         "AddUserToTeamRequest": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "teamId": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
         },
         "AuthenticateUserRequest": {
             "type": "object",

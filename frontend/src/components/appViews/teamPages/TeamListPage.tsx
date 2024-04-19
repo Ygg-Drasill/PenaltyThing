@@ -4,6 +4,7 @@ import { Box, ButtonBase, Fade, LinearProgress, Slide, Stack, Typography } from 
 import { Team, TeamMember } from "../../openapi/requests"
 import { useUserServiceGetUser } from "../../openapi/queries"
 import { useTheme } from "@emotion/react"
+import { GavelSharp, LocalPoliceSharp } from "@mui/icons-material"
 
 function TeamListPage() {
     const appContext = useContext(AppContext)
@@ -46,11 +47,12 @@ function TeamMemberListItem(props: {member: TeamMember}) {
     const theme = useTheme()
 
     return (
-        <Box borderRadius={1} border={"1px solid rgb(0,0,0,0.12)"} padding={1} sx={{backgroundColor: theme}} boxShadow={"0px 5px 25px -15px rgb(0,0,0,0.25)"}>
-            <Stack direction={"row"} gap={1}>
+        <Box borderRadius={1} border={"1px solid rgb(0,0,0,0.12)"} sx={{backgroundColor: theme}} boxShadow={"0px 5px 25px -15px rgb(0,0,0,0.25)"} display={"flex"} flexDirection={"row"} justifyContent={"space-between"} paddingRight={4}>
+            <Stack direction={"row"} gap={1} padding={1}>
                 <Typography variant="h6">{userPublic?.firstName ? userPublic?.firstName : "name not found"}</Typography>
                 <Typography variant="h6">{userPublic?.firstName ? userPublic?.lastName : "name not found"}</Typography>
             </Stack>
+            {/* <Box sx={{background: "linear-gradient(rgb(255, 55, 35) 50%, rgb(235, 45, 25) 50%)", transform: "skew(-15deg)",}} display={"flex"} alignItems={"center"}><GavelSharp sx={{transform: "skew(15deg)", margin:"0 4px"}}/></Box> */}
         </Box>
     )
 }

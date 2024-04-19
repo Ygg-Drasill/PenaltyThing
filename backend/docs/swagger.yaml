@@ -11,6 +11,11 @@ definitions:
         type: string
     type: object
   AddUserToTeamRequest:
+    properties:
+      teamId:
+        type: string
+      userId:
+        type: string
     type: object
   AuthenticateUserRequest:
     properties:
@@ -206,8 +211,10 @@ paths:
       summary: Add penalty to team member
       tags:
       - penalty
-  /team/addUserToTeam:
+  /team/addUser:
     post:
+      consumes:
+      - application/json
       description: Add user to team
       operationId: addUserToTeam
       parameters:
