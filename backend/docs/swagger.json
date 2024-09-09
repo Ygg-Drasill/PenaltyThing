@@ -213,6 +213,40 @@
                 }
             }
         },
+        "/user/all": {
+            "get": {
+                "description": "Get all users",
+                "consumes": [
+                    "application/json",
+                    "application/vnd.api+json"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/vnd.api+json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Get all users",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/UserPublic"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/user/authenticate": {
             "post": {
                 "description": "Authenticate user using username and password",
@@ -270,40 +304,6 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/UserPublic"
-                        }
-                    }
-                }
-            }
-        },
-        "/user/get/all": {
-            "get": {
-                "description": "Get all users",
-                "consumes": [
-                    "application/json",
-                    "application/vnd.api+json"
-                ],
-                "produces": [
-                    "application/json",
-                    "application/vnd.api+json"
-                ],
-                "tags": [
-                    "user"
-                ],
-                "summary": "Get all users",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/UserPublic"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "schema": {
-                            "type": "string"
                         }
                     }
                 }
