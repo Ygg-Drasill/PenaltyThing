@@ -26,6 +26,15 @@ func (repo *Repository) GetUserById(id string) (*models.User, error) {
 	return &user, nil
 }
 
+func (repo *Repository) GetUsers() ([]models.User, error) {
+	var users []models.User
+	res := repo.db.Find(&users)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+	return users, nil
+}
+
 func (repo *Repository) GetUserByUsername(username string) (*models.User, error) {
 	var user models.User
 	res := repo.db.Find(&user, "username = ?", username)

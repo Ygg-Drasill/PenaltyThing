@@ -315,6 +315,29 @@ paths:
       summary: Get user
       tags:
       - user
+  /user/get/all:
+    get:
+      consumes:
+      - application/json
+      - application/vnd.api+json
+      description: Get all users
+      produces:
+      - application/json
+      - application/vnd.api+json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/UserPublic'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Get all users
+      tags:
+      - user
   /user/register:
     post:
       consumes:

@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"github.com/Ygg-Drasill/PenaltyThing/backend/authentication"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/models"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
@@ -85,6 +86,31 @@ func (db *DbContext) GetUser(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, *user.ToUserResponse())
+}
+
+// GetUsers godoc
+//
+//	@Summary		Get all users
+//	@Description	Get all users
+//	@Tags			user
+//	@Accept			json,json-api
+//	@Produce		json,json-api
+//	@Success		200	{object}	[]models.UserPublic
+//	@Failure		500	{string}	string	"Internal server error"
+//	@Router			/user/all [get]
+func (db *DbContext) GetUsers(g *gin.Context) {
+	result, err := db.repo.GetUsers()
+	if err != nil {
+		g.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	var users []models.UserPublic
+	for _, user := range result {
+		users = append(users, *user.ToUserResponse())
+	}
+
+	g.JSON(http.StatusOK, gin.H{"users": users})
 }
 
 type AuthenticateUserRequest struct {
