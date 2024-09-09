@@ -2,6 +2,7 @@ package repository
 
 import (
 	"github.com/Ygg-Drasill/PenaltyThing/backend/models"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/google/uuid"
 	"strings"
 )
@@ -74,6 +75,15 @@ func (repo *Repository) GetUserCredentials(email string) (*models.User, error) {
 	res := repo.db.Where("email = ?", email).Find(&user)
 	if res.Error != nil {
 		return nil, res.Error
+	}
+	return &user, nil
+}
+
+func (repo *Repository) GetUserClaim(claims jwt.MapClaims) (*models.User, error) {
+	var user models.User
+	result := repo.db.Where("username = ?", claims["user"]).First(&user)
+	if result.Error != nil {
+		return nil, result.Error
 	}
 	return &user, nil
 }

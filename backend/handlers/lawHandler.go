@@ -23,7 +23,7 @@ type CreateLawRequest struct {
 //	@Produce		json
 //	@Success		200	{object}	Law
 //	@Router			/law/create [post]
-func (db *DbContext) CreateLaw(ctx *gin.Context) {
+func (db *DBContext) CreateLaw(ctx *gin.Context) {
 	var req CreateLawRequest
 	if err := ctx.BindJSON(&req); err != nil {
 		ctx.String(http.StatusBadRequest, err.Error())
@@ -53,7 +53,7 @@ type GetLawsRequest struct {
 //	@Produce		json
 //	@Success		200	{array}	Law
 //	@Router			/law/getByTeam [get]
-func (db *DbContext) GetLaws(ctx *gin.Context) {
+func (db *DBContext) GetLaws(ctx *gin.Context) {
 	var query GetLawsRequest
 	if err := ctx.ShouldBindQuery(&query); err != nil {
 		ctx.String(http.StatusBadRequest, err.Error())

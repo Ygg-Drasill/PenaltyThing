@@ -25,7 +25,7 @@ type AddPenaltyRequest struct {
 //	@Produce		json
 //	@Success		200	{object}	PenaltyEntry
 //	@Router			/penalty/add [post]
-func (db *DbContext) AddPenalty(ctx *gin.Context) {
+func (db *DBContext) AddPenalty(ctx *gin.Context) {
 	var req AddPenaltyRequest
 	if err := ctx.BindJSON(&req); err != nil {
 		fmt.Print(err.Error())

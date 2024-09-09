@@ -4,10 +4,13 @@ import (
 	"fmt"
 	"github.com/Ygg-Drasill/PenaltyThing/backend/authentication"
 	"github.com/Ygg-Drasill/PenaltyThing/backend/models"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"strings"
+	"os"
+	"time"
 )
 
 const hashCost = 14
@@ -32,7 +35,7 @@ type RegisterUserRequest struct {
 //	@Produce		json
 //	@Success		200	{object}	User
 //	@Router			/user/register [post]
-func (db *DbContext) RegisterUser(ctx *gin.Context) {
+func (db *DBContext) RegisterUser(ctx *gin.Context) {
 	req := RegisterUserRequest{}
 	if err := ctx.BindJSON(&req); err != nil {
 		ctx.String(http.StatusBadRequest, err.Error())
@@ -91,7 +94,7 @@ type GetUserRequest struct {
 //	@Produce		json
 //	@Success		200	{object}	UserPublic
 //	@Router			/user/get [get]
-func (db *DbContext) GetUser(ctx *gin.Context) {
+func (db *DBContext) GetUser(ctx *gin.Context) {
 	var query GetUserRequest
 	if res := ctx.ShouldBindQuery(&query); res != nil {
 		ctx.String(http.StatusInternalServerError, res.Error())
@@ -116,10 +119,10 @@ func (db *DbContext) GetUser(ctx *gin.Context) {
 //	@Success		200	{array}		UserPublic
 //	@Failure		500	{string}	string	"Internal server error"
 //	@Router			/user/all [get]
-func (db *DbContext) GetUsers(g *gin.Context) {
+func (db *DBContext) GetUsers(ctx *gin.Context) {
 	result, err := db.repo.GetUsers()
 	if err != nil {
-		g.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -128,7 +131,7 @@ func (db *DbContext) GetUsers(g *gin.Context) {
 		users = append(users, *user.ToUserResponse())
 	}
 
-	g.JSON(http.StatusOK, users)
+	ctx.JSON(http.StatusOK, users)
 }
 
 type GetUsersBatchRequest struct {
@@ -146,7 +149,7 @@ type GetUsersBatchRequest struct {
 //	@Produce		json
 //	@Success		200	{array}	UserPublic
 //	@Router			/user/getMemberBatch [get]
-func (db *DbContext) GetUsersMemberBatch(ctx *gin.Context) {
+func (db *DBContext) GetUsersMemberBatch(ctx *gin.Context) {
 	var query GetUsersBatchRequest
 	if res := ctx.ShouldBindQuery(&query); res != nil {
 		ctx.String(http.StatusInternalServerError, res.Error())
@@ -166,6 +169,7 @@ func (db *DbContext) GetUsersMemberBatch(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, users)
+	ctx.JSON(http.StatusOK, gin.H{"users": users})
 }
 
 type AuthenticateUserRequest struct {
@@ -173,18 +177,18 @@ type AuthenticateUserRequest struct {
 	Password string `json:"password"`
 } //@name AuthenticateUserRequest
 
-// AuthenticateUser
+// LoginUser
 //
-//	@Summary	Authenticate user
-//	@Id			authenticateUser
+//	@Summary	Login user
+//	@Id			loginUser
 //	@Schemes
-//	@Description	Authenticate user using username and password
+//	@Description	Login User and set cookie with JWT token. Token expires in 24 hours.
 //	@Tags			user
 //	@Param			request	body	AuthenticateUserRequest	true	"User credentials"
 //	@Produce		json
-//	@Success		200	{object}	UserPublic
-//	@Router			/user/authenticate [post]
-func (db *DbContext) AuthenticateUser(ctx *gin.Context) {
+//	@Success		200	{object} UserPublic
+//	@Router			/user/login [post]
+func (db *DBContext) LoginUser(ctx *gin.Context) {
 	var req AuthenticateUserRequest
 	if err := ctx.BindJSON(&req); err != nil {
 		ctx.String(http.StatusBadRequest, err.Error())
@@ -199,5 +203,32 @@ func (db *DbContext) AuthenticateUser(ctx *gin.Context) {
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"user": user.Username,
+		"exp":  time.Now().Add(time.Hour * 24).Unix(),
+	})
+	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
+		return
+	}
+
+	ctx.SetSameSite(http.SameSiteLaxMode)
+	ctx.SetCookie("token", tokenString, 3600*24, "", "", false, true)
+
 	ctx.JSON(http.StatusOK, user.ToUserResponse())
+}
+
+// AuthenticateUser godoc
+//
+//	@Summary		Authenticate user
+//	@Description	Authenticate user
+//	@Tags			user
+//	@Accept			json,json-api
+//	@Produce		json,json-api
+//	@Success		200	{string}	string	"Authenticated"
+//	@Router			/user/authenticate [get]
+func AuthenticateUser(g *gin.Context) {
+	g.JSON(http.StatusOK, gin.H{"message": "Authenticated"})
 }

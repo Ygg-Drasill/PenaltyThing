@@ -24,7 +24,7 @@ type CreateTeamRequest struct {
 //	@Produce		json
 //	@Success		200	{object}	Team
 //	@Router			/team/create [post]
-func (db *DbContext) CreateTeam(ctx *gin.Context) {
+func (db *DBContext) CreateTeam(ctx *gin.Context) {
 	req := CreateTeamRequest{}
 	if err := ctx.BindJSON(&req); err != nil {
 		ctx.String(http.StatusBadRequest, err.Error())
@@ -62,7 +62,7 @@ type AddUserToTeamRequest struct {
 //	@Produce		json
 //	@Success		200	{object}	Team
 //	@Router			/team/addUserToTeam [post]
-func (db *DbContext) AddUserToTeam(ctx *gin.Context) {
+func (db *DBContext) AddUserToTeam(ctx *gin.Context) {
 	var req AddUserToTeamRequest
 	if err := ctx.ShouldBindQuery(&req); err != nil {
 		ctx.String(http.StatusBadRequest, err.Error())
@@ -97,7 +97,7 @@ func (db *DbContext) AddUserToTeam(ctx *gin.Context) {
 //	@Produce		json
 //	@Success		200	{array}	Team
 //	@Router			/team/getByUserId [get]
-func (db *DbContext) GetTeamsByUserId(ctx *gin.Context) {
+func (db *DBContext) GetTeamsByUserId(ctx *gin.Context) {
 	var userId string
 	var teams []models.Team
 	var err error

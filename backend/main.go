@@ -41,7 +41,8 @@ func main() {
 			user.GET("/get", dbContext.GetUser)
 			user.GET("/getMemberBatch", dbContext.GetUsersMemberBatch)
 			user.POST("/register", dbContext.RegisterUser)
-			user.POST("/authenticate", dbContext.AuthenticateUser)
+			user.POST("/login", dbContext.LoginUser)
+			user.GET("/authenticate", middleware.AuthenticateUser(*repo), handlers.AuthenticateUser)
 		}
 
 		team := v1.Group("/team")
