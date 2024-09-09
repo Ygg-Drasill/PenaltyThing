@@ -113,6 +113,39 @@ func (db *DbContext) GetUsers(g *gin.Context) {
 	g.JSON(http.StatusOK, gin.H{"users": users})
 }
 
+type GetUsersBatchRequest struct {
+	Ids []string `json:"ids" form:"ids"`
+} //@name GetUsersBatchRequest
+
+// GetUsersBatch
+//
+//	@Summary	Get users as batch
+//	@Id			getUsersBatch
+//	@Schemes
+//	@Description	get user batch
+//	@Tags			user
+//	@Param			request body GetUsersBatchRequest true "query params"
+//	@Produce		json
+//	@Success		200	{array} UserPublic
+//	@Router			/user/getBatch [get]
+func (db *DbContext) GetUsersBatch(ctx *gin.Context) {
+	var query GetUsersBatchRequest
+	if res := ctx.ShouldBindJSON(&query); res != nil {
+		ctx.String(http.StatusInternalServerError, res.Error())
+	}
+
+	var users []models.UserPublic
+	publicUsers, err := db.repo.GetUsersByIds(query.Ids)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	}
+	for _, user := range publicUsers {
+		users = append(users, *user.ToUserResponse())
+	}
+
+	ctx.JSON(http.StatusOK, users)
+}
+
 type AuthenticateUserRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`

@@ -35,6 +35,13 @@ definitions:
       userId:
         type: string
     type: object
+  GetUsersBatchRequest:
+    properties:
+      ids:
+        items:
+          type: string
+        type: array
+    type: object
   Law:
     properties:
       description:
@@ -252,6 +259,26 @@ paths:
       summary: Create new team
       tags:
       - team
+  /team/get:
+    get:
+      description: Get a single team by its id
+      operationId: getTeam
+      parameters:
+      - description: Team ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Team'
+      summary: Get a team by id
+      tags:
+      - team
   /team/getByUserId:
     get:
       description: Get all teams that a user is a member of
@@ -274,6 +301,29 @@ paths:
       summary: Get teams by user id
       tags:
       - team
+  /user/all:
+    get:
+      consumes:
+      - application/json
+      - application/vnd.api+json
+      description: Get all users
+      produces:
+      - application/json
+      - application/vnd.api+json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/UserPublic'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Get all users
+      tags:
+      - user
   /user/authenticate:
     post:
       description: Authenticate user using username and password
@@ -315,15 +365,19 @@ paths:
       summary: Get user
       tags:
       - user
-  /user/get/all:
+  /user/getBatch:
     get:
-      consumes:
-      - application/json
-      - application/vnd.api+json
-      description: Get all users
+      description: get user batch
+      operationId: getUsersBatch
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/GetUsersBatchRequest'
       produces:
       - application/json
-      - application/vnd.api+json
       responses:
         "200":
           description: OK
@@ -331,11 +385,7 @@ paths:
             items:
               $ref: '#/definitions/UserPublic'
             type: array
-        "500":
-          description: Internal server error
-          schema:
-            type: string
-      summary: Get all users
+      summary: Get users as batch
       tags:
       - user
   /user/register:

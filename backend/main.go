@@ -42,7 +42,9 @@ func main() {
 
 		team := v1.Group("/team")
 		{
+			team.GET("/get", dbContext.GetTeam)
 			team.GET("/getByUserId", dbContext.GetTeamsByUserId)
+			team.GET("/getBatch", dbContext.GetUsersBatch)
 			team.POST("/create", dbContext.CreateTeam)
 			team.POST("/addUser", dbContext.AddUserToTeam)
 		}

@@ -19,6 +19,7 @@ import { AppContext } from "./components/hooks/appContext";
 import { TeamService, UserService } from "./components/openapi/requests";
 import { useQuery } from "@tanstack/react-query";
 import TeamListPage from "./components/appViews/teamPages/TeamListPage";
+import TeamViewPage from "./components/appViews/teamPages/TeamViewPage";
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
               <Route path="create" element={<TeamCreatePage />} />
               <Route path="join" element={<TeamJoinPage />} />
               <Route path="list" element={<TeamListPage />} />
+              <Route path=":id" element={<TeamViewPage />} />
             </Route>
             <Route path="*" element={<NoView />} />
           </Route>
