@@ -35,13 +35,6 @@ definitions:
       userId:
         type: string
     type: object
-  GetUsersBatchRequest:
-    properties:
-      ids:
-        items:
-          type: string
-        type: array
-    type: object
   Law:
     properties:
       description:
@@ -91,7 +84,7 @@ definitions:
         items:
           $ref: '#/definitions/Law'
         type: array
-      member:
+      members:
         items:
           $ref: '#/definitions/TeamMember'
         type: array
@@ -365,17 +358,16 @@ paths:
       summary: Get user
       tags:
       - user
-  /user/getBatch:
+  /user/getMemberBatch:
     get:
-      description: get user batch
-      operationId: getUsersBatch
+      description: Get public users as batch from list of members
+      operationId: getUsersMemberBatch
       parameters:
-      - description: query params
-        in: body
-        name: request
+      - description: id list
+        in: query
+        name: ids
         required: true
-        schema:
-          $ref: '#/definitions/GetUsersBatchRequest'
+        type: string
       produces:
       - application/json
       responses:
@@ -385,7 +377,7 @@ paths:
             items:
               $ref: '#/definitions/UserPublic'
             type: array
-      summary: Get users as batch
+      summary: Get public users as batch
       tags:
       - user
   /user/register:

@@ -348,26 +348,24 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/getBatch": {
+        "/user/getMemberBatch": {
             "get": {
-                "description": "get user batch",
+                "description": "Get public users as batch from list of members",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "user"
                 ],
-                "summary": "Get users as batch",
-                "operationId": "getUsersBatch",
+                "summary": "Get public users as batch",
+                "operationId": "getUsersMemberBatch",
                 "parameters": [
                     {
-                        "description": "query params",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/GetUsersBatchRequest"
-                        }
+                        "type": "string",
+                        "description": "id list",
+                        "name": "ids",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -476,17 +474,6 @@ const docTemplate = `{
                 }
             }
         },
-        "GetUsersBatchRequest": {
-            "type": "object",
-            "properties": {
-                "ids": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
         "Law": {
             "type": "object",
             "properties": {
@@ -562,7 +549,7 @@ const docTemplate = `{
                         "$ref": "#/definitions/Law"
                     }
                 },
-                "member": {
+                "members": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/TeamMember"

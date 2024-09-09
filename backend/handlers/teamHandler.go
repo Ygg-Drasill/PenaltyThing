@@ -140,5 +140,9 @@ func (db *DbContext) GetTeam(ctx *gin.Context) {
 	if err != nil {
 		ctx.String(http.StatusInternalServerError, err.Error())
 	}
+
+	members, err := db.repo.GetMembersByTeamId(query.Id)
+	team.Members = members
+
 	ctx.JSON(http.StatusOK, team)
 }
