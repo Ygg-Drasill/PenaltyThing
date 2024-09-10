@@ -36,8 +36,8 @@ function App() {
               <Route path="create" element={<TeamCreatePage />} />
               <Route path="join" element={<TeamJoinPage />} />
               <Route path="list" element={<TeamListPage />} />
-              <Route path=":id" element={<TeamViewPage />} />
             </Route>
+            <Route path=":id" element={<TeamViewPage />} />
             <Route path="*" element={<NoView />} />
           </Route>
           <Route path="*" element={<Navigate replace to={"/app/home"}/>} />

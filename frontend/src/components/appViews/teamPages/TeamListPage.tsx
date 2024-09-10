@@ -16,7 +16,7 @@ function TeamListPage() {
 
 function TeamListItem(props: {team: Team}) {
     return (
-        <Link component={RouterLink} to={"/app/team/" + props.team.id} draggable={false}>
+        <Link component={RouterLink} to={"/app/" + props.team.id} draggable={false}>
             <Button fullWidth sx={{justifyContent: "start", textTransform: "none"}}>
                 <Typography color={"primary"}>
                     {props.team.name ?? "name not found"}

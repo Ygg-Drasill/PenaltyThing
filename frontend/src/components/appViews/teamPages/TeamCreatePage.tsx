@@ -29,20 +29,18 @@ function TeamCreatePage() {
     }
 
     return (
-        <BasePage loading={false}>
-            <Box component={"form"} onSubmit={handleTeamCreateSubmit}>
-                <Stack direction={"row"} gap={2}>
-                    <TextField
-                    id="teamName"
-                    label="Team name"
-                    value={teamName}
-                    onChange={(e) => setTeamName(e.currentTarget.value)}
-                    />
-                    <Button type="submit" color="success">Create{createTeamMutation.isPending && <CircularProgress />}</Button>
-                </Stack>
-            </Box>
-        </BasePage>
-    )
+        <Box component={"form"} onSubmit={handleTeamCreateSubmit}>
+            <Stack direction={"row"} gap={2}>
+                <TextField
+                id="teamName"
+                label="Team name"
+                value={teamName}
+                onChange={(e) => setTeamName(e.currentTarget.value)}
+                />
+                <Button type="submit" color="success">Create{createTeamMutation.isPending && <CircularProgress />}</Button>
+            </Stack>
+        </Box>
+)
 }
 
 export default TeamCreatePage
