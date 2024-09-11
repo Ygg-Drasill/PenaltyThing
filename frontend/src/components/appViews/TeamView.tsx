@@ -29,7 +29,7 @@ function IconWithText(props: {path: string, icon: ReactNode, name: string}){
         <Link component={RouterLink} to={props.path} draggable={false}>
             <Button>
                 {props.icon}
-                <Typography sx={{marginLeft: 0.5}} variant="outlined">{props.name}</Typography>
+                <Typography sx={{marginLeft: 0.5}}>{props.name}</Typography>
             </Button>
         </Link>
     )
