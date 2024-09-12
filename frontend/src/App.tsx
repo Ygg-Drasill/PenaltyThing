@@ -15,15 +15,16 @@ import { useTeamServiceGetTeamsByUserIdKey, useUserServiceGetUserKey } from "./c
 import TeamCreatePage from "./components/appViews/teamPages/TeamCreatePage";
 import TeamJoinPage from "./components/appViews/teamPages/TeamJoinPage";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { AppContext } from "./components/hooks/appContext";
 import { TeamService, UserService } from "./components/openapi/requests";
 import { useQuery } from "@tanstack/react-query";
 import TeamListPage from "./components/appViews/teamPages/TeamListPage";
 import TeamLawPage from "./components/appViews/specificTeamPages/TeamLawPage";
 import SpecificTeamView from "./components/appViews/SpecificTeamView";
+import TeamMemberListPage from "./components/appViews/specificTeamPages/TeamMemberListPage";
+import { AppContext } from "./components/hooks/appContext";
+import { queryClient } from "./queryClient";
 
 function App() {
-
   return (
     <>
       <Router>
@@ -33,13 +34,14 @@ function App() {
           <Route path="app" element={<InnerApp />}>
             <Route path="home" element={<HomeView />} />
             <Route path="penalties" element={<PenaltiesView />} />
-            <Route path="team" element={<TeamView />}>
+            <Route path="teams" element={<TeamView />}>
               <Route path="create" element={<TeamCreatePage />} />
               <Route path="join" element={<TeamJoinPage />} />
               <Route path="list" element={<TeamListPage />} />
             </Route>
-            <Route path=":id" element={<SpecificTeamView />} >
+            <Route path="team" element={<SpecificTeamView />} >
               <Route path="laws" element={<TeamLawPage />}/>
+              <Route path="" element={<TeamMemberListPage />}/>
             </Route>
             <Route path="*" element={<NoView />} />
           </Route>
@@ -56,13 +58,32 @@ export default App;
 function InnerApp() { //TODO: Introduce userSession context where user cookie is passed down to components inside innerApp
   const navigate = useNavigate()
   const [userId, setUserId] = useState("")
+  const [currentTeamId, setCurrentTeamId] = useState("")
+
+  useEffect(() => {
+    const cookies = new Cookies()
+    const savedUserId = cookies.get("userId")
+    const savedTeamId = cookies.get("teamId")
+    setCurrentTeamId(savedTeamId)
+    if (!savedUserId) {
+      navigate("/login")
+    } else {
+      setUserId(userId)
+    }
+    queryClient.invalidateQueries({
+      queryKey: [useUserServiceGetUserKey]
+    })
+    console.log("Updating appContext");
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   
   const {data: user} = useQuery({
-    queryKey: [useUserServiceGetUserKey],
+    queryKey: [useUserServiceGetUserKey, userId],
     queryFn: () => {
       return UserService.getUser({id: userId})
     },
-    enabled: !!userId
+    enabled: !!userId,
   })
 
   const {data: teams} = useQuery({
@@ -72,22 +93,16 @@ function InnerApp() { //TODO: Introduce userSession context where user cookie is
     },
     enabled: !!userId
   })
-  
-  useEffect(() => {
-    const cookies = new Cookies()
-    const userId = cookies.get("userId")
-    if (!userId) {
-      navigate("/login")
-    } else {
-      setUserId(userId)
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+
+  if (!user || !teams) return (
+    <Stack direction={"row"} height={"100vh"} padding={4} gap={4} boxSizing={"border-box"}>
+        <NoView />
+      </Stack>
+  )
 
   return (
-    <AppContext.Provider value={{user: user, teams: teams}}>
+    <AppContext.Provider value={{user: user, teams: teams, currentTeamId: currentTeamId, setCurrentTeamId: setCurrentTeamId}}>
       <Stack direction={"row"} height={"100vh"} padding={4} gap={4} boxSizing={"border-box"}>
-        <AppTray user={user} isLoading={!!user}/>
         <Outlet context={{user}} />
       </Stack>
     </AppContext.Provider>
