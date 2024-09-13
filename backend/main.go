@@ -61,7 +61,7 @@ func main() {
 		}
 	}
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-	if err := router.Run(fmt.Sprintf(":%s", os.Getenv("LISTEN_PORT"))); err != nil {
+	if err := router.Run(fmt.Sprintf("localhost:%s", os.Getenv("LISTEN_PORT"))); err != nil {
 		panic(err)
 	}
 }
