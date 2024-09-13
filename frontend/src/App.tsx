@@ -4,7 +4,6 @@ import { Navigate, Outlet, Route, BrowserRouter as Router, Routes, useNavigate }
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import { Stack, Typography } from "@mui/material";
-import AppTray from "./components/AppTray";
 import HomeView from "./components/appViews/HomeView";
 import AppView from "./components/appViews/AppView";
 import PenaltiesView from "./components/appViews/PenaltiesView";
@@ -22,7 +21,9 @@ import TeamLawPage from "./components/appViews/specificTeamPages/TeamLawPage";
 import SpecificTeamView from "./components/appViews/SpecificTeamView";
 import TeamMemberListPage from "./components/appViews/specificTeamPages/TeamMemberListPage";
 import { AppContext } from "./components/hooks/appContext";
-import { queryClient } from "./queryClient";
+import AppTray from "./components/AppTray";
+
+export const cookies = new Cookies()
 
 function App() {
   return (
@@ -57,31 +58,28 @@ export default App;
 
 function InnerApp() { //TODO: Introduce userSession context where user cookie is passed down to components inside innerApp
   const navigate = useNavigate()
-  const [userId, setUserId] = useState("")
-  const [currentTeamId, setCurrentTeamId] = useState("")
+  const [userId, setUserId] = useState(cookies.get("userId"))
+  const [currentTeamId, setCurrentTeamId] = useState(cookies.get("teamId"))
 
   useEffect(() => {
-    const cookies = new Cookies()
-    const savedUserId = cookies.get("userId")
-    const savedTeamId = cookies.get("teamId")
-    setCurrentTeamId(savedTeamId)
-    if (!savedUserId) {
+    console.log("id: " + userId);
+  }, [userId])
+
+  useEffect(() => {
+    if (!userId) {
       navigate("/login")
     } else {
       setUserId(userId)
     }
-    queryClient.invalidateQueries({
-      queryKey: [useUserServiceGetUserKey]
-    })
     console.log("Updating appContext");
     
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   
-  const {data: user} = useQuery({
-    queryKey: [useUserServiceGetUserKey, userId],
+  const {data: user, isLoading: userLoading} = useQuery({
+    queryKey: [useUserServiceGetUserKey],
     queryFn: () => {
-      return UserService.getUser({id: userId})
+      return UserService.getUser({id: userId ?? cookies.get("userId")})
     },
     enabled: !!userId,
   })
@@ -89,7 +87,7 @@ function InnerApp() { //TODO: Introduce userSession context where user cookie is
   const {data: teams} = useQuery({
     queryKey: [useTeamServiceGetTeamsByUserIdKey],
     queryFn: () => {
-      return TeamService.getTeamsByUserId({userId: userId})
+      return TeamService.getTeamsByUserId({userId: userId ?? cookies.get("userId")})
     },
     enabled: !!userId
   })
@@ -103,6 +101,7 @@ function InnerApp() { //TODO: Introduce userSession context where user cookie is
   return (
     <AppContext.Provider value={{user: user, teams: teams, currentTeamId: currentTeamId, setCurrentTeamId: setCurrentTeamId}}>
       <Stack direction={"row"} height={"100vh"} padding={4} gap={4} boxSizing={"border-box"}>
+        <AppTray user={user} isLoading={userLoading}/>
         <Outlet context={{user}} />
       </Stack>
     </AppContext.Provider>

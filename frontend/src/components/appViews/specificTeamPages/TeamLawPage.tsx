@@ -1,9 +1,10 @@
 import { Theme } from "@emotion/react";
 import { Add, AddOutlined } from "@mui/icons-material";
 import { Box, Button, CircularProgress, Divider, Modal, Stack, SxProps, TextField, Typography } from "@mui/material";
-import { useContext, useState } from "react";
-import { useLawServiceCreateLaw } from "../../openapi/queries";
-import useAppContext, { AppContext } from "../../hooks/appContext";
+import { useState } from "react";
+import { useLawServiceCreateLaw, useLawServiceGetLaws, useLawServiceGetLawsKey } from "../../openapi/queries";
+import useAppContext from "../../hooks/appContext";
+import { queryClient } from "../../../queryClient";
 
 const AddLawModalStyle:SxProps<Theme> = {
     position: 'absolute' as 'absolute',
@@ -16,12 +17,10 @@ const AddLawModalStyle:SxProps<Theme> = {
 }
 
 function AddLawModal(props: {open: boolean, teamId: string, onClose: Function}) {
-    const [lawTitle, setLawTitle] = useState("")
-    const [lawDescription, setLawDescription] = useState("")
+    const [lawTitle, setLawTitle] = useState<string>()
+    const [lawDescription, setLawDescription] = useState<string>()
 
-    const createLawMutation = useLawServiceCreateLaw({ onSuccess: () => {
-        props.onClose()
-    }})
+    const createLawMutation = useLawServiceCreateLaw()
 
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault()
@@ -29,17 +28,20 @@ function AddLawModal(props: {open: boolean, teamId: string, onClose: Function}) 
             teamId: props.teamId,
             title: lawTitle,
             description: lawDescription,
+        }}, { onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: [useLawServiceGetLawsKey]})
+            props.onClose()
         }})
     }
 
     return (
         <Modal open={props.open} onClose={() => props.onClose()}>
-            <Box component={"form"} sx={AddLawModalStyle}>
+            <Box component={"form"} onSubmit={onSubmit} sx={AddLawModalStyle}>
                 <Typography variant={"h5"} color={"secondary"}>Add new law</Typography>
                 <Divider/>
                 <Stack direction={"row"} gap={2} my={4}>
                     <TextField required variant={"filled"} onChange={(e) => setLawTitle(e.currentTarget.value)} placeholder="Title"/>
-                    <Button color="success" onSubmit={onSubmit}>{createLawMutation.isPending ? <CircularProgress /> : <Add />}</Button>
+                    <Button color="success" onClick={onSubmit} onSubmit={onSubmit}>{createLawMutation.isPending ? <CircularProgress color="success" /> : <Add />}</Button>
                 </Stack>
                 <TextField multiline fullWidth variant={"outlined"} onChange={(e) => setLawDescription(e.currentTarget.value)} placeholder="Description"/>
             </Box>
@@ -50,12 +52,17 @@ function AddLawModal(props: {open: boolean, teamId: string, onClose: Function}) 
 function TeamLawPage() {
     const appContext = useAppContext()
     const [addLawModalOpen, setAddLawModalOpen] = useState(false)
+    const laws = useLawServiceGetLaws({teamId: appContext.currentTeamId})
 
     return (
         <Box>
             <Stack flexDirection={"row"} justifyContent={"space-between"}>
                 <Typography alignSelf={"center"}>Laws</Typography>
                 <Button onClick={() => setAddLawModalOpen(!addLawModalOpen)}><AddOutlined/>Add Law</Button>
+            </Stack>
+            <Divider />
+            <Stack>
+                {laws.data?.map(l => <Typography>{l.title}</Typography>)}
             </Stack>
             <AddLawModal teamId={appContext.currentTeamId!} open={addLawModalOpen} onClose={() => setAddLawModalOpen(false)}/>
         </Box>

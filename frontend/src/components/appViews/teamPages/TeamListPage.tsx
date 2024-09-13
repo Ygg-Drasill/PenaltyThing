@@ -1,13 +1,12 @@
-import { SetStateAction, useContext, useState } from "react"
-import { AppContext } from "../../hooks/appContext"
+import { SetStateAction, useState } from "react"
+import useAppContext from "../../hooks/appContext"
 import { Button, Link, Stack, Typography } from "@mui/material"
 import { Team } from "../../openapi/requests"
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import Cookies from "universal-cookie";
+import { cookies } from "../../../App";
 
 function TeamListPage() {
-    const appContext = useContext(AppContext)
-    const [_, ductTape] = useState("")
+    const appContext = useAppContext()
 
     if (appContext.setCurrentTeamId == undefined) {
         return (<Typography>Error</Typography>)
@@ -15,7 +14,7 @@ function TeamListPage() {
 
     return (
         <Stack gap={1} mt={4} mx={2}>
-            {appContext.teams?.map((team) => <TeamListItem team={team} setTeamId={appContext.setCurrentTeamId ?? ductTape} />)}
+            {appContext.teams?.map((team) => <TeamListItem team={team} setTeamId={appContext.setCurrentTeamId} />)}
         </Stack>
     )
 }
@@ -23,7 +22,6 @@ function TeamListPage() {
 function TeamListItem(props: {team: Team, setTeamId: React.Dispatch<SetStateAction<string>>}) {
     const navigate = useNavigate()
     const teamOnClick = () => {
-        const cookies = new Cookies()
         cookies.set("teamId", props.team.id ?? "")
         props.setTeamId(props.team.id ?? "")
         navigate("/app/team")
