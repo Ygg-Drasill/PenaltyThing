@@ -3,6 +3,7 @@ package repository
 import (
 	"github.com/Ygg-Drasill/PenaltyThing/backend/models"
 	"github.com/google/uuid"
+	"strings"
 )
 
 func (repo *Repository) AddUser(username, passwordHash, firstName, lastName string) (*models.User, error) {
@@ -57,4 +58,13 @@ func (repo *Repository) GetUserCredentials(username string) (*models.User, error
 		return nil, res.Error
 	}
 	return &user, nil
+}
+
+func (repo *Repository) GetUsersByIds(ids []string) ([]*models.User, error) {
+	var users []*models.User
+	res := repo.db.Where("id IN (?)", strings.Join(ids, ",")).Find(&users)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+	return users, nil
 }

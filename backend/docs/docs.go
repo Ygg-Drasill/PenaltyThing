@@ -189,6 +189,36 @@ const docTemplate = `{
                 }
             }
         },
+        "/team/get": {
+            "get": {
+                "description": "Get a single team by its id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "team"
+                ],
+                "summary": "Get a team by id",
+                "operationId": "getTeam",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Team ID",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Team"
+                        }
+                    }
+                }
+            }
+        },
         "/team/getByUserId": {
             "get": {
                 "description": "Get all teams that a user is a member of",
@@ -217,6 +247,40 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/Team"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/all": {
+            "get": {
+                "description": "Get all users",
+                "consumes": [
+                    "application/json",
+                    "application/vnd.api+json"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/vnd.api+json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Get all users",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/UserPublic"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -284,21 +348,26 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/get/all": {
+        "/user/getMemberBatch": {
             "get": {
-                "description": "Get all users",
-                "consumes": [
-                    "application/json",
-                    "application/vnd.api+json"
-                ],
+                "description": "Get public users as batch from list of members",
                 "produces": [
-                    "application/json",
-                    "application/vnd.api+json"
+                    "application/json"
                 ],
                 "tags": [
                     "user"
                 ],
-                "summary": "Get all users",
+                "summary": "Get public users as batch",
+                "operationId": "getUsersMemberBatch",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id list",
+                        "name": "ids",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -307,12 +376,6 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/UserPublic"
                             }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "schema": {
-                            "type": "string"
                         }
                     }
                 }
@@ -486,7 +549,7 @@ const docTemplate = `{
                         "$ref": "#/definitions/Law"
                     }
                 },
-                "member": {
+                "members": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/TeamMember"

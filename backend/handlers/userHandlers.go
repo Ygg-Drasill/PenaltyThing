@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
+	"strings"
 )
 
 const hashCost = 14
@@ -111,6 +112,43 @@ func (db *DbContext) GetUsers(g *gin.Context) {
 	}
 
 	g.JSON(http.StatusOK, gin.H{"users": users})
+}
+
+type GetUsersBatchRequest struct {
+	Ids string `json:"ids" form:"ids"`
+} //@name GetUsersBatchRequest
+
+// GetUsersMemberBatch
+//
+//	@Summary	Get public users as batch
+//	@Id			getUsersMemberBatch
+//	@Schemes
+//	@Description	Get public users as batch from list of members
+//	@Tags			user
+//	@Param			ids query string true "id list"
+//	@Produce		json
+//	@Success		200	{array} UserPublic
+//	@Router			/user/getMemberBatch [get]
+func (db *DbContext) GetUsersMemberBatch(ctx *gin.Context) {
+	var query GetUsersBatchRequest
+	if res := ctx.ShouldBindQuery(&query); res != nil {
+		ctx.String(http.StatusInternalServerError, res.Error())
+	}
+	memberIds := strings.Split(query.Ids, ",")
+
+	var users []models.UserPublic
+	for _, id := range memberIds {
+		user, err := db.repo.GetMemberAsUser(id)
+		if err != nil {
+			ctx.String(http.StatusInternalServerError, err.Error())
+			return
+		}
+		if user != nil {
+			users = append(users, *user)
+		}
+	}
+
+	ctx.JSON(http.StatusOK, users)
 }
 
 type AuthenticateUserRequest struct {
