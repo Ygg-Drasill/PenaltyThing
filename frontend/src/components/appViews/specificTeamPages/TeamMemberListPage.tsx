@@ -28,10 +28,17 @@ interface PenaltyModalProps {
 function PenaltyModal(props: PenaltyModalProps) {
     const {open, onClose, targetMember, issuer, laws} = props
     const issuePenalty = usePenaltyServiceAddPenalty()
+    const [selectedLaw, setSelectedLaw] = useState<Law>()
+    const [comment, setComment] = useState<string>()
     
-    const onSubmit = () => {
-        if (!targetMember) return
-        issuePenalty.mutate({request: { targetUserId: targetMember.id, issuerUserId: issuer.id }})
+    const onSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+        if (!targetMember || !selectedLaw) return
+        issuePenalty.mutate({request: { 
+            targetUserId: targetMember.id, 
+            issuerUserId: issuer.id,
+            lawId: selectedLaw.id,
+            comment: comment}}, {onSuccess: () => onClose()})
         console.log("penalty")
     }
     
@@ -42,13 +49,15 @@ function PenaltyModal(props: PenaltyModalProps) {
                 <Divider/>
                 <Autocomplete
                     disablePortal
-                    sx={{width: 300, marginTop: 2}}
-                    options={laws.map(law => {return {label: law.title, id: law.id}})}
+                    sx={{marginTop: 2}}
+                    options={laws}
+                    getOptionLabel={(law:Law) => law.title ?? "Unknown law"}
                     renderInput={(params) => <TextField {...params} label={"Law"}/>}
+                    onChange={(e, value: Law) => setSelectedLaw(value)}
+                    fullWidth
                 />
-                <Stack direction={"column"} gap={2} my={4}>
-                    {laws.map(law => <Typography key={law.id}>{law.title}</Typography>)}
-                </Stack>
+                <TextField multiline fullWidth variant={"outlined"} placeholder={"Comment"} onChange={(e) => setComment(e.target.value)} />
+                <Button type={"submit"}>Submit</Button>
             </Box>
         </Modal>
     )
