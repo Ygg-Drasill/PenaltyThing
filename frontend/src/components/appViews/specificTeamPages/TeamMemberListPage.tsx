@@ -41,6 +41,12 @@ function PenaltyModal(props: PenaltyModalProps) {
             comment: comment}}, {onSuccess: () => onClose()})
         console.log("penalty")
     }
+
+    const onChangeLaw = (law?: Law | null) => {
+        if (law) {
+            setSelectedLaw(law)
+        }
+    }
     
     return (
         <Modal open={open} onClose={() => onClose()}>
@@ -53,7 +59,7 @@ function PenaltyModal(props: PenaltyModalProps) {
                     options={laws}
                     getOptionLabel={(law:Law) => law.title ?? "Unknown law"}
                     renderInput={(params) => <TextField {...params} label={"Law"}/>}
-                    onChange={(e, value: Law) => setSelectedLaw(value)}
+                    onChange={(_, value) => onChangeLaw(value)}
                     fullWidth
                 />
                 <TextField multiline fullWidth variant={"outlined"} placeholder={"Comment"} onChange={(e) => setComment(e.target.value)} />
