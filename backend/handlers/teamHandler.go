@@ -140,9 +140,10 @@ func (db *DbContext) GetTeam(ctx *gin.Context) {
 	if err != nil {
 		ctx.String(http.StatusInternalServerError, err.Error())
 	}
-
+	laws, err := db.repo.GetLawsByTeam(team.Id)
 	members, err := db.repo.GetMembersByTeamId(query.Id)
 	team.Members = members
+	team.Laws = laws
 
 	ctx.JSON(http.StatusOK, team)
 }

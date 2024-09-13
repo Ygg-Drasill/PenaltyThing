@@ -1,14 +1,16 @@
-import { Box, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { UserPublic } from "../openapi/requests";
 
 interface PublicUserRowProps {
-    user: UserPublic
+    user: UserPublic,
+    actionButton?: React.ReactNode
 }
 
 export default function PublicUserRow(props: PublicUserRowProps) {
     return (
-        <Box padding={2} borderRadius={1} bgcolor={"primary.dark"}>
+        <Stack padding={2} borderRadius={1} direction={"row"} justifyContent={"space-between"}>
             <Typography>{props.user.firstName} {props.user.lastName}</Typography>
-        </Box>
+            {props.actionButton}
+        </Stack>
     )
 }

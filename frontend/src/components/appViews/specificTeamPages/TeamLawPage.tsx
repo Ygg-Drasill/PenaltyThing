@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useLawServiceCreateLaw, useLawServiceGetLaws, useLawServiceGetLawsKey } from "../../openapi/queries";
 import useAppContext from "../../hooks/appContext";
 import { queryClient } from "../../../queryClient";
+import { Law } from "../../openapi/requests";
 
 const AddLawModalStyle:SxProps<Theme> = {
     position: 'absolute' as 'absolute',
@@ -49,6 +50,17 @@ function AddLawModal(props: {open: boolean, teamId: string, onClose: Function}) 
     )
 }
 
+function LawRow(props: {law: Law}) {
+    const law = props.law
+    
+    return (
+        <Stack direction={"row"} justifyContent={"space-between"}>
+            <Typography>{law.title}</Typography>
+            <Typography>{law.description}</Typography>
+        </Stack>
+    )
+}
+
 function TeamLawPage() {
     const appContext = useAppContext()
     const [addLawModalOpen, setAddLawModalOpen] = useState(false)
@@ -62,7 +74,7 @@ function TeamLawPage() {
             </Stack>
             <Divider />
             <Stack>
-                {laws.data?.map(l => <Typography>{l.title}</Typography>)}
+                {laws.data?.map(law => <LawRow law={law} />)}
             </Stack>
             <AddLawModal teamId={appContext.currentTeamId!} open={addLawModalOpen} onClose={() => setAddLawModalOpen(false)}/>
         </Box>
