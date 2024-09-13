@@ -14,7 +14,7 @@ import { useUserServiceRegisterUser } from "../components/openapi/queries";
 import { useState } from "react";
 import { AnnouncementSharp } from "@mui/icons-material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import Cookies from "universal-cookie";
+import { cookies } from "../App";
 
 export default function RegisterPage() {
   const registerUserMutation = useUserServiceRegisterUser();
@@ -42,7 +42,6 @@ export default function RegisterPage() {
       },
     }, {
         onSuccess: (data) => {
-            const cookies = new Cookies()
             cookies.set("userId", data.id, {
               path: "app/"
             })

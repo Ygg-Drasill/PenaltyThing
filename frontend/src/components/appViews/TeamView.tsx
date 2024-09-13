@@ -17,9 +17,9 @@ function TeamView() {
 function TeamViewNavbar() {
     return (
         <Stack width={"100%"} direction="row" justifyContent={"flex-end"} gap={4}>
-            <IconWithText path="/app/team/list" icon={<FormatListBulletedIcon />} name="List" />
-            <IconWithText path="/app/team/create" icon={<AddCircleIcon />} name="Create" />
-            <IconWithText path="/app/team/join" icon={<GroupAddIcon />} name="Join" />
+            <IconWithText path="/app/teams/list" icon={<FormatListBulletedIcon />} name="List" />
+            <IconWithText path="/app/teams/create" icon={<AddCircleIcon />} name="Create" />
+            <IconWithText path="/app/teams/join" icon={<GroupAddIcon />} name="Join" />
         </Stack>
     );
 }
@@ -29,7 +29,7 @@ function IconWithText(props: {path: string, icon: ReactNode, name: string}){
         <Link component={RouterLink} to={props.path} draggable={false}>
             <Button>
                 {props.icon}
-                <Typography sx={{marginLeft: 0.5}} variant="outlined">{props.name}</Typography>
+                <Typography sx={{marginLeft: 0.5}}>{props.name}</Typography>
             </Button>
         </Link>
     )

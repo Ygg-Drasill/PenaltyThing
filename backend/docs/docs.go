@@ -189,6 +189,36 @@ const docTemplate = `{
                 }
             }
         },
+        "/team/get": {
+            "get": {
+                "description": "Get a single team by its id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "team"
+                ],
+                "summary": "Get a team by id",
+                "operationId": "getTeam",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Team ID",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Team"
+                        }
+                    }
+                }
+            }
+        },
         "/team/getByUserId": {
             "get": {
                 "description": "Get all teams that a user is a member of",
@@ -313,6 +343,39 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/UserPublic"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/getMemberBatch": {
+            "get": {
+                "description": "Get public users as batch from list of members",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Get public users as batch",
+                "operationId": "getUsersMemberBatch",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id list",
+                        "name": "ids",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/UserPublic"
+                            }
                         }
                     }
                 }
@@ -486,7 +549,7 @@ const docTemplate = `{
                         "$ref": "#/definitions/Law"
                     }
                 },
-                "member": {
+                "members": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/TeamMember"

@@ -84,7 +84,7 @@ definitions:
         items:
           $ref: '#/definitions/Law'
         type: array
-      member:
+      members:
         items:
           $ref: '#/definitions/TeamMember'
         type: array
@@ -252,6 +252,26 @@ paths:
       summary: Create new team
       tags:
       - team
+  /team/get:
+    get:
+      description: Get a single team by its id
+      operationId: getTeam
+      parameters:
+      - description: Team ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Team'
+      summary: Get a team by id
+      tags:
+      - team
   /team/getByUserId:
     get:
       description: Get all teams that a user is a member of
@@ -336,6 +356,28 @@ paths:
           schema:
             $ref: '#/definitions/UserPublic'
       summary: Get user
+      tags:
+      - user
+  /user/getMemberBatch:
+    get:
+      description: Get public users as batch from list of members
+      operationId: getUsersMemberBatch
+      parameters:
+      - description: id list
+        in: query
+        name: ids
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/UserPublic'
+            type: array
+      summary: Get public users as batch
       tags:
       - user
   /user/register:

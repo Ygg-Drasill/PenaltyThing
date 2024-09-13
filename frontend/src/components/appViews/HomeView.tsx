@@ -1,11 +1,10 @@
 import { Button, Link, Stack, Typography } from "@mui/material";
 import AppView from "./AppView";
 import { Link as RouterLink } from "react-router-dom";
-import { useContext } from "react";
-import { AppContext } from "../hooks/appContext";
+import useAppContext from "../hooks/appContext";
 
 function HomeView() {
-    const appContext = useContext(AppContext)
+    const appContext = useAppContext()
 
     if (appContext.teams?.length == 0 || !appContext.teams) {
         return (

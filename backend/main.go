@@ -36,12 +36,14 @@ func main() {
 		{
 			user.GET("/all", dbContext.GetUsers)
 			user.GET("/get", dbContext.GetUser)
+			user.GET("/getMemberBatch", dbContext.GetUsersMemberBatch)
 			user.POST("/register", dbContext.RegisterUser)
 			user.POST("/authenticate", dbContext.AuthenticateUser)
 		}
 
 		team := v1.Group("/team")
 		{
+			team.GET("/get", dbContext.GetTeam)
 			team.GET("/getByUserId", dbContext.GetTeamsByUserId)
 			team.POST("/create", dbContext.CreateTeam)
 			team.POST("/addUser", dbContext.AddUserToTeam)
