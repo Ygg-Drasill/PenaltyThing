@@ -1,5 +1,5 @@
 import BasePage from "../../pages/BasePage";
-import { IconButton, LinearProgress, Stack } from "@mui/material";
+import { LinearProgress, Stack } from "@mui/material";
 import { Outlet, useNavigate } from "react-router-dom";
 import AppView from "./AppView";
 import IconLinkWithText from "../IconWithText";
