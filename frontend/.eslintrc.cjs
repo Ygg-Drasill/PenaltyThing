@@ -15,4 +15,5 @@ module.exports = {
       { allowConstantExport: true },
     ],
   },
+  ignorePatterns: ["src/components/openapi"]
 }
