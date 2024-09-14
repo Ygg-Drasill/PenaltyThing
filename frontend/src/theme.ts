@@ -27,7 +27,7 @@ export const PenaltyThingTheme = createTheme({
             main: "#5cc4ed"
         },
         success: {
-            main: "#1fed6a"
+            main: "#0A8379"
         },
         text: {
 
