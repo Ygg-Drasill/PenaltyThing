@@ -20,6 +20,7 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true
   },
-  "exclude": ["./src/components/openapi"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["vite.config.ts", "node_modules", "./src/components/openapi"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
