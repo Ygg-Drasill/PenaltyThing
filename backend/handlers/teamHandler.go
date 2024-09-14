@@ -23,7 +23,7 @@ type CreateTeamRequest struct {
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{object}	Team
-//	@Router			create [post]
+//	@Router			/team/create [post]
 func (db *DbContext) CreateTeam(ctx *gin.Context) {
 	req := CreateTeamRequest{}
 	if err := ctx.BindJSON(&req); err != nil {
