@@ -5,11 +5,11 @@ RUN go install github.com/swaggo/swag/cmd/swag@latest
 
 WORKDIR /swag
 
-COPY go.mod go.sum /swag/
+COPY ./backend/go.mod ./backend/go.sum /swag/
 
 RUN go mod download
 
-COPY . .
+COPY ./backend .
 
 RUN sh generate-api.sh
 
@@ -18,17 +18,18 @@ FROM node:21.7.3-alpine3.19 AS react-build
 
 WORKDIR /app
 
-COPY package*.json /app
+COPY ./frontend/package*.json /app
 
 RUN npm i -f
 
-COPY . .
+COPY ./frontend .
 
 COPY --from=openapi-docs /swag/docs /docs
 
-RUN npm run generate-api-deploy
+ARG API_TARGET
+RUN npm run generate-api:${API_TARGET}
 
-COPY ./src/components/openapi .
+COPY ./frontend/src/components/openapi .
 
 RUN npm run build
 

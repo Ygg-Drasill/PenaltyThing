@@ -13,9 +13,11 @@ services:
 
   frontend:
     build:
-      context: ./frontend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./frontend/Dockerfile
       network: host
+      args:
+        - API_TARGET=local
     image: frontend-image
     container_name: frontend-container
     ports:
