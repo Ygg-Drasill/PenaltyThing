@@ -3,7 +3,6 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-      network: host
     image: backend-image
     container_name: backend-container
     env_file:
@@ -15,7 +14,6 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-      network: host
     image: frontend-image
     container_name: frontend-container
     ports:

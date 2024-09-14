@@ -9,7 +9,7 @@ RUN npm i -f
 
 COPY . .
 
-RUN npm run generate-api
+RUN npm run generate-api-test
 
 COPY ./src/components/openapi .
 

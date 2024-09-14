@@ -7,7 +7,11 @@ COPY go.mod go.sum /build/
 
 RUN go mod download
 
+RUN go install github.com/swaggo/swag/cmd/swag@latest
+
 COPY . .
+
+RUN sh generate-api.sh
 
 EXPOSE 9000
 
