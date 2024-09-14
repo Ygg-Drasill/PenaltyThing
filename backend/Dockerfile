@@ -13,8 +13,6 @@ COPY . .
 
 RUN sh generate-api.sh
 
-EXPOSE 9000
-
 RUN go build -o main.exe  .
 
 # STAGE 2: Deploy
