@@ -1,13 +1,17 @@
 # STAGE 1: Build
-FROM node:21.7.3-alpine3.19 as react-build
+FROM node:21.7.3-alpine3.19 AS react-build
 
 WORKDIR /app
 
-COPY ./frontend/package*.json /app
+COPY package*.json /app
 
 RUN npm i -f
 
-COPY ./frontend .
+COPY . .
+
+RUN npm run generate-api
+
+COPY ./src/components/openapi .
 
 RUN npm run build
 

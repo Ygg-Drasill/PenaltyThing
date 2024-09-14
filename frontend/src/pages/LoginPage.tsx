@@ -13,7 +13,7 @@ import BasePage from "./BasePage";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useUserServiceAuthenticateUser } from "../components/openapi/queries";
 import React, { useState } from "react";
-import Cookies from "universal-cookie";
+import { cookies } from "../App";
 
 export default function LoginPage() {
   const authenticationMutation = useUserServiceAuthenticateUser();
@@ -32,7 +32,6 @@ export default function LoginPage() {
       },
     }, {
       onSuccess: (data) => {
-        const cookies = new Cookies()
         cookies.set("userId", data.id, {
           path: "app/"
         })

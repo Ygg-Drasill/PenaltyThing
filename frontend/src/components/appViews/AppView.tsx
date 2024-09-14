@@ -1,4 +1,4 @@
-import { Divider, Paper, Stack, Typography } from "@mui/material";
+import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
 import { ReactNode } from "react";
 
 function AppView(props: { title: string; children: ReactNode; barComponent?: ReactNode }) {
@@ -7,15 +7,16 @@ function AppView(props: { title: string; children: ReactNode; barComponent?: Rea
       sx={{
         backgroundColor: "background.default",
         flexGrow: 1,
-        padding: "1rem",
+        padding: 4,
 
       }}
     >
-      <Stack direction={"row"}>
-        <Typography variant="h4" color={"secondary"}>
+      <Stack direction={"row"} justifyContent={"space-between"}>
+        <Typography variant="h6" color={"secondary"}>
           {props.title}
         </Typography>
         {props.barComponent}
+
       </Stack>
       <Divider />
       {props.children}

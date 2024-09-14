@@ -23,7 +23,7 @@ type CreateTeamRequest struct {
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{object}	Team
-//	@Router			/team/create [post]
+//	@Router			create [post]
 func (db *DbContext) CreateTeam(ctx *gin.Context) {
 	req := CreateTeamRequest{}
 	if err := ctx.BindJSON(&req); err != nil {
@@ -112,4 +112,38 @@ func (db *DbContext) GetTeamsByUserId(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, teams)
+}
+
+type GetTeamRequest struct {
+	Id string `json:"id" form:"id"`
+} //@name GetTeamRequest
+
+// GetTeam
+//
+//	@Summary	Get a team by id
+//	@Id			getTeam
+//	@Schemes
+//	@Description	Get a single team by its id
+//	@Tags			team
+//	@Param			id	query	string	true	"Team ID"
+//	@Produce		json
+//	@Success		200	{object} Team
+//	@Router			/team/get [get]
+func (db *DbContext) GetTeam(ctx *gin.Context) {
+	var query GetTeamRequest
+	if res := ctx.ShouldBindQuery(&query); res != nil {
+		ctx.String(http.StatusInternalServerError, res.Error())
+		return
+	}
+
+	team, err := db.repo.GetTeam(query.Id)
+	if err != nil {
+		ctx.String(http.StatusInternalServerError, err.Error())
+	}
+	laws, err := db.repo.GetLawsByTeam(team.Id)
+	members, err := db.repo.GetMembersByTeamId(query.Id)
+	team.Members = members
+	team.Laws = laws
+
+	ctx.JSON(http.StatusOK, team)
 }

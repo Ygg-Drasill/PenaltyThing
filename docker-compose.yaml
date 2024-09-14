@@ -1,0 +1,24 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      network: host
+    image: backend-image
+    container_name: backend-container
+    env_file:
+      - ./backend/.env
+    ports:
+      - "9000:9000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      network: host
+    image: frontend-image
+    container_name: frontend-container
+    ports:
+      - "80:80"
+    depends_on:
+        - backend

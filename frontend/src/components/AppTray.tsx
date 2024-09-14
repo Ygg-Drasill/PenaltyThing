@@ -9,7 +9,6 @@ import {
   Button,
   Card,
   ClickAwayListener,
-  Divider,
   Fade,
   IconButton,
   Link,
@@ -61,7 +60,7 @@ function AppTray(props: { user?: UserPublic; isLoading: boolean }) {
         <Stack height={"100%"} minWidth={"1rem"} padding={1} gap={1}>
           <AppTrayButton to="/app/home" icon={<HouseSharp />} />
           <AppTrayButton to="/app/penalties" icon={<RequestQuoteSharp />} />
-          <AppTrayButton to="/app/team" icon={<WorkspacesSharp />} />
+          <AppTrayButton to="/app/teams" icon={<WorkspacesSharp />} />
         </Stack>
         <Box
           display={"flex"}

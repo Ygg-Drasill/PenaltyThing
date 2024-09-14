@@ -46,7 +46,7 @@ jobs:
             push: true
             tags: ${{ steps.meta.outputs.tags }}
             labels: ${{ steps.meta.outputs.labels }}
-
+  
     build-and-push-frontend:
       if: startsWith(github.ref, 'refs/tags/v')
       needs: build-and-push-backend
