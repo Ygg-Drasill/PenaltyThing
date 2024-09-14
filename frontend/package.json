@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "generate-api": "openapi-rq -i http://localhost:9000/swagger/doc.json -o ./src/components/openapi -c axios"
+    "generate-api": "openapi-rq -i http://localhost:9000/swagger/doc.json -o ./src/components/openapi -c axios",
+    "generate-api-local": "openapi-rq -i ../backend/docs/swagger.json -o ./src/components/openapi -c axios"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
