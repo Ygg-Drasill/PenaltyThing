@@ -1,0 +1,5 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src"],  // Include the folders you want to lint
+  "exclude": ["./src/components/openapi"]  // Exclude "openapi" folder from linting
+}
