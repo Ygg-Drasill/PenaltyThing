@@ -5,6 +5,8 @@ import {
 } from "@mui/icons-material";
 import {
   Avatar,
+  Badge,
+  BadgeProps,
   Box,
   Button,
   Card,
@@ -15,6 +17,7 @@ import {
   Paper,
   Popper,
   Stack,
+  styled,
   Typography,
 } from "@mui/material";
 import React from "react";
@@ -28,12 +31,24 @@ function userInitials(user: UserPublic) {
   return firstInitial + secondInitial;
 }
 
+const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    right: 8,
+    top: 8,
+    border: `2px solid ${theme.palette.background.default}`,
+    padding: '6px 6px',
+    color: theme.palette.secondary.contrastText,
+  },
+}));
+
 function AppTrayButton(props: { to: string; icon: React.ReactElement }) {
   return (
     <Link component={RouterLink} to={props.to} draggable={false}>
+      <StyledBadge badgeContent={"?"} color="secondary">
       <Button variant="outlined" color="secondary" sx={{ height: "4rem" }}>
         {props.icon}
       </Button>
+      </StyledBadge>
     </Link>
   );
 }
