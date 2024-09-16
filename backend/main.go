@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	address  = "localhost:9000"
+	address  = "api.penaltything.social"
 	basePath = "/api/v1"
 )
 

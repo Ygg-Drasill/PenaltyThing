@@ -3,17 +3,15 @@ FROM golang:1.22.1-alpine3.19 AS go-build
 
 WORKDIR /build
 
-COPY go.mod go.sum /build/
+COPY ./backend/go.mod ./backend/go.sum /build/
 
 RUN go mod download
 
 RUN go install github.com/swaggo/swag/cmd/swag@latest
 
-COPY . .
+COPY ./backend .
 
 RUN sh generate-api.sh
-
-EXPOSE 9000
 
 RUN go build -o main.exe  .
 
