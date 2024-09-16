@@ -28,8 +28,6 @@ COPY --from=openapi-docs /swag/docs /app/docs
 
 RUN npm run generate-api:deploy
 
-COPY ./frontend/src/components/openapi .
-
 RUN npm run build
 
 # STAGE 3: Run
