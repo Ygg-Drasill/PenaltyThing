@@ -92,12 +92,6 @@ function InnerApp() { //TODO: Introduce userSession context where user cookie is
     enabled: !!userId
   })
 
-  if (!user || !teams) return (
-    <Stack direction={"row"} height={"100vh"} padding={4} gap={4} boxSizing={"border-box"}>
-        <NoView />
-      </Stack>
-  )
-
   return (
     <AppContext.Provider value={{user: user, teams: teams, currentTeamId: currentTeamId, setCurrentTeamId: setCurrentTeamId}}>
       <Stack direction={"row"} height={"100vh"} padding={4} gap={4} boxSizing={"border-box"}>
