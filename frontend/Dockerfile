@@ -26,8 +26,7 @@ COPY ./frontend .
 
 COPY --from=openapi-docs /swag/docs /app/docs
 
-ARG API_TARGET
-RUN npm run generate-api:${API_TARGET}
+RUN npm run generate-api:deploy
 
 COPY ./frontend/src/components/openapi .
 
