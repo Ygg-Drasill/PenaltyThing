@@ -14,10 +14,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-        with:
-          repository: ${{ github.repository }}
       - name: Call Build
-        uses: Ygg-Drasill/PenaltyThing/.github/workflows/build.yaml@dev
+        uses: ./.github/actions/build/action.yaml
         with:
           ENVIRONMENT: "dev"
           DOCKER_TAG: "dev"
