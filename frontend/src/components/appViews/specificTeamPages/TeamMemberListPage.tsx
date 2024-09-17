@@ -6,16 +6,8 @@ import { Law, UserPublic } from "../../openapi/requests";
 import { useState } from "react";
 import { Theme } from "@emotion/react";
 import useTeamContext from "../../hooks/teamContext";
-
-const PenaltyModalStyle:SxProps<Theme> = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    bgcolor: "background.default",
-    padding: 2,
-    borderRadius: 2
-}
+import { ModalBase } from "../../modals/ModalBase";
+import InviteUserModal from "../../modals/InviteUserModal";
 
 interface PenaltyModalProps {
     open: boolean,
@@ -50,11 +42,10 @@ function PenaltyModal(props: PenaltyModalProps) {
     
     return (
         <Modal open={open} onClose={() => onClose()}>
-            <Box component={"form"} sx={PenaltyModalStyle} onSubmit={onSubmit}>
-                {targetMember == undefined ? <Typography>Help</Typography> : <Typography variant="h5" mb={1}>Let's penaltise {targetMember.firstName}!</Typography>}
+            <Box component={"form"} sx={ModalBase} onSubmit={onSubmit}>
+                {targetMember == undefined ? <Typography>Help</Typography> : <Typography variant="h5" mb={1}>Let's penalize {targetMember.firstName}!</Typography>}
                 <Divider/>
                 <Autocomplete
-                    disablePortal
                     sx={{marginTop: 2}}
                     options={laws}
                     getOptionLabel={(law:Law) => law.title ?? "Unknown law"}
@@ -72,14 +63,15 @@ function PenaltyModal(props: PenaltyModalProps) {
 
 function PenaltyButton(props: {onCLick: React.MouseEventHandler<HTMLButtonElement>}) {
     return (
-        <Button onClick={props.onCLick} variant={"outlined"} color={"error"}>Penaltise</Button>
+        <Button onClick={props.onCLick} variant={"outlined"} color={"error"}>Penalize</Button>
     )
 }
 
 function TeamMemberListPage() {
     const appContext = useAppContext()
     const teamContext = useTeamContext()
-    const [open, setOpen] = useState(false)
+    const [penaltyModalOpen, setPenaltyModalOpen] = useState(false)
+    const [inviteModalOpen, setInviteModalOpen] = useState(false)
     const [selectedMember, setSelectedMember] = useState<UserPublic>()
     const {data: currentTeam} = useTeamServiceGetTeam({id: appContext.currentTeamId ?? ""})
     const {data: members} = useUserServiceGetUsersMemberBatch({ids: currentTeam?.members?.map(m => m.id).filter(id => id != undefined).join(",") ?? ""})
@@ -90,16 +82,20 @@ function TeamMemberListPage() {
 
     const onSelectMember = (member: UserPublic) => {
         setSelectedMember(member)
-        setOpen(true)
+        setPenaltyModalOpen(true)
     }
 
     return (
     <Box>
-        <Typography color={"primary"}>Members</Typography>
-        <Stack>
+        <Stack direction={"row"} justifyContent={"space-between"}>
+            <Typography color={"primary"}>Members</Typography>
+            <Button onClick={() => setInviteModalOpen(true)}>Add Member</Button>
+        </Stack>
+        <Stack gap={2}>
             {members.map(member => <PublicUserRow key={member.id} user={member} actionButton={<PenaltyButton onCLick={() => onSelectMember(member)}/>} />)}
         </Stack>
-        <PenaltyModal onClose={() => setOpen(false)} open={open} targetMember={selectedMember} issuer={appContext.user} laws={teamContext.team.law ?? []}/>
+        <PenaltyModal open={penaltyModalOpen} onClose={() => setPenaltyModalOpen(false)} targetMember={selectedMember} issuer={appContext.user} laws={teamContext.team.law ?? []}/>
+        <InviteUserModal open={inviteModalOpen} onClose={() => setInviteModalOpen(false)} />
     </Box>
     )
 }

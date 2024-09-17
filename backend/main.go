@@ -59,6 +59,11 @@ func main() {
 		{
 			penalty.POST("/add", dbContext.AddPenalty)
 		}
+
+		invitation := v1.Group("/invitation")
+		{
+			invitation.POST("/create", dbContext.CreateInvitation)
+		}
 	}
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	if err := router.Run(fmt.Sprintf(":%s", os.Getenv("LISTEN_PORT"))); err != nil {
