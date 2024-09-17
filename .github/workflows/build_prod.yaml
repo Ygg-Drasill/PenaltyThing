@@ -13,7 +13,8 @@ jobs:
     permissions:
       contents: read
       packages: write
-  call-build:
+  steps:
+    name: Call Build
     uses: ./.github/workflows/build.yaml
     with:
       ENVIRONMENT: "prod"
