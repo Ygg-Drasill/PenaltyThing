@@ -1,33 +1,125 @@
-name: Build and Push to Dev
-
 on:
   push:
     branches:
       - "dev"
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository_owner }}/${{ github.repository }}
+  ENVIRONMENT: dev
+
 jobs:
-  build-and-push-dev:
+  build-and-push-backend:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
+
     steps:
-      - name: Check out repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
         with:
-          repository: ${{ github.repository }}
-          ref: ${{ github.ref }}
-          token: ${{ secrets.BERTHA_TOKEN }}
-          path: ${{ github.workspace }}
-      - name: Call Build
-        uses: ./.github/actions/build
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.BERTHA_NAME }}
+          password: ${{ secrets.BERTHA_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
         with:
-          ENVIRONMENT: "dev"
-          DOCKER_TAG: "dev"
-          USERNAME: ${{ secrets.BERTHA_NAME }}
-          REGISTRY: "ghcr.io"
-          IMAGE_NAME: ${{ github.repository_owner }}/${{ github.repository }}
-          TAGS: ${{ steps.meta.outputs.tags }}
-          LABELS: ${{ steps.meta.outputs.labels }}
-          repository: ${{ github.repository }}
-          token: ${{ secrets.BERTHA_TOKEN }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/backend-${{ env.ENVIRONMENT }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./backend/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  build-and-push-frontend:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.BERTHA_NAME }}
+          password: ${{ secrets.BERTHA_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/frontend-${{ env.ENVIRONMENT }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./frontend/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  build-and-push-nginx:
+    runs-on: nginx-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ inputs.REGISTRY }}
+          username: ${{ inputs.USERNAME }}
+          password: ${{ inputs.token }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ inputs.REGISTRY }}/${{ inputs.IMAGE_NAME }}/nginx-${{ inputs.ENVIRONMENT }}
+          tags: ${{ inputs.DOCKER_TAG }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./nginx/Dockerfile
+          push: true
+          tags: ${{ inputs.TAGS }}
+          labels: ${{ inputs.LABELS }}
