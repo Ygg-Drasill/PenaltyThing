@@ -17,9 +17,10 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
-          repo: ${{ github.repository }}
+          repository: ${{ github.repository }}
       - name: Call Build
         uses: ./.github/workflows/build.yaml
         with:
           ENVIRONMENT: "prod"
           DOCKER_TAG: ${{ github.ref }}
+          token: ${{ secrets.BERTHA_TOKEN }}
