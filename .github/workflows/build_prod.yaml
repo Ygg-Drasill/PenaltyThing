@@ -26,3 +26,10 @@ jobs:
         with:
           ENVIRONMENT: "prod"
           DOCKER_TAG: ${{ github.ref }}
+          USERNAME: ${{ secrets.BERTHA_NAME }}
+          REGISTRY: "ghcr.io"
+          IMAGE_NAME: ${{ github.repository_owner }}/${{ github.repository }}
+          TAGS: ${{ steps.meta.outputs.tags }}
+          LABELS: ${{ steps.meta.outputs.labels }}
+          repository: ${{ github.repository }}
+          token: ${{ secrets.BERTHA_TOKEN }}
