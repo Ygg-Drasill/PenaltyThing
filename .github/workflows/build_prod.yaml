@@ -16,9 +16,13 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}
+          ref: ${{ github.ref }}
+          token: ${{ secrets.BERTHA_TOKEN }}
+          path: ${{ github.workspace }}
       - name: Call Build
         uses: ./.github/actions/build
         with:
           ENVIRONMENT: "prod"
           DOCKER_TAG: ${{ github.ref }}
-          token: ${{ secrets.BERTHA_TOKEN }}
