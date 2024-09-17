@@ -19,7 +19,7 @@ jobs:
         with:
           repository: ${{ github.repository }}
       - name: Call Build
-        uses: ./.github/workflows/build.yaml
+        uses: 'Ygg-Drasill/PenaltyThing/.github/workflows/build.yaml@main'
         with:
           ENVIRONMENT: "prod"
           DOCKER_TAG: ${{ github.ref }}
