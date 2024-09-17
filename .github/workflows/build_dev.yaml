@@ -15,7 +15,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
       - name: Call Build
-        uses: ./.github/actions/build/action.yaml
+        uses: ./.github/actions/build
         with:
           ENVIRONMENT: "dev"
           DOCKER_TAG: "dev"
