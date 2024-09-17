@@ -11,9 +11,9 @@ jobs:
     permissions:
       contents: read
       packages: write
-  steps:
-    name: Call Build
-    uses: ./.github/workflows/build.yaml
-    with:
-      ENVIRONMENT: 'dev'
-      DOCKER_TAG: ''
+    steps:
+      - name: Call Build
+        uses: ./.github/workflows/build.yaml
+        with:
+          ENVIRONMENT: 'dev'
+          DOCKER_TAG: ''

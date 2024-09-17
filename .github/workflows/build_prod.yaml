@@ -13,9 +13,9 @@ jobs:
     permissions:
       contents: read
       packages: write
-  steps:
-    name: Call Build
-    uses: ./.github/workflows/build.yaml
-    with:
-      ENVIRONMENT: "prod"
-      DOCKER_TAG: ${{ github.ref }}
+    steps:
+      - name: Call Build
+        uses: ./.github/workflows/build.yaml
+        with:
+          ENVIRONMENT: "prod"
+          DOCKER_TAG: ${{ github.ref }}
