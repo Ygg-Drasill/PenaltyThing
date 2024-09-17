@@ -107,16 +107,15 @@ jobs:
       - name: Log in to the Container registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ inputs.REGISTRY }}
-          username: ${{ inputs.USERNAME }}
-          password: ${{ inputs.token }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.BERTHA_NAME }}
+          password: ${{ secrets.BERTHA_TOKEN }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ inputs.REGISTRY }}/${{ inputs.IMAGE_NAME }}/nginx-${{ inputs.ENVIRONMENT }}
-          tags: ${{ inputs.DOCKER_TAG }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/nginx-${{ env.ENVIRONMENT }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -124,5 +123,5 @@ jobs:
           context: .
           file: ./nginx/Dockerfile
           push: true
-          tags: ${{ inputs.TAGS }}
-          labels: ${{ inputs.LABELS }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
