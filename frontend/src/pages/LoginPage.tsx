@@ -96,7 +96,7 @@ export default function LoginPage() {
         </CardContent>
         <Divider />
         <CardContent align="center">
-          <Typography avariant="body1" color="white">
+          <Typography variant="body1" color="white">
             Don't have an account yet?
           </Typography>
           <Typography variant="body1" color="white">
