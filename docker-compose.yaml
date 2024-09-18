@@ -1,7 +1,7 @@
 services:
   backend:
     image: ghcr.io/ygg-drasill/penaltything/backend-dev:dev
-    container_name: backend-container
+    container_name: backend-container-dev
     env_file:
       - ./backend/.env
     networks:
@@ -9,15 +9,13 @@ services:
 
   frontend:
     image: ghcr.io/ygg-drasill/penaltything/frontend-dev:dev
-    container_name: frontend-container
+    container_name: frontend-container-dev
     networks:
       - app-network
 
   nginx:
-    build:
-      context: ./nginx
-    image: nginx-image
-    container_name: nginx-container
+    image: ghcr.io/ygg-drasill/penaltything/nginx-dev:dev
+    container_name: nginx-container-dev
     ports:
       - "80:80"
     depends_on:

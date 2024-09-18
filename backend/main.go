@@ -13,8 +13,11 @@ import (
 	"os"
 )
 
+var (
+	address = os.Getenv("API_BASE_ADDRESS")
+)
+
 const (
-	address  = "api.penaltything.social"
 	basePath = "/api/v1"
 )
 
@@ -58,6 +61,17 @@ func main() {
 		penalty := v1.Group("/penalty")
 		{
 			penalty.POST("/add", dbContext.AddPenalty)
+		}
+
+		invitation := v1.Group("/invitation")
+		{
+			invitation.POST("/create", dbContext.CreateInvitation)
+			invitation.POST("/accept", dbContext.AcceptInvitation)
+		}
+
+		notification := v1.Group("/notification")
+		{
+			notification.GET("/getFiltered", dbContext.GetNotifications)
 		}
 	}
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
