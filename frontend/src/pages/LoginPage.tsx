@@ -17,7 +17,7 @@ import { cookies } from "../App";
 
 export default function LoginPage() {
   const authenticationMutation = useUserServiceAuthenticateUser();
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate()
@@ -27,7 +27,7 @@ export default function LoginPage() {
 
     authenticationMutation.mutate({
       request: {
-        username: username,
+        email: email,
         password: password,
       },
     }, {
@@ -57,9 +57,9 @@ export default function LoginPage() {
               <TextField
                 required
                 id="name"
-                label="Username"
+                label="Email"
                 variant="outlined"
-                onChange={(e) => setUsername(e.currentTarget.value)}
+                onChange={(e) => setEmail(e.currentTarget.value)}
               ></TextField>
               <TextField
                 required

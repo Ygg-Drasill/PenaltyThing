@@ -10,13 +10,13 @@ function TeamCreatePage() {
 
     const handleTeamCreateSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        if (!appContext.user?.id) {
+        if (!appContext.user?.data.id) {
             return
         }
         createTeamMutation.mutate({
             request: {
                 name: teamName,
-                userId: appContext.user.id
+                userId: appContext.user.data.id
             }
         }, {
             onSuccess: () => {

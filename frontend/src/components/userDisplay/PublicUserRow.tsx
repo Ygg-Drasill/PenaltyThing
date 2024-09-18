@@ -9,7 +9,7 @@ interface PublicUserRowProps {
 export default function PublicUserRow(props: PublicUserRowProps) {
     return (
         <Stack padding={2} borderRadius={1} border={"1px solid"} borderColor={"primary.main"} direction={"row"} justifyContent={"space-between"}>
-            <Typography>{props.user.firstName} {props.user.lastName}</Typography>
+            <Typography variant="h5" alignContent={"center"}>{props.user.username}</Typography>
             {props.actionButton}
         </Stack>
     )

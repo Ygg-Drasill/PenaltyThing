@@ -24,7 +24,7 @@ export default function InviteUserModal(props: InviteUserModalProps) {
         e.preventDefault()
 
         inviteMutation.mutate({request: {
-            senderUserId: appContext.user.id,
+            senderUserId: appContext.user.data.id,
             targetUserId: selectedUser.id,
             teamId: teamContext.team.id,
         }})
@@ -39,7 +39,7 @@ export default function InviteUserModal(props: InviteUserModalProps) {
                 <Divider />
                 {(isLoading || !allUsers) ? <LinearProgress /> : <Autocomplete 
                     options={allUsers}
-                    getOptionLabel={(user:UserPublic) => user.firstName ?? "Unknown user"}
+                    getOptionLabel={(user:UserPublic) => user.username ?? "Unknown user"}
                     renderInput={(params) => <TextField {...params} label={"User"}/>}
                     onChange={(_, user) => setSelectedUser(user)}
                 />}

@@ -2,11 +2,12 @@ import { Button, Link, Stack, Typography } from "@mui/material";
 import AppView from "./AppView";
 import { Link as RouterLink } from "react-router-dom";
 import useAppContext from "../hooks/appContext";
+import NotificationList from "../NotificationList";
 
 function HomeView() {
     const appContext = useAppContext()
 
-    if (appContext.teams?.length == 0 || !appContext.teams) {
+    if (appContext.teams.data.length == 0) {
         return (
             <AppView title="Home">
                 <BecomeMemberOfTeam />
@@ -17,6 +18,7 @@ function HomeView() {
     return (
         <AppView title="Home">
             <Typography>Home</Typography>
+            <NotificationList />
         </AppView>
     )
 }

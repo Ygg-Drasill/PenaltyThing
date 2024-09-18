@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -47,5 +48,6 @@ func (db *DbContext) AddPenalty(ctx *gin.Context) {
 		return
 	}
 
+	db.repo.CreateNotification(req.TargetUserId, models.PENALTY, []byte(newPenaltyEntry.Id))
 	ctx.JSON(http.StatusOK, newPenaltyEntry)
 }

@@ -18,14 +18,13 @@ func (repo *Repository) CreateNotification(receiverId string, notificationType m
 }
 
 func (repo *Repository) GetNotificationsByUserId(userId string) ([]models.Notification, error) {
-	var user *models.User
-	var notifications []models.Notification
+	notifications := make([]models.Notification, 0)
 
 	if !repo.UserExists(userId) {
 		return nil, errors.New("user does not exist")
 	}
 
-	if result := repo.db.Find(&notifications, "receiver_id = ?", user.Id); result.Error != nil {
+	if result := repo.db.Find(&notifications, "receiver_id = ?", userId); result.Error != nil {
 		return nil, result.Error
 	}
 

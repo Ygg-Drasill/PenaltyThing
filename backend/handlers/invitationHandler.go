@@ -32,10 +32,12 @@ func (db *DbContext) CreateInvitation(ctx *gin.Context) {
 	}
 
 	invitation, err := db.repo.CreateInvitation(request.SenderUserId, request.TargetUserId, request.TeamId)
-	db.repo.CreateNotification(request.TargetUserId, models.INVITATION, []byte(invitation.Id))
 	if err != nil {
 		ctx.String(http.StatusInternalServerError, "Unable to create invitation: "+err.Error())
+		return
 	}
+
+	db.repo.CreateNotification(request.TargetUserId, models.INVITATION, []byte(invitation.Id))
 
 	ctx.JSON(http.StatusOK, invitation)
 }

@@ -20,7 +20,7 @@ import TeamListPage from "./components/appViews/teamPages/TeamListPage";
 import TeamLawPage from "./components/appViews/specificTeamPages/TeamLawPage";
 import SpecificTeamView from "./components/appViews/SpecificTeamView";
 import TeamMemberListPage from "./components/appViews/specificTeamPages/TeamMemberListPage";
-import { AppContext } from "./components/hooks/appContext";
+import { AppContext, AppContextProvider } from "./components/hooks/appContext";
 import AppTray from "./components/AppTray";
 
 export const cookies = new Cookies()
@@ -62,43 +62,22 @@ function InnerApp() { //TODO: Introduce userSession context where user cookie is
   const [currentTeamId, setCurrentTeamId] = useState(cookies.get("teamId"))
 
   useEffect(() => {
-    console.log("id: " + userId);
-  }, [userId])
-
-  useEffect(() => {
     if (!userId) {
       navigate("/login")
     } else {
       setUserId(userId)
     }
-    console.log("Updating appContext");
-    
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  
-  const {data: user, isLoading: userLoading} = useQuery({
-    queryKey: [useUserServiceGetUserKey],
-    queryFn: () => {
-      return UserService.getUser({id: userId ?? cookies.get("userId")})
-    },
-    enabled: !!userId,
-  })
 
-  const {data: teams} = useQuery({
-    queryKey: [useTeamServiceGetTeamsByUserIdKey],
-    queryFn: () => {
-      return TeamService.getTeamsByUserId({userId: userId ?? cookies.get("userId")})
-    },
-    enabled: !!userId
-  })
 
   return (
-    <AppContext.Provider value={{user: user, teams: teams, currentTeamId: currentTeamId, setCurrentTeamId: setCurrentTeamId}}>
+    <AppContextProvider userId={userId} currentTeamId={currentTeamId} setCurrentTeamId={setCurrentTeamId}>
       <Stack direction={"row"} height={"100vh"} padding={4} gap={4} boxSizing={"border-box"}>
-        <AppTray user={user} isLoading={userLoading}/>
-        <Outlet context={{user}} />
+        <AppTray />
+        <Outlet />
       </Stack>
-    </AppContext.Provider>
+    </AppContextProvider>
   )
 }
 

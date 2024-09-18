@@ -4,7 +4,6 @@ import { usePenaltyServiceAddPenalty, useTeamServiceGetTeam, useUserServiceGetUs
 import useAppContext from "../../hooks/appContext";
 import { Law, UserPublic } from "../../openapi/requests";
 import { useState } from "react";
-import { Theme } from "@emotion/react";
 import useTeamContext from "../../hooks/teamContext";
 import { ModalBase } from "../../modals/ModalBase";
 import InviteUserModal from "../../modals/InviteUserModal";
@@ -43,7 +42,7 @@ function PenaltyModal(props: PenaltyModalProps) {
     return (
         <Modal open={open} onClose={() => onClose()}>
             <Box component={"form"} sx={ModalBase} onSubmit={onSubmit}>
-                {targetMember == undefined ? <Typography>Help</Typography> : <Typography variant="h5" mb={1}>Let's penalize {targetMember.firstName}!</Typography>}
+                {targetMember == undefined ? <Typography>Help</Typography> : <Typography variant="h5" mb={1}>Let's penalize {targetMember.username}!</Typography>}
                 <Divider/>
                 <Autocomplete
                     sx={{marginTop: 2}}
@@ -94,7 +93,7 @@ function TeamMemberListPage() {
         <Stack gap={2}>
             {members.map(member => <PublicUserRow key={member.id} user={member} actionButton={<PenaltyButton onCLick={() => onSelectMember(member)}/>} />)}
         </Stack>
-        <PenaltyModal open={penaltyModalOpen} onClose={() => setPenaltyModalOpen(false)} targetMember={selectedMember} issuer={appContext.user} laws={teamContext.team.law ?? []}/>
+        <PenaltyModal open={penaltyModalOpen} onClose={() => setPenaltyModalOpen(false)} targetMember={selectedMember} issuer={appContext.user.data} laws={teamContext.team.law ?? []}/>
         <InviteUserModal open={inviteModalOpen} onClose={() => setInviteModalOpen(false)} />
     </Box>
     )

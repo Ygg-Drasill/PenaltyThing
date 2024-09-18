@@ -1,6 +1,6 @@
 import { SetStateAction, useState } from "react"
 import useAppContext from "../../hooks/appContext"
-import { Button, Link, Stack, Typography } from "@mui/material"
+import { Button, LinearProgress, Link, Stack, Typography } from "@mui/material"
 import { Team } from "../../openapi/requests"
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { cookies } from "../../../App";
@@ -8,13 +8,13 @@ import { cookies } from "../../../App";
 function TeamListPage() {
     const appContext = useAppContext()
 
-    if (appContext.setCurrentTeamId == undefined) {
-        return (<Typography>Error</Typography>)
+    if (appContext.teams.isLoading) {
+        return <LinearProgress />
     }
 
     return (
         <Stack gap={1} mt={4} mx={2}>
-            {appContext.teams?.map((team) => <TeamListItem team={team} setTeamId={appContext.setCurrentTeamId} />)}
+            {appContext.teams.data.map((team) => <TeamListItem team={team} setTeamId={appContext.setCurrentTeamId} />)}
         </Stack>
     )
 }

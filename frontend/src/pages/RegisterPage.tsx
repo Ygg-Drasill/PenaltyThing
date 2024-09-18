@@ -18,11 +18,12 @@ import { cookies } from "../App";
 
 export default function RegisterPage() {
   const registerUserMutation = useUserServiceRegisterUser();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [firstName, setFirstName] = useState<string>()
+  const [lastName, setLastName] = useState<string>()
+  const [username, setUsername] = useState<string>()
+  const [email, setEmail] = useState<string>()
+  const [password, setPassword] = useState<string>()
+  const [passwordConfirm, setPasswordConfirm] = useState<string>()
 
   const navigate = useNavigate()
 
@@ -35,7 +36,8 @@ export default function RegisterPage() {
 
     registerUserMutation.mutate({
       request: {
-        name: username,
+        username: username,
+        email: email,
         password: password,
         firstName: firstName,
         lastName: lastName,
@@ -91,6 +93,13 @@ export default function RegisterPage() {
                 label="Username"
                 variant="outlined"
                 onChange={(e) => setUsername(e.target.value)}
+              ></TextField>
+              <TextField
+                required
+                id="email"
+                label="Email"
+                variant="outlined"
+                onChange={(e) => setEmail(e.target.value)}
               ></TextField>
               <TextField
                 required

@@ -99,7 +99,7 @@ func (db *DbContext) AddUserToTeam(ctx *gin.Context) {
 //	@Router			/team/getByUserId [get]
 func (db *DbContext) GetTeamsByUserId(ctx *gin.Context) {
 	var userId string
-	var teams []models.Team
+	teams := make([]models.Team, 0)
 	var err error
 	userId = ctx.Query("userId")
 	if !db.repo.UserExists(userId) {
@@ -111,6 +111,7 @@ func (db *DbContext) GetTeamsByUserId(ctx *gin.Context) {
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
+
 	ctx.JSON(http.StatusOK, teams)
 }
 

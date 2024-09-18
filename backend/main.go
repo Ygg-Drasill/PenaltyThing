@@ -39,6 +39,7 @@ func main() {
 		{
 			user.GET("/all", dbContext.GetUsers)
 			user.GET("/get", dbContext.GetUser)
+			user.GET("/getInfo", dbContext.GetUserInfo)
 			user.GET("/getMemberBatch", dbContext.GetUsersMemberBatch)
 			user.POST("/register", dbContext.RegisterUser)
 			user.POST("/authenticate", dbContext.AuthenticateUser)

@@ -10,6 +10,7 @@ import {
   Box,
   Button,
   Card,
+  CircularProgress,
   ClickAwayListener,
   Fade,
   IconButton,
@@ -23,9 +24,11 @@ import {
 import React from "react";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { UserPublic } from "./openapi/requests";
+import { UserInfo } from "./openapi/requests";
+import useAppContext from "./hooks/appContext";
+import { useUserServiceGetUserInfo } from "./openapi/queries";
 
-function userInitials(user: UserPublic) {
+function userInitials(user: UserInfo) {
   const firstInitial = user.firstName?.slice(0, 1).toLocaleUpperCase() ?? "";
   const secondInitial = user.lastName?.slice(0, 1).toLocaleUpperCase() ?? "";
   return firstInitial + secondInitial;
@@ -41,20 +44,23 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   },
 }));
 
-function AppTrayButton(props: { to: string; icon: React.ReactElement }) {
+function AppTrayButton(props: { to: string; icon: React.ReactElement, notifications: number }) {
   return (
     <Link component={RouterLink} to={props.to} draggable={false}>
-      <StyledBadge badgeContent={"?"} color="secondary">
-      <Button variant="outlined" color="secondary" sx={{ height: "4rem" }}>
-        {props.icon}
-      </Button>
+      <StyledBadge badgeContent={props.notifications.toString()} color="secondary" invisible={props.notifications < 1}>
+        <Button variant="outlined" color="secondary" sx={{ height: "4rem" }}>
+          {props.icon}
+        </Button>
       </StyledBadge>
     </Link>
   );
 }
 
-function AppTray(props: { user?: UserPublic; isLoading: boolean }) {
-  const user = props.user;
+function AppTray() {
+  const appContext = useAppContext()
+  const user = appContext.user.data;
+  const userInfoResult = useUserServiceGetUserInfo({id: user?.id}, null, {enabled: !!user?.id})
+  const userInfo = userInfoResult.data
   const [accountPopperAnchor, setAccountPopperAnchor] =
     useState<null | HTMLElement>(null);
 
@@ -64,6 +70,10 @@ function AppTray(props: { user?: UserPublic; isLoading: boolean }) {
 
   const accountPopperOpen = Boolean(accountPopperAnchor);
 
+  if (userInfoResult.isLoading) {
+    return <CircularProgress />
+  }
+  
   return (
     <Paper sx={{ backgroundColor: "background.default" }}>
       <Stack
@@ -73,9 +83,12 @@ function AppTray(props: { user?: UserPublic; isLoading: boolean }) {
         justifyContent={"space-between"}
       >
         <Stack height={"100%"} minWidth={"1rem"} padding={1} gap={1}>
-          <AppTrayButton to="/app/home" icon={<HouseSharp />} />
-          <AppTrayButton to="/app/penalties" icon={<RequestQuoteSharp />} />
-          <AppTrayButton to="/app/teams" icon={<WorkspacesSharp />} />
+          <AppTrayButton to="/app/home" icon={<HouseSharp />} 
+            notifications={appContext.notifications.data?.filter(n => n.type == "INVITATION").length ?? 0}/>
+          <AppTrayButton to="/app/penalties" icon={<RequestQuoteSharp />} 
+            notifications={appContext.notifications.data?.filter(n => n.type == "PENALTY").length ?? 0}/>
+          <AppTrayButton to="/app/teams" icon={<WorkspacesSharp />} 
+            notifications={0}/>
         </Stack>
         <Box
           display={"flex"}
@@ -91,7 +104,7 @@ function AppTray(props: { user?: UserPublic; isLoading: boolean }) {
               onClick={handleToggleAccountPopper}
             >
               <Avatar sx={{ backgroundColor: "secondary.main" }}>
-                {user ? userInitials(user) : "  "}
+                {user ? userInitials(userInfo) : "  "}
               </Avatar>
             </IconButton>
           </ClickAwayListener>
@@ -118,7 +131,7 @@ function AppTray(props: { user?: UserPublic; isLoading: boolean }) {
                     </Button>
                   </Link>
                 </Stack>
-                <Typography variant="subtitle2">{`${user?.firstName} ${user?.lastName}`}</Typography>
+                <Typography variant="subtitle2">{`${userInfo.firstName} ${userInfo.lastName}`}</Typography>
               </Stack>
             </Card>
           </Fade>

@@ -7,8 +7,8 @@ import (
 )
 
 type GetFilteredNotificationsRequest struct {
-	UserId string                    `json:"userId"`
-	Filter []models.NotificationType `json:"filter"`
+	UserId string                    `json:"userId" form:"userId"`
+	Filter []models.NotificationType `json:"filter" form:"filter"`
 } //@Name GetFilteredNotificationsRequest
 
 // GetNotifications
@@ -32,12 +32,18 @@ func (db *DbContext) GetNotifications(ctx *gin.Context) {
 		return
 	}
 
-	notifications, err := db.repo.GetNotificationsByUserId(request.UserId)
-
-	if len(notifications) == 0 {
-		ctx.String(http.StatusNoContent, "no notifications found for user: "+request.UserId)
+	allNotifications, err := db.repo.GetNotificationsByUserId(request.UserId)
+	if err != nil {
+		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	ctx.JSON(http.StatusOK, notifications)
+	if len(allNotifications) == 0 {
+		ctx.String(http.StatusNoContent, "no notifications found for this user: "+request.UserId)
+		return
+	}
+
+	if len(request.Filter) == 0 {
+		ctx.JSON(http.StatusOK, allNotifications)
+	}
 }
