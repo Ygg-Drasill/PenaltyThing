@@ -17,8 +17,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { UserPublic } from "./openapi/requests";
 

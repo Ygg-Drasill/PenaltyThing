@@ -30,7 +30,8 @@ export const PenaltyThingTheme = createTheme({
             main: "#0A8379"
         },
         text: {
-
+            primary: "#f0ede9",
+            secondary: "#f0ede9
         }
     },
     components: {

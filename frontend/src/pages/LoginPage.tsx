@@ -95,16 +95,18 @@ export default function LoginPage() {
           </Box>
         </CardContent>
         <Divider />
-        <CardContent align="center">
-          <Typography avariant="body1" color="white">
+        <CardContent>
+          <Typography variant="body1" color="text" align="center">
             Don't have an account yet?
           </Typography>
-          <Typography variant="body1" color="white">
-            Sign up here:{" "}
-            <Link color={"info.main"} component={RouterLink} to={"/register"}>
-              Create account
-            </Link>
-          </Typography>
+          <Box display="flex" justifyContent="center" mt={1}>
+            <Typography variant="body1" color="text">
+              Sign up here:{" "}
+              <Link color={"info.main"} component={RouterLink} to={"/register"}>
+                Create account
+              </Link>
+            </Typography>
+          </Box>
         </CardContent>
       </Card>
     </BasePage>
