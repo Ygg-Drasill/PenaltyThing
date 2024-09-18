@@ -8,7 +8,7 @@ interface PublicUserRowProps {
 
 export default function PublicUserRow(props: PublicUserRowProps) {
     return (
-        <Stack padding={2} borderRadius={1} direction={"row"} justifyContent={"space-between"}>
+        <Stack padding={2} borderRadius={1} border={"1px solid"} borderColor={"primary.main"} direction={"row"} justifyContent={"space-between"}>
             <Typography>{props.user.firstName} {props.user.lastName}</Typography>
             {props.actionButton}
         </Stack>
