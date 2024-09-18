@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View , ImageBackground, Pressable} from "react-native";
+import { StyleSheet, Text, View , ImageBackground, Pressable, FlatList} from "react-native";
 import { Link } from "expo-router";
 
 const laws = () => {
@@ -13,10 +13,36 @@ const laws = () => {
               </Pressable>   
             </Link>  
 
-
-
         <Text style={styles.title}>The Jungle Laws</Text>
 
+
+        
+      <FlatList
+        data={[
+          {key: 'Devin'},
+          {key: 'Dan'},
+          {key: 'Dominic'},
+          {key: 'Jackson'},
+          {key: 'James'},
+          {key: 'Joel'},
+          {key: 'John'},
+          {key: 'Jillian'},
+          {key: 'Jimmy'},
+          {key: 'Julie'},
+          {key: 'Devin'},
+          {key: 'Dan'},
+          {key: 'Dominic'},
+          {key: 'Jackson'},
+          {key: 'James'},
+          {key: 'Joel'},
+          {key: 'John'},
+          {key: 'Jillian'},
+          {key: 'Jimmy'},
+          {key: 'Julie'},
+        ]}renderItem={({item}) => <Text style={styles.item}>{item.key}
+        </Text>}
+      />
+  
 
 
         </ImageBackground>
@@ -80,5 +106,12 @@ const styles = StyleSheet.create({
       width: '10%',
       marginTop: 10,
       marginLeft: 10,
+    },
+    item: {
+      padding: 10,
+      fontSize: 18,
+      height: 44,
+      color: "#fff",
+
     }
   });
