@@ -6,13 +6,22 @@ import (
 	"strings"
 )
 
-func (repo *Repository) AddUser(username, passwordHash, firstName, lastName string) (*models.User, error) {
+func (repo *Repository) AddUser(
+	username,
+	email,
+	passwordHash,
+	firstName,
+	lastName string,
+) (
+	*models.User, error) {
 	newUser := &models.User{
 		Id:           uuid.New().String(),
 		Username:     username,
+		Email:        email,
 		PasswordHash: passwordHash,
 		FirstName:    firstName,
 		LastName:     lastName,
+		Status:       "Unblooded Drengr",
 	}
 	res := repo.db.Create(newUser)
 	return newUser, res.Error
@@ -45,15 +54,24 @@ func (repo *Repository) GetUserByUsername(username string) (*models.User, error)
 	return &user, nil
 }
 
+func (repo *Repository) GetUserByEmail(email string) (*models.User, error) {
+	var user models.User
+	res := repo.db.Find(&user, "email = ?", email)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+	return &user, nil
+}
+
 func (repo *Repository) UserExists(id string) bool {
 	var exists bool
 	repo.db.Raw("SELECT EXISTS(SELECT FROM users WHERE id = ?)", id).Scan(&exists)
 	return exists
 }
 
-func (repo *Repository) GetUserCredentials(username string) (*models.User, error) {
+func (repo *Repository) GetUserCredentials(email string) (*models.User, error) {
 	var user models.User
-	res := repo.db.Where("username = ?", username).Find(&user)
+	res := repo.db.Where("email = ?", email).Find(&user)
 	if res.Error != nil {
 		return nil, res.Error
 	}

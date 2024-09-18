@@ -25,3 +25,5 @@ COPY --from=go-build /build/main.exe /deploy
 EXPOSE 9000
 
 CMD ["./main.exe"]
+
+LABEL org.opencontainers.image.source=https://github.com/Ygg-Drasill/PenaltyThing
