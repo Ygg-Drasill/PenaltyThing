@@ -30,10 +30,6 @@ func (db *DbContext) AddPenalty(ctx *gin.Context) {
 	if err := ctx.BindJSON(&req); err != nil {
 		fmt.Print(err.Error())
 	}
-	if req.TargetUserId == req.IssuerUserId {
-		ctx.String(http.StatusBadRequest, "The target member must be different to the issuer")
-		return
-	}
 
 	if !db.repo.UserExists(req.IssuerUserId) {
 		ctx.String(http.StatusBadRequest, "Unable to find existing user with given issuer id")
