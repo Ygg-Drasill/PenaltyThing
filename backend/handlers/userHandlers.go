@@ -26,7 +26,7 @@ type RegisterUserRequest struct {
 //	@Schemes
 //	@Description	Register new user, given password will be encrypted on backend. This is subject to change
 //	@Tags			user
-//	@Param			request body RegisterUserRequest true "query params"
+//	@Param			request	body	RegisterUserRequest	true	"query params"
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{object}	User
@@ -70,9 +70,9 @@ type GetUserRequest struct {
 //	@Schemes
 //	@Description	get user
 //	@Tags			user
-//	@Param			id query string true "User search by id"
+//	@Param			id	query	string	true	"User search by id"
 //	@Produce		json
-//	@Success		200	{object} UserPublic
+//	@Success		200	{object}	UserPublic
 //	@Router			/user/get [get]
 func (db *DbContext) GetUser(ctx *gin.Context) {
 	var query GetUserRequest
@@ -96,7 +96,7 @@ func (db *DbContext) GetUser(ctx *gin.Context) {
 //	@Tags			user
 //	@Accept			json,json-api
 //	@Produce		json,json-api
-//	@Success		200	{object}	[]models.UserPublic
+//	@Success		200	{array}		UserPublic
 //	@Failure		500	{string}	string	"Internal server error"
 //	@Router			/user/all [get]
 func (db *DbContext) GetUsers(g *gin.Context) {
@@ -111,7 +111,7 @@ func (db *DbContext) GetUsers(g *gin.Context) {
 		users = append(users, *user.ToUserResponse())
 	}
 
-	g.JSON(http.StatusOK, gin.H{"users": users})
+	g.JSON(http.StatusOK, users)
 }
 
 type GetUsersBatchRequest struct {
@@ -125,9 +125,9 @@ type GetUsersBatchRequest struct {
 //	@Schemes
 //	@Description	Get public users as batch from list of members
 //	@Tags			user
-//	@Param			ids query string true "id list"
+//	@Param			ids	query	string	true	"id list"
 //	@Produce		json
-//	@Success		200	{array} UserPublic
+//	@Success		200	{array}	UserPublic
 //	@Router			/user/getMemberBatch [get]
 func (db *DbContext) GetUsersMemberBatch(ctx *gin.Context) {
 	var query GetUsersBatchRequest
@@ -163,9 +163,9 @@ type AuthenticateUserRequest struct {
 //	@Schemes
 //	@Description	Authenticate user using username and password
 //	@Tags			user
-//	@Param			request body AuthenticateUserRequest true "User credentials"
+//	@Param			request	body	AuthenticateUserRequest	true	"User credentials"
 //	@Produce		json
-//	@Success		200	{object} UserPublic
+//	@Success		200	{object}	UserPublic
 //	@Router			/user/authenticate [post]
 func (db *DbContext) AuthenticateUser(ctx *gin.Context) {
 	var req AuthenticateUserRequest

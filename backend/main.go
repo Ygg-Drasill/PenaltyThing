@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	address  = "api.penaltything.social"
+	address  = "localhost:9000"
 	basePath = "/api/v1"
 )
 
@@ -58,6 +58,17 @@ func main() {
 		penalty := v1.Group("/penalty")
 		{
 			penalty.POST("/add", dbContext.AddPenalty)
+		}
+
+		invitation := v1.Group("/invitation")
+		{
+			invitation.POST("/create", dbContext.CreateInvitation)
+			invitation.POST("/accept", dbContext.AcceptInvitation)
+		}
+
+		notification := v1.Group("/notification")
+		{
+			notification.GET("/getFiltered", dbContext.GetNotifications)
 		}
 	}
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
