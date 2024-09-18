@@ -45,70 +45,83 @@ export default function LoginPage() {
 
   return (
     <BasePage loading={authenticationMutation.isPending}>
-      <Card sx={{ borderRadius: 3 }}>
-        <CardContent>
-          <Box
-            component="form"
-            noValidate
-            autoComplete="off"
-            onSubmit={handleLoginSubmission}
-          >
-            <Typography
-              align="center"
-              color={"secondary.main"}
-              variant="h3"
-              mb={2}
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="60vh"
+      >
+        <Card sx={{ borderRadius: 3, maxWidth: 500, width: "100%" }}>
+          <CardContent>
+            <Box
+              component="form"
+              noValidate
+              autoComplete="off"
+              onSubmit={handleLoginSubmission}
             >
-              Login
+              <Typography
+                align="center"
+                color={"secondary.main"}
+                variant="h3"
+                mb={2}
+              >
+                Login
+              </Typography>
+              <Stack gap={2}>
+                <TextField
+                  sx={{ input: { color: "white" } }}
+                  required
+                  id="name"
+                  label="Username"
+                  variant="outlined"
+                  onChange={(e) => setUsername(e.currentTarget.value)}
+                  color="primary"
+                />
+                <TextField
+                  sx={{ input: { color: "white" } }}
+                  required
+                  id="password"
+                  label="Password"
+                  variant="outlined"
+                  type="password"
+                  onChange={(e) => setPassword(e.currentTarget.value)}
+                />
+                <Box display="flex" justifyContent="center">
+                  <Button
+                    type="submit"
+                    color="success"
+                    variant="contained"
+                    sx={{
+                      borderRadius: 3,
+                    }}
+                    size="large"
+                  >
+                    Login
+                  </Button>
+                </Box>
+              </Stack>
+            </Box>
+          </CardContent>
+          <Divider />
+          <CardContent>
+            <Typography variant="body1" color="text" align="center">
+              Don't have an account yet?
             </Typography>
-            <Stack gap={2}>
-              <TextField
-                required
-                id="name"
-                label="Username"
-                variant="outlined"
-                onChange={(e) => setUsername(e.currentTarget.value)}
-                color="primary"
-              />
-              <TextField
-                required
-                id="password"
-                label="Password"
-                variant="outlined"
-                type="password"
-                onChange={(e) => setPassword(e.currentTarget.value)}
-              />
-              <Box display="flex" justifyContent="center">
-                <Button
-                  type="submit"
-                  color="success"
-                  variant="contained"
-                  sx={{
-                    borderRadius: 3,
-                  }}
-                  size="large"
+            <Box display="flex" justifyContent="center" mt={1}>
+              <Typography variant="body1" color="text">
+                Sign up here:{" "}
+                <Link
+                  color={"info.main"}
+                  component={RouterLink}
+                  to={"/register"}
                 >
-                  Login
-                </Button>
-              </Box>
-            </Stack>
-          </Box>
-        </CardContent>
-        <Divider />
-        <CardContent>
-          <Typography variant="body1" color="text" align="center">
-            Don't have an account yet?
-          </Typography>
-          <Box display="flex" justifyContent="center" mt={1}>
-            <Typography variant="body1" color="text">
-              Sign up here:{" "}
-              <Link color={"info.main"} component={RouterLink} to={"/register"}>
-                Create account
-              </Link>
-            </Typography>
-          </Box>
-        </CardContent>
-      </Card>
+                  Create account
+                </Link>
+              </Typography>
+            </Box>
+          </CardContent>
+        </Card>
+      </Box>
     </BasePage>
   );
 }
