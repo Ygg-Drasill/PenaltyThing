@@ -14,9 +14,7 @@ services:
       - app-network
 
   nginx:
-    build:
-      context: ./nginx
-    image: nginx-image
+    image: ghcr.io/ygg-drasill/penaltything/frontend-dev:dev
     container_name: nginx-container
     ports:
       - "80:80"
