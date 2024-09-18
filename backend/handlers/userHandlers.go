@@ -13,7 +13,8 @@ import (
 const hashCost = 14
 
 type RegisterUserRequest struct {
-	Name      string `json:"name"`
+	Username  string `json:"username"`
+	Email     string `json:"email"`
 	Password  string `json:"password"`
 	FirstName string `json:"firstName"`
 	LastName  string `json:"lastName"`
@@ -39,11 +40,27 @@ func (db *DbContext) RegisterUser(ctx *gin.Context) {
 	}
 
 	if len(req.FirstName) == 0 || len(req.LastName) == 0 {
-		ctx.String(http.StatusBadRequest, "Missing fields")
+		ctx.String(http.StatusBadRequest, "First and last name must be provided")
 		return
 	}
-	if len(req.Name) == 0 || len(req.Password) == 0 {
+	if len(req.Username) == 0 || len(req.Password) == 0 {
 		ctx.String(http.StatusBadRequest, "Username and password must be provided")
+		return
+	}
+
+	if len(req.Email) == 0 {
+		ctx.String(http.StatusBadRequest, "Email must be provided")
+		return
+	}
+
+	if !strings.Contains(req.Email, "@") {
+		ctx.String(http.StatusBadRequest, "Email must be provided")
+		return
+	}
+
+	c := strings.Split(req.Email, "@")
+	if len(c) != 2 {
+		ctx.String(http.StatusBadRequest, "Email must be provided")
 		return
 	}
 
@@ -51,7 +68,7 @@ func (db *DbContext) RegisterUser(ctx *gin.Context) {
 	var hash []byte
 	hash, err = bcrypt.GenerateFromPassword([]byte(req.Password), hashCost)
 
-	newUser, err := db.repo.AddUser(req.Name, string(hash), req.FirstName, req.LastName)
+	newUser, err := db.repo.AddUser(req.Username, req.Email, string(hash), req.FirstName, req.LastName)
 	if err != nil {
 		fmt.Println(err)
 		ctx.String(http.StatusInternalServerError, err.Error())
@@ -152,7 +169,7 @@ func (db *DbContext) GetUsersMemberBatch(ctx *gin.Context) {
 }
 
 type AuthenticateUserRequest struct {
-	Username string `json:"username"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 } //@name AuthenticateUserRequest
 
@@ -173,11 +190,11 @@ func (db *DbContext) AuthenticateUser(ctx *gin.Context) {
 		ctx.String(http.StatusBadRequest, err.Error())
 	}
 
-	if !authentication.AuthenticatePassword(req.Username, req.Password, db.repo) {
+	if !authentication.AuthenticatePassword(req.Email, req.Password, db.repo) {
 		ctx.String(http.StatusUnauthorized, "Wrong username or password, please try again")
 	}
 
-	user, err := db.repo.GetUserByUsername(req.Username)
+	user, err := db.repo.GetUserByEmail(req.Email)
 	if err != nil {
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return

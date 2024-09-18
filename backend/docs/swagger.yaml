@@ -14,9 +14,9 @@ definitions:
     type: object
   AuthenticateUserRequest:
     properties:
-      password:
+      email:
         type: string
-      username:
+      password:
         type: string
     type: object
   CreateLawRequest:
@@ -67,13 +67,15 @@ definitions:
     type: object
   RegisterUserRequest:
     properties:
+      email:
+        type: string
       firstName:
         type: string
       lastName:
         type: string
-      name:
-        type: string
       password:
+        type: string
+      username:
         type: string
     type: object
   Team:
@@ -102,6 +104,8 @@ definitions:
     type: object
   User:
     properties:
+      email:
+        type: string
       firstName:
         type: string
       id:
@@ -114,6 +118,8 @@ definitions:
         items:
           $ref: '#/definitions/PenaltyEntry'
         type: array
+      status:
+        type: string
       teamMembers:
         items:
           $ref: '#/definitions/TeamMember'
@@ -123,11 +129,9 @@ definitions:
     type: object
   UserPublic:
     properties:
-      firstName:
-        type: string
       id:
         type: string
-      lastName:
+      status:
         type: string
       userName:
         type: string

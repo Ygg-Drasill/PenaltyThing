@@ -13,8 +13,11 @@ import (
 	"os"
 )
 
+var (
+	address = os.Getenv("API_BASE_ADDRESS")
+)
+
 const (
-	address  = "api.penaltything.social"
 	basePath = "/api/v1"
 )
 

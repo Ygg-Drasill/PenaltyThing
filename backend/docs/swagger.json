@@ -432,10 +432,10 @@
         "AuthenticateUserRequest": {
             "type": "object",
             "properties": {
-                "password": {
+                "email": {
                     "type": "string"
                 },
-                "username": {
+                "password": {
                     "type": "string"
                 }
             }
@@ -514,16 +514,19 @@
         "RegisterUserRequest": {
             "type": "object",
             "properties": {
+                "email": {
+                    "type": "string"
+                },
                 "firstName": {
                     "type": "string"
                 },
                 "lastName": {
                     "type": "string"
                 },
-                "name": {
+                "password": {
                     "type": "string"
                 },
-                "password": {
+                "username": {
                     "type": "string"
                 }
             }
@@ -568,6 +571,9 @@
         "User": {
             "type": "object",
             "properties": {
+                "email": {
+                    "type": "string"
+                },
                 "firstName": {
                     "type": "string"
                 },
@@ -586,6 +592,9 @@
                         "$ref": "#/definitions/PenaltyEntry"
                     }
                 },
+                "status": {
+                    "type": "string"
+                },
                 "teamMembers": {
                     "type": "array",
                     "items": {
@@ -600,13 +609,10 @@
         "UserPublic": {
             "type": "object",
             "properties": {
-                "firstName": {
-                    "type": "string"
-                },
                 "id": {
                     "type": "string"
                 },
-                "lastName": {
+                "status": {
                     "type": "string"
                 },
                 "userName": {

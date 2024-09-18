@@ -441,10 +441,10 @@ const docTemplate = `{
         "AuthenticateUserRequest": {
             "type": "object",
             "properties": {
-                "password": {
+                "email": {
                     "type": "string"
                 },
-                "username": {
+                "password": {
                     "type": "string"
                 }
             }
@@ -523,16 +523,19 @@ const docTemplate = `{
         "RegisterUserRequest": {
             "type": "object",
             "properties": {
+                "email": {
+                    "type": "string"
+                },
                 "firstName": {
                     "type": "string"
                 },
                 "lastName": {
                     "type": "string"
                 },
-                "name": {
+                "password": {
                     "type": "string"
                 },
-                "password": {
+                "username": {
                     "type": "string"
                 }
             }
@@ -577,6 +580,9 @@ const docTemplate = `{
         "User": {
             "type": "object",
             "properties": {
+                "email": {
+                    "type": "string"
+                },
                 "firstName": {
                     "type": "string"
                 },
@@ -595,6 +601,9 @@ const docTemplate = `{
                         "$ref": "#/definitions/PenaltyEntry"
                     }
                 },
+                "status": {
+                    "type": "string"
+                },
                 "teamMembers": {
                     "type": "array",
                     "items": {
@@ -609,13 +618,10 @@ const docTemplate = `{
         "UserPublic": {
             "type": "object",
             "properties": {
-                "firstName": {
-                    "type": "string"
-                },
                 "id": {
                     "type": "string"
                 },
-                "lastName": {
+                "status": {
                     "type": "string"
                 },
                 "userName": {

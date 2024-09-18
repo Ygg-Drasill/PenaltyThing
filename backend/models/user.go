@@ -1,8 +1,10 @@
 package models
 
 type User struct {
-	Id           string         `json:"id" gorm:"primarykey"`
-	Username     string         `json:"username"`
+	Id           string         `json:"id" gorm:"primarykey" gorm:"unique"`
+	Username     string         `json:"username" gorm:"unique"`
+	Email        string         `json:"email" gorm:"unique"`
+	Status       string         `json:"status"`
 	PasswordHash string         `json:"password"`
 	FirstName    string         `json:"firstName"`
 	LastName     string         `json:"lastName"`
@@ -11,16 +13,15 @@ type User struct {
 } //@name User
 
 type UserPublic struct {
-	Id        string `json:"id"`
-	UserName  string `json:"userName"`
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
+	Id       string `json:"id"`
+	UserName string `json:"userName"`
+	Status   string `json:"status"`
 } //@name UserPublic
 
 func (user User) ToUserResponse() *UserPublic {
 	return &UserPublic{
-		Id:        user.Id,
-		FirstName: user.FirstName,
-		LastName:  user.LastName,
+		Id:       user.Id,
+		UserName: user.Username,
+		Status:   user.Status,
 	}
 }
