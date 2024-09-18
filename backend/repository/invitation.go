@@ -16,3 +16,15 @@ func (repo *Repository) CreateInvitation(senderUserId, targetUserId, teamId stri
 	repo.db.Save(newInvitation)
 	return newInvitation, nil
 }
+
+func (repo *Repository) InvitationExists(id string) bool {
+	var exists bool
+	repo.db.Raw("SELECT EXISTS(SELECT FROM invitations WHERE id = ?)", id).Scan(&exists)
+	return exists
+}
+
+func (repo *Repository) GetInvitationById(id string) (*models.Invitation, error) {
+	var invitation models.Invitation
+	res := repo.db.Find(&invitation, "id = ?", id)
+	return &invitation, res.Error
+}

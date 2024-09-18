@@ -1,15 +1,15 @@
 package models
 
-type notificationType string
+type NotificationType string //@Name NotificationType
 
 const (
-	INVITATION notificationType = "INVITATION"
-	PENALTY    notificationType = "PENALTY"
+	INVITATION NotificationType = "INVITATION"
+	PENALTY    NotificationType = "PENALTY"
 )
 
 type Notification struct {
 	Id         string           `json:"id" binding:"required" gorm:"primary_key"`
-	Type       notificationType `json:"type" binding:"required" gorm:"type:notification_type"`
+	Type       NotificationType `json:"type" binding:"required" gorm:"type:notification_type"`
 	Data       []byte           `json:"data" binding:"required"`
-	RecieverId string           `json:"recieverId" binding:"required"`
-}
+	ReceiverId string           `json:"receiverId" binding:"required"`
+} //@Name Notification

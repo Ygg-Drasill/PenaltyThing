@@ -19,6 +19,76 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/invitation/accept": {
+            "post": {
+                "description": "accept invitation",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "invitation"
+                ],
+                "summary": "Accept an invitation, if it exists",
+                "operationId": "acceptInvitation",
+                "parameters": [
+                    {
+                        "description": "query params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/AcceptInvitationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/invitation/create": {
+            "post": {
+                "description": "create invitation",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "invitation"
+                ],
+                "summary": "Create new invitation",
+                "operationId": "createInvitation",
+                "parameters": [
+                    {
+                        "description": "query params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CreateInvitationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/law/create": {
             "post": {
                 "description": "create law",
@@ -81,6 +151,53 @@ const docTemplate = `{
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/Law"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/notification/getFiltered": {
+            "get": {
+                "description": "get notifications with filter",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "notification"
+                ],
+                "summary": "get notifications for user, given a notification type filter",
+                "operationId": "getFiltered",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "userId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "filter list",
+                        "name": "filter",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Notification"
                             }
                         }
                     }
@@ -418,6 +535,17 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "AcceptInvitationRequest": {
+            "type": "object",
+            "properties": {
+                "invitationId": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
         "AddPenaltyRequest": {
             "type": "object",
             "properties": {
@@ -445,6 +573,20 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "CreateInvitationRequest": {
+            "type": "object",
+            "properties": {
+                "senderUserId": {
+                    "type": "string"
+                },
+                "targetUserId": {
+                    "type": "string"
+                },
+                "teamId": {
                     "type": "string"
                 }
             }
@@ -490,6 +632,43 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "Notification": {
+            "type": "object",
+            "required": [
+                "data",
+                "id",
+                "receiverId",
+                "type"
+            ],
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "id": {
+                    "type": "string"
+                },
+                "receiverId": {
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/NotificationType"
+                }
+            }
+        },
+        "NotificationType": {
+            "type": "string",
+            "enum": [
+                "INVITATION",
+                "PENALTY"
+            ],
+            "x-enum-varnames": [
+                "INVITATION",
+                "PENALTY"
+            ]
         },
         "PenaltyEntry": {
             "type": "object",
@@ -585,6 +764,12 @@ const docTemplate = `{
                 },
                 "lastName": {
                     "type": "string"
+                },
+                "notifications": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Notification"
+                    }
                 },
                 "password": {
                     "type": "string"
