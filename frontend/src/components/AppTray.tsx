@@ -21,8 +21,7 @@ import {
   styled,
   Typography,
 } from "@mui/material";
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { UserInfo } from "./openapi/requests";
 import useAppContext from "./hooks/appContext";

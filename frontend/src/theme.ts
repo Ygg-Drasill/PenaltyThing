@@ -18,7 +18,7 @@ export const PenaltyThingTheme = createTheme({
         },
         background: {
             default: "#34393f",
-            paper: "#686868"
+            paper: "#3c3c3c"
         },
         error: {
             main: "#eb2352"
@@ -27,10 +27,10 @@ export const PenaltyThingTheme = createTheme({
             main: "#5cc4ed"
         },
         success: {
-            main: "#1fed6a"
+            main: "#0A8379"
         },
         text: {
-
+            
         }
     },
     components: {
