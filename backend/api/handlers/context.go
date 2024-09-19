@@ -1,6 +1,8 @@
 package handlers
 
-import "github.com/Ygg-Drasill/PenaltyThing/backend/repository"
+import (
+	"github.com/Ygg-Drasill/PenaltyThing/backend/api/repository"
+)
 
 type DbContext struct {
 	repo *repository.Repository

@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"fmt"
-	"github.com/Ygg-Drasill/PenaltyThing/backend/models"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/api/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

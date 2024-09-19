@@ -2,7 +2,7 @@ package repository
 
 import (
 	"errors"
-	"github.com/Ygg-Drasill/PenaltyThing/backend/models"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/api/models"
 	"github.com/google/uuid"
 )
 

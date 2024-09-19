@@ -2,8 +2,8 @@ package authentication
 
 import (
 	"fmt"
-	"github.com/Ygg-Drasill/PenaltyThing/backend/models"
-	"github.com/Ygg-Drasill/PenaltyThing/backend/repository"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/api/models"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/api/repository"
 	"golang.org/x/crypto/bcrypt"
 )
 

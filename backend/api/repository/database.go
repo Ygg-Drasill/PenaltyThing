@@ -2,7 +2,7 @@ package repository
 
 import (
 	"fmt"
-	"github.com/Ygg-Drasill/PenaltyThing/backend/models"
+	models2 "github.com/Ygg-Drasill/PenaltyThing/backend/api/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"net/url"
@@ -51,13 +51,13 @@ func ConnectToDatabase(dsn string) *Repository {
 	if err != nil {
 		panic(err)
 	}
-	err = db.AutoMigrate(&models.User{})
-	err = db.AutoMigrate(&models.Team{})
-	err = db.AutoMigrate(&models.Law{})
-	err = db.AutoMigrate(&models.PenaltyEntry{})
-	err = db.AutoMigrate(&models.TeamMember{})
-	err = db.AutoMigrate(&models.Invitation{})
-	err = db.AutoMigrate(&models.Notification{})
+	err = db.AutoMigrate(&models2.User{})
+	err = db.AutoMigrate(&models2.Team{})
+	err = db.AutoMigrate(&models2.Law{})
+	err = db.AutoMigrate(&models2.PenaltyEntry{})
+	err = db.AutoMigrate(&models2.TeamMember{})
+	err = db.AutoMigrate(&models2.Invitation{})
+	err = db.AutoMigrate(&models2.Notification{})
 	return &Repository{
 		db: db,
 	}

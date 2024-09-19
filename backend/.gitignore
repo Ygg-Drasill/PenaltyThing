@@ -6,7 +6,7 @@
 /dist
 /webui/.tmp/
 /site/
-/docs/site/
+/api/docs/site/
 /autogen/
 /traefik
 /traefik.toml
@@ -20,5 +20,5 @@ plugins-local/
 traefik_changelog.md
 integration/tailscale.secret
 integration/conformance-reports/
-backend/docs
+api/docs
 .env
