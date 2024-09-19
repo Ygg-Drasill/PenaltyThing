@@ -74,6 +74,17 @@ func main() {
 		{
 			notification.GET("/getFiltered", dbContext.GetNotifications)
 		}
+
+		health := v1.Group("/health")
+		{
+			health.GET("/", handlers.GetHealth)
+
+			database := health.Group("/database")
+			{
+				database.GET("/ping", dbContext.PingDatabase)
+				database.GET("/stats", dbContext.GetDatabaseStats)
+			}
+		}
 	}
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	if err := router.Run(fmt.Sprintf(":%s", os.Getenv("LISTEN_PORT"))); err != nil {
