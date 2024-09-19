@@ -28,3 +28,11 @@ func (repo *Repository) GetInvitationById(id string) (*models.Invitation, error)
 	res := repo.db.Find(&invitation, "id = ?", id)
 	return &invitation, res.Error
 }
+
+func (repo *Repository) DeleteInvitation(id string) error {
+	res := repo.db.Delete(&models.Invitation{}, id)
+	if res.Error != nil {
+		return res.Error
+	}
+	return nil
+}

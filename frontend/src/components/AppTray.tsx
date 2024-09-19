@@ -40,14 +40,14 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
     top: 8,
     border: `2px solid ${theme.palette.background.default}`,
     padding: '6px 6px',
-    color: theme.palette.secondary.contrastText,
+    color: theme.palette.error.contrastText,
   },
 }));
 
 function AppTrayButton(props: { to: string; icon: React.ReactElement, notifications: number }) {
   return (
     <Link component={RouterLink} to={props.to} draggable={false}>
-      <StyledBadge badgeContent={props.notifications.toString()} color="secondary" invisible={props.notifications < 1}>
+      <StyledBadge badgeContent={props.notifications.toString()} color="error" invisible={props.notifications < 1}>
         <Button variant="outlined" color="secondary" sx={{ height: "4rem" }}>
           {props.icon}
         </Button>
