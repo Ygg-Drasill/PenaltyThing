@@ -129,7 +129,7 @@ type GetTeamRequest struct {
 //	@Produce		json
 //	@Success		200	{object} Team
 //	@Router			/team/get [get]
-func (db *DbContext) GetTeam(ctx *gin.Context) {
+func (db *DBContext) GetTeam(ctx *gin.Context) {
 	var query GetTeamRequest
 	if res := ctx.ShouldBindQuery(&query); res != nil {
 		ctx.String(http.StatusInternalServerError, res.Error())

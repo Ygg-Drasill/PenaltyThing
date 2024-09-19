@@ -24,7 +24,7 @@ type CreateInvitationRequest struct {
 //	@Produce		json
 //	@Success		200 {string} success
 //	@Router			/invitation/create [post]
-func (db *DbContext) CreateInvitation(ctx *gin.Context) {
+func (db *DBContext) CreateInvitation(ctx *gin.Context) {
 	var request CreateInvitationRequest
 	err := ctx.ShouldBind(&request)
 	if err != nil {
@@ -57,7 +57,7 @@ type AcceptInvitationRequest struct {
 //	@Produce		json
 //	@Success		200 {string} success
 //	@Router			/invitation/accept [post]
-func (db *DbContext) AcceptInvitation(ctx *gin.Context) {
+func (db *DBContext) AcceptInvitation(ctx *gin.Context) {
 	var request *AcceptInvitationRequest
 	err := ctx.ShouldBindJSON(&request)
 	if err != nil {

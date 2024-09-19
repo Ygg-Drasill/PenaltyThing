@@ -446,24 +446,24 @@ paths:
       tags:
       - user
   /user/authenticate:
-    post:
-      description: Authenticate user using username and password
-      operationId: authenticateUser
-      parameters:
-      - description: User credentials
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/AuthenticateUserRequest'
+    get:
+      consumes:
+      - application/json
+      - application/vnd.api+json
+      description: AuthenticateUser
       produces:
       - application/json
+      - application/vnd.api+json
       responses:
         "200":
-          description: OK
+          description: Authenticated
           schema:
-            $ref: '#/definitions/UserPublic'
-      summary: Authenticate user
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      summary: AuthenticateUser
       tags:
       - user
   /user/get:
@@ -506,6 +506,27 @@ paths:
               $ref: '#/definitions/UserPublic'
             type: array
       summary: Get public users as batch
+      tags:
+      - user
+  /user/login:
+    post:
+      description: Login User and set cookie with JWT token. Token expires in 24 hours.
+      operationId: loginUser
+      parameters:
+      - description: User credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/AuthenticateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/UserPublic'
+      summary: Login user
       tags:
       - user
   /user/register:

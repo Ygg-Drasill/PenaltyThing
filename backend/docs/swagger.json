@@ -395,32 +395,31 @@
             }
         },
         "/user/authenticate": {
-            "post": {
-                "description": "Authenticate user using username and password",
+            "get": {
+                "description": "AuthenticateUser",
+                "consumes": [
+                    "application/json",
+                    "application/vnd.api+json"
+                ],
                 "produces": [
-                    "application/json"
+                    "application/json",
+                    "application/vnd.api+json"
                 ],
                 "tags": [
                     "user"
                 ],
-                "summary": "Authenticate user",
-                "operationId": "authenticateUser",
-                "parameters": [
-                    {
-                        "description": "User credentials",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/AuthenticateUserRequest"
-                        }
-                    }
-                ],
+                "summary": "AuthenticateUser",
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Authenticated",
                         "schema": {
-                            "$ref": "#/definitions/UserPublic"
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -484,6 +483,38 @@
                             "items": {
                                 "$ref": "#/definitions/UserPublic"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "post": {
+                "description": "Login User and set cookie with JWT token. Token expires in 24 hours.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Login user",
+                "operationId": "loginUser",
+                "parameters": [
+                    {
+                        "description": "User credentials",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/AuthenticateUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/UserPublic"
                         }
                     }
                 }
