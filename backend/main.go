@@ -78,7 +78,7 @@ func main() {
 		health := v1.Group("/health")
 		{
 			health.GET("/", handlers.GetHealth)
-
+			health.GET("/ping", handlers.Ping)
 			database := health.Group("/database")
 			{
 				database.GET("/ping", dbContext.PingDatabase)

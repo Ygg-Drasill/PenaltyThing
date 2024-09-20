@@ -21,6 +21,23 @@ func GetHealth(ctx *gin.Context) {
 	})
 }
 
+// Ping godoc
+//
+//	@Summary		Ping
+//	@Description	Ping
+//	@Tags			health
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{string} ping time in milliseconds
+//	@Router			/health/ping [get]
+func Ping(ctx *gin.Context) {
+	startTime := time.Now()
+	elapsedTime := time.Since(startTime)
+	ctx.JSON(200, gin.H{
+		"message": fmt.Sprintf("Ping successful in %d ms", elapsedTime.Milliseconds()),
+	})
+}
+
 // PingDatabase godoc
 //
 //	@Summary		Pings the database
