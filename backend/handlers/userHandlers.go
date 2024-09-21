@@ -222,7 +222,7 @@ func (db *DbContext) AuthenticateUser(ctx *gin.Context) {
 	}
 
 	if !authentication.AuthenticatePassword(req.Email, req.Password, db.repo) {
-		ctx.String(http.StatusUnauthorized, "Wrong username or password, please try again")
+		ctx.String(http.StatusUnauthorized, "Wrong email or password, please try again")
 	}
 
 	user, err := db.repo.GetUserByEmail(req.Email)
