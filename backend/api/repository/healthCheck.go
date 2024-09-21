@@ -1,6 +1,9 @@
 package repository
 
-import "fmt"
+import (
+	"database/sql"
+	"fmt"
+)
 
 func (repo *Repository) VerifyDatabaseConnection() error {
 	sqlDB, err := repo.db.DB()
@@ -15,16 +18,11 @@ func (repo *Repository) VerifyDatabaseConnection() error {
 	return nil
 }
 
-func (repo *Repository) DatabaseStats() (map[string]interface{}, error) {
+func (repo *Repository) DatabaseStats() (*sql.DBStats, error) {
 	sqlDB, err := repo.db.DB()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get database connection: %w", err)
 	}
 	stats := sqlDB.Stats()
-	return map[string]interface{}{
-		"max_open_connections": stats.MaxOpenConnections,
-		"open_connections":     stats.OpenConnections,
-		"in_use":               stats.InUse,
-		"idle":                 stats.Idle,
-	}, nil
+	return &stats, nil
 }
