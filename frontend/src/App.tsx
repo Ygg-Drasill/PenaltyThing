@@ -70,10 +70,11 @@ function InnerApp() { //TODO: Introduce userSession context where user cookie is
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const portrait = window.matchMedia("(orientation: portrait)").matches;
 
   return (
     <AppContextProvider userId={userId} currentTeamId={currentTeamId} setCurrentTeamId={setCurrentTeamId}>
-      <Stack direction={"row"} height={"100vh"} padding={4} gap={4} boxSizing={"border-box"}>
+      <Stack direction={portrait ? "column-reverse" : "row"} height={"100vh"} padding={portrait ? 2 : 4} gap={portrait ? 2 : 4} boxSizing={"border-box"}>
         <AppTray />
         <Outlet />
       </Stack>
