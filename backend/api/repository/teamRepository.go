@@ -1,16 +1,16 @@
 package repository
 
 import (
-	models2 "github.com/Ygg-Drasill/PenaltyThing/backend/api/models"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/api/models"
 	"github.com/google/uuid"
 )
 
-func (repo *Repository) AddTeam(name string) (*models2.Team, error) {
-	newTeam := &models2.Team{
+func (repo *Repository) AddTeam(name string) (*models.Team, error) {
+	newTeam := &models.Team{
 		Id:      uuid.New().String(),
 		Name:    name,
-		Members: make([]models2.TeamMember, 0),
-		Laws:    make([]models2.Law, 0),
+		Members: make([]models.TeamMember, 0),
+		Laws:    make([]models.Law, 0),
 	}
 	res := repo.db.Create(newTeam)
 	if res.Error != nil {
@@ -25,8 +25,8 @@ func (repo *Repository) TeamExists(id string) bool {
 	return exists
 }
 
-func (repo *Repository) GetTeam(id string) (*models2.Team, error) {
-	var team models2.Team
+func (repo *Repository) GetTeam(id string) (*models.Team, error) {
+	var team models.Team
 	res := repo.db.First(&team, "id = ?", id)
 	if res.Error != nil {
 		return nil, res.Error
@@ -35,8 +35,8 @@ func (repo *Repository) GetTeam(id string) (*models2.Team, error) {
 }
 
 func (repo *Repository) AddUserToTeam(userId, teamId string) error {
-	var team models2.Team
-	var user models2.User
+	var team models.Team
+	var user models.User
 	teamResult := repo.db.Find(&team, "id = ?", &teamId)
 	userResult := repo.db.Find(&user, "id = ?", &userId)
 	member, memberError := repo.AddMember(team.Id, user.Id)
@@ -58,10 +58,10 @@ func (repo *Repository) AddUserToTeam(userId, teamId string) error {
 	return nil
 }
 
-func (repo *Repository) GetTeamsByUserId(userId string) ([]models2.Team, error) {
-	var user *models2.User
-	var members []models2.TeamMember
-	var teams []models2.Team
+func (repo *Repository) GetTeamsByUserId(userId string) ([]models.Team, error) {
+	var user *models.User
+	var members []models.TeamMember
+	var teams []models.Team
 	var err error
 	user, err = repo.GetUserById(userId)
 	if err != nil {
@@ -73,7 +73,7 @@ func (repo *Repository) GetTeamsByUserId(userId string) ([]models2.Team, error) 
 	}
 
 	for _, member := range members {
-		var team models2.Team
+		var team models.Team
 		result := repo.db.First(&team, "id = ?", member.TeamId)
 		if result.Error != nil {
 			return nil, result.Error
