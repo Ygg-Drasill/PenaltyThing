@@ -24,7 +24,7 @@ RUN npm i -f
 
 COPY ./frontend .
 
-COPY --from=openapi-docs /swag/docs /app/docs
+COPY --from=openapi-docs /swag/api/docs /app/docs
 
 RUN npm run generate-api:deploy
 
