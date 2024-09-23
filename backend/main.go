@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"github.com/Ygg-Drasill/PenaltyThing/backend/docs"
 	"github.com/Ygg-Drasill/PenaltyThing/backend/handlers"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/initializers"
 	"github.com/Ygg-Drasill/PenaltyThing/backend/middleware"
 	"github.com/Ygg-Drasill/PenaltyThing/backend/repository"
 	"github.com/gin-gonic/gin"
 	_ "github.com/joho/godotenv/autoload"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"log"
 	"os"
 )
 
@@ -20,6 +22,12 @@ var (
 const (
 	basePath = "/api/v1"
 )
+
+func init() {
+	if err := initializers.LoadSecrets(); err != nil {
+		log.Fatalf("error while loading secrets: %v", err)
+	}
+}
 
 // @title			PenaltyThing API
 // @version		1.0
