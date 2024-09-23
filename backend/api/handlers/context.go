@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"github.com/Ygg-Drasill/PenaltyThing/backend/api/repository"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/repository"
 )
 
 type DbContext struct {

@@ -5,7 +5,7 @@ import (
 	"github.com/Ygg-Drasill/PenaltyThing/backend/api/docs"
 	"github.com/Ygg-Drasill/PenaltyThing/backend/api/handlers"
 	"github.com/Ygg-Drasill/PenaltyThing/backend/api/middleware"
-	"github.com/Ygg-Drasill/PenaltyThing/backend/api/repository"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/repository"
 	"github.com/gin-gonic/gin"
 	_ "github.com/joho/godotenv/autoload"
 	swaggerfiles "github.com/swaggo/files"

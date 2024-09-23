@@ -2,7 +2,7 @@ package repository
 
 import (
 	"fmt"
-	"github.com/Ygg-Drasill/PenaltyThing/backend/api/models"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"net/url"

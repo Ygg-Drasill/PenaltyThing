@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"fmt"
-	"github.com/Ygg-Drasill/PenaltyThing/backend/api/models"
 	"github.com/Ygg-Drasill/PenaltyThing/backend/authentication"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/models"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"

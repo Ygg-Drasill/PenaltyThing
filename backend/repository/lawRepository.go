@@ -3,7 +3,7 @@ package repository
 import (
 	"errors"
 	"fmt"
-	"github.com/Ygg-Drasill/PenaltyThing/backend/api/models"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/models"
 	"github.com/google/uuid"
 )
 

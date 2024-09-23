@@ -20,7 +20,7 @@ type HealthCheck struct {
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{object}	HealthCheck
-//	@Failure		500	{string} 	error message
+//	@Failure		500	{string}	error	message
 //	@Router			/health [get]
 func (db *DbContext) GetHealth(ctx *gin.Context) {
 	startTime := time.Now()
@@ -58,8 +58,8 @@ func (db *DbContext) GetHealth(ctx *gin.Context) {
 //	@Tags			health
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{string} ping time in milliseconds
-//	@Failure		500	{string} error message
+//	@Success		200	{string}	ping	time	in	milliseconds
+//	@Failure		500	{string}	error	message
 //	@Router			/health/ping [get]
 func Ping(ctx *gin.Context) {
 	startTime := time.Now()
@@ -83,8 +83,8 @@ func Ping(ctx *gin.Context) {
 //	@Tags			health
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{string} ping time in milliseconds
-//	@Failure		500	{string} error message
+//	@Success		200	{string}	ping	time	in	milliseconds
+//	@Failure		500	{string}	error	message
 //	@Router			/health/database/ping [get]
 func (db *DbContext) PingDatabase(ctx *gin.Context) {
 	startTime := time.Now()
@@ -109,7 +109,7 @@ func (db *DbContext) PingDatabase(ctx *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{object}	sql.DBStats
-//	@Failure		500	{string} error message
+//	@Failure		500	{string}	error	message
 //	@Router			/health/database/stats [get]
 func (db *DbContext) GetDatabaseStats(ctx *gin.Context) {
 	stats, err := db.repo.DatabaseStats()
