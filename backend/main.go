@@ -2,10 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/Ygg-Drasill/PenaltyThing/backend/docs"
-	"github.com/Ygg-Drasill/PenaltyThing/backend/handlers"
-	"github.com/Ygg-Drasill/PenaltyThing/backend/initializers"
-	"github.com/Ygg-Drasill/PenaltyThing/backend/middleware"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/api/docs"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/api/handlers"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/api/middleware"
 	"github.com/Ygg-Drasill/PenaltyThing/backend/repository"
 	"github.com/gin-gonic/gin"
 	_ "github.com/joho/godotenv/autoload"
@@ -81,6 +80,17 @@ func main() {
 		notification := v1.Group("/notification")
 		{
 			notification.GET("/getFiltered", dbContext.GetNotifications)
+		}
+
+		health := v1.Group("/health")
+		{
+			health.GET("/", dbContext.GetHealth)
+			health.GET("/ping", handlers.Ping)
+			database := health.Group("/database")
+			{
+				database.GET("/ping", dbContext.PingDatabase)
+				database.GET("/stats", dbContext.GetDatabaseStats)
+			}
 		}
 	}
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
