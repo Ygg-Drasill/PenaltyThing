@@ -27,9 +27,9 @@ import { UserInfo } from "./openapi/requests";
 import useAppContext from "./hooks/appContext";
 import { useUserServiceGetUserInfo } from "./openapi/queries";
 
-function userInitials(user: UserInfo) {
-  const firstInitial = user.firstName?.slice(0, 1).toLocaleUpperCase() ?? "";
-  const secondInitial = user.lastName?.slice(0, 1).toLocaleUpperCase() ?? "";
+function userInitials(user: UserInfo | undefined) {
+  const firstInitial = user?.firstName?.slice(0, 1).toLocaleUpperCase() ?? "";
+  const secondInitial = user?.lastName?.slice(0, 1).toLocaleUpperCase() ?? "";
   return firstInitial + secondInitial;
 }
 
@@ -71,6 +71,10 @@ function AppTray() {
 
   if (userInfoResult.isLoading) {
     return <CircularProgress />
+  }
+
+  if (!userInfoResult.data) {
+    return <Typography>user info not found</Typography>
   }
   
   return (

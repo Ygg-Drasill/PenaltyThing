@@ -10,7 +10,7 @@ import PenaltiesView from "./components/appViews/PenaltiesView";
 import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
 import TeamView from "./components/appViews/TeamView";
-import { useTeamServiceGetTeamsByUserIdKey, useUserServiceGetUserKey } from "./components/openapi/queries";
+import { useHealthServiceGetHealthDatabasePing, useHealthServiceGetHealthDatabaseStats, useTeamServiceGetTeamsByUserIdKey, useUserServiceGetUserKey, useVersionServiceGetVersion } from "./components/openapi/queries";
 import TeamCreatePage from "./components/appViews/teamPages/TeamCreatePage";
 import TeamJoinPage from "./components/appViews/teamPages/TeamJoinPage";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -60,6 +60,7 @@ function InnerApp() { //TODO: Introduce userSession context where user cookie is
   const navigate = useNavigate()
   const [userId, setUserId] = useState(cookies.get("userId"))
   const [currentTeamId, setCurrentTeamId] = useState(cookies.get("teamId"))
+  const {data: version} = useVersionServiceGetVersion()
 
   useEffect(() => {
     if (!userId) {
@@ -77,6 +78,7 @@ function InnerApp() { //TODO: Introduce userSession context where user cookie is
         <AppTray />
         <Outlet />
       </Stack>
+      <Typography position={"absolute"} bottom={0} ml={4} color={"background.default"}>v{version}</Typography>
     </AppContextProvider>
   )
 }

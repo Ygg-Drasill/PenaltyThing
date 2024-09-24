@@ -17,6 +17,7 @@ import (
 
 var (
 	address = os.Getenv("API_BASE_ADDRESS")
+	version = handlers.NewVersionNumber(0, 1, 0)
 )
 
 const (
@@ -41,6 +42,7 @@ func main() {
 	router.Use(middleware.CORSMiddleware())
 	docs.SwaggerInfo.Host = address
 	docs.SwaggerInfo.BasePath = basePath
+	docs.SwaggerInfo.Version = string(version)
 	v1 := router.Group(basePath)
 	{
 		user := v1.Group("/user")
@@ -93,6 +95,8 @@ func main() {
 				database.GET("/stats", dbContext.GetDatabaseStats)
 			}
 		}
+
+		v1.GET("/version", version.GetVersion)
 	}
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	if err := router.Run(fmt.Sprintf(":%s", os.Getenv("LISTEN_PORT"))); err != nil {

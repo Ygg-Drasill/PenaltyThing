@@ -101,6 +101,9 @@ func (db *DbContext) PingDatabase(ctx *gin.Context) {
 	})
 }
 
+type DBStats struct {
+} //@name DBStats
+
 // GetDatabaseStats godoc
 //
 //	@Summary		Gets database stats
@@ -108,7 +111,7 @@ func (db *DbContext) PingDatabase(ctx *gin.Context) {
 //	@Tags			health
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{object}	sql.DBStats
+//	@Success		200	{object}	DBStats
 //	@Failure		500	{string}	error	message
 //	@Router			/health/database/stats [get]
 func (db *DbContext) GetDatabaseStats(ctx *gin.Context) {
@@ -121,6 +124,6 @@ func (db *DbContext) GetDatabaseStats(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{
-		"stats": stats,
+		"stats": *stats,
 	})
 }
