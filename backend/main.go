@@ -10,6 +10,7 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"log"
 	"os"
 )
 
@@ -20,6 +21,12 @@ var (
 const (
 	basePath = "/api/v1"
 )
+
+func init() {
+	if err := initializers.LoadSecrets(); err != nil {
+		log.Fatalf("error while loading secrets: %v", err)
+	}
+}
 
 // @title			PenaltyThing API
 // @version		1.0
