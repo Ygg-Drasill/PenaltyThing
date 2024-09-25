@@ -51,3 +51,21 @@ func (db *DbContext) AddPenalty(ctx *gin.Context) {
 	db.repo.CreateNotification(req.TargetUserId, models.PENALTY, []byte(newPenaltyEntry.Id))
 	ctx.JSON(http.StatusOK, newPenaltyEntry)
 }
+
+type GetPenaltyHistoryResponse struct {
+	PageNumber     int                 `json:"pageNumber"`
+	PageSize       int                 `json:"pageSize"`
+	TotalCount     int                 `json:"totalCount"`
+	PenaltyEntries models.PenaltyEntry `json:"penaltyEntries"`
+} //	@name	GetPenaltyHistoryResponse
+
+// GetPenaltyHistory
+//
+//	@Id			getPenaltyHistory
+//	@Param		userId	query	string	true	"id"
+//	@Produce	json
+//	@Success	200	{object}	GetPenaltyHistoryResponse
+//	@Router		/penalty/getHistory [get]
+func (db *DbContext) GetPenaltyHistory(ctx *gin.Context) {
+	var req GetPenaltyHistoryResponse
+}
