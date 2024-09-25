@@ -8,7 +8,6 @@ import AppView from './AppView'
 function TeamView() {
 	return (
 		<AppView title={'Team'} barComponent={<TeamViewNavbar />}>
-			<Navigate to='list'></Navigate>
 			<Outlet />
 		</AppView>
 	)

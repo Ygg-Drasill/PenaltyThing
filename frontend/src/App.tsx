@@ -37,6 +37,7 @@ function App() {
 							<Route path='create' element={<TeamCreatePage />} />
 							<Route path='join' element={<TeamJoinPage />} />
 							<Route path='list' element={<TeamListPage />} />
+							<Route path='' element={<TeamListPage />} />
 						</Route>
 						<Route path='team' element={<SpecificTeamView />}>
 							<Route path='laws' element={<TeamLawPage />} />
