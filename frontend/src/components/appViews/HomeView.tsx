@@ -6,26 +6,30 @@ import NotificationList from "../NotificationList";
 import InvitationNotificationList from "../NotificationList";
 
 function HomeView() {
-    const appContext = useAppContext()
+  const appContext = useAppContext();
 
-    if (appContext.teams.isLoading) {
-        return <AppView title="Home"><LinearProgress /></AppView>
-    }
-
-    if (appContext.teams.data != undefined && appContext.teams.data.length == 0) {
-        return (
-            <AppView title="Home">
-                <BecomeMemberOfTeam />
-            </AppView>
-        )
-    }
-
+  if (appContext.teams.isLoading) {
     return (
-        <AppView title="Home">
-            <Typography>Home</Typography>
-            <InvitationNotificationList />
-        </AppView>
-    )
+      <AppView title="Home">
+        <LinearProgress />
+      </AppView>
+    );
+  }
+
+  if (appContext.teams.data != undefined && appContext.teams.data.length == 0) {
+    return (
+      <AppView title="Home">
+        <BecomeMemberOfTeam />
+      </AppView>
+    );
+  }
+
+  return (
+    <AppView title="Home">
+      <Typography>Home</Typography>
+      <InvitationNotificationList />
+    </AppView>
+  );
 }
 
 export default HomeView;

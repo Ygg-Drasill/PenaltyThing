@@ -1,6 +1,13 @@
 import "./App.css";
 
-import { Navigate, Outlet, Route, BrowserRouter as Router, Routes, useNavigate } from "react-router-dom";
+import {
+  Navigate,
+  Outlet,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import { Stack, Typography } from "@mui/material";
@@ -10,7 +17,13 @@ import PenaltiesView from "./components/appViews/PenaltiesView";
 import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
 import TeamView from "./components/appViews/TeamView";
-import { useHealthServiceGetHealthDatabasePing, useHealthServiceGetHealthDatabaseStats, useTeamServiceGetTeamsByUserIdKey, useUserServiceGetUserKey, useVersionServiceGetVersion } from "./components/openapi/queries";
+import {
+  useHealthServiceGetHealthDatabasePing,
+  useHealthServiceGetHealthDatabaseStats,
+  useTeamServiceGetTeamsByUserIdKey,
+  useUserServiceGetUserKey,
+  useVersionServiceGetVersion,
+} from "./components/openapi/queries";
 import TeamCreatePage from "./components/appViews/teamPages/TeamCreatePage";
 import TeamJoinPage from "./components/appViews/teamPages/TeamJoinPage";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -23,7 +36,7 @@ import TeamMemberListPage from "./components/appViews/specificTeamPages/TeamMemb
 import { AppContext, AppContextProvider } from "./components/hooks/appContext";
 import AppTray from "./components/AppTray";
 
-export const cookies = new Cookies()
+export const cookies = new Cookies();
 
 function App() {
   return (
@@ -40,13 +53,13 @@ function App() {
               <Route path="join" element={<TeamJoinPage />} />
               <Route path="list" element={<TeamListPage />} />
             </Route>
-            <Route path="team" element={<SpecificTeamView />} >
-              <Route path="laws" element={<TeamLawPage />}/>
-              <Route path="" element={<TeamMemberListPage />}/>
+            <Route path="team" element={<SpecificTeamView />}>
+              <Route path="laws" element={<TeamLawPage />} />
+              <Route path="" element={<TeamMemberListPage />} />
             </Route>
             <Route path="*" element={<NoView />} />
           </Route>
-          <Route path="*" element={<Navigate replace to={"/app/home"}/>} />
+          <Route path="*" element={<Navigate replace to={"/app/home"} />} />
         </Routes>
       </Router>
       <ReactQueryDevtools initialIsOpen={false} />
@@ -56,38 +69,56 @@ function App() {
 
 export default App;
 
-function InnerApp() { //TODO: Introduce userSession context where user cookie is passed down to components inside innerApp
-  const navigate = useNavigate()
-  const [userId, setUserId] = useState(cookies.get("userId"))
-  const [currentTeamId, setCurrentTeamId] = useState(cookies.get("teamId"))
-  const {data: version} = useVersionServiceGetVersion()
-  
+function InnerApp() {
+  //TODO: Introduce userSession context where user cookie is passed down to components inside innerApp
+  const navigate = useNavigate();
+  const [userId, setUserId] = useState(cookies.get("userId"));
+  const [currentTeamId, setCurrentTeamId] = useState(cookies.get("teamId"));
+  const { data: version } = useVersionServiceGetVersion();
+
   useEffect(() => {
     if (!userId) {
-      navigate("/login")
+      navigate("/login");
     } else {
-      setUserId(userId)
+      setUserId(userId);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const portrait = window.matchMedia("(orientation: portrait)").matches;
 
   return (
-    <AppContextProvider userId={userId} currentTeamId={currentTeamId} setCurrentTeamId={setCurrentTeamId}>
-      <Stack direction={portrait ? "column-reverse" : "row"} height={"100vh"} padding={portrait ? 2 : 4} gap={portrait ? 2 : 4} boxSizing={"border-box"}>
+    <AppContextProvider
+      userId={userId}
+      currentTeamId={currentTeamId}
+      setCurrentTeamId={setCurrentTeamId}
+    >
+      <Stack
+        direction={portrait ? "column-reverse" : "row"}
+        height={"100vh"}
+        padding={portrait ? 2 : 4}
+        gap={portrait ? 2 : 4}
+        boxSizing={"border-box"}
+      >
         <AppTray />
         <Outlet />
       </Stack>
-      {!portrait && <Typography position={"absolute"} bottom={0} ml={4} color={"background.default"}>v{version}</Typography>}
+      <Typography
+        position={"absolute"}
+        bottom={0}
+        ml={4}
+        color={"background.default"}
+      >
+        v{version}
+      </Typography>
     </AppContextProvider>
-  )
+  );
 }
 
 function NoView() {
-  return <AppView title="404">
-    <Typography>
-      Page does not exist
-    </Typography>
-  </AppView>
+  return (
+    <AppView title="404">
+      <Typography>Page does not exist</Typography>
+    </AppView>
+  );
 }
