@@ -18,14 +18,14 @@ import { cookies } from "../App";
 
 export default function RegisterPage() {
   const registerUserMutation = useUserServiceRegisterUser();
-  const [firstName, setFirstName] = useState<string>()
-  const [lastName, setLastName] = useState<string>()
-  const [username, setUsername] = useState<string>()
-  const [email, setEmail] = useState<string>()
-  const [password, setPassword] = useState<string>()
-  const [passwordConfirm, setPasswordConfirm] = useState<string>()
+  const [firstName, setFirstName] = useState<string>();
+  const [lastName, setLastName] = useState<string>();
+  const [username, setUsername] = useState<string>();
+  const [email, setEmail] = useState<string>();
+  const [password, setPassword] = useState<string>();
+  const [passwordConfirm, setPasswordConfirm] = useState<string>();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const registerSubmissionHandler = (event: React.FormEvent) => {
     event.preventDefault();
@@ -34,25 +34,28 @@ export default function RegisterPage() {
       return;
     }
 
-    registerUserMutation.mutate({
-      request: {
-        username: username,
-        email: email,
-        password: password,
-        firstName: firstName,
-        lastName: lastName,
+    registerUserMutation.mutate(
+      {
+        request: {
+          username: username,
+          email: email,
+          password: password,
+          firstName: firstName,
+          lastName: lastName,
+        },
       },
-    }, {
+      {
         onSuccess: (data) => {
-            cookies.set("userId", data.id, {
-              path: "app/"
-            })
-            navigate("/app/home")
+          cookies.set("userId", data.id, {
+            path: "app/",
+          });
+          navigate("/app/home");
         },
         onError: (data) => {
-            console.log(data);
-        }
-    });
+          console.log(data);
+        },
+      },
+    );
   };
 
   return (

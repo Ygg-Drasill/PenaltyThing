@@ -1,10 +1,7 @@
-import { Box } from "@mui/material"
+import { Box } from "@mui/material";
 
 function TeamJoinPage() {
-
-    return (
-        <Box></Box>
-    )
+  return <Box></Box>;
 }
 
-export default TeamJoinPage
+export default TeamJoinPage;
