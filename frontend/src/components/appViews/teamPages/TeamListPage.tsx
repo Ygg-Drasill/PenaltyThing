@@ -12,6 +12,10 @@ function TeamListPage() {
         return <LinearProgress />
     }
 
+    if (!appContext.teams.data) {
+        return <Typography>No teams found</Typography>
+    }
+
     return (
         <Stack gap={1} mt={4} mx={2}>
             {appContext.teams.data.map((team) => <TeamListItem team={team} setTeamId={appContext.setCurrentTeamId} />)}
