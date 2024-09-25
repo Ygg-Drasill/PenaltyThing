@@ -17,7 +17,7 @@ import (
 
 var (
 	address = os.Getenv("API_BASE_ADDRESS")
-	version = handlers.NewVersionNumber(0, 1, 0)
+	version = handlers.NewVersionNumber(0, 0, 1)
 )
 
 const (
