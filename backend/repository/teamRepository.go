@@ -83,3 +83,9 @@ func (repo *Repository) GetTeamsByUserId(userId string) ([]models.Team, error) {
 
 	return teams, nil
 }
+
+func (repo *Repository) UserInTeam(userId string, teamId string) bool {
+	var exists bool
+	repo.db.Raw("SELECT EXISTS(SELECT FROM team_members WHERE user_id = ? AND team_id = ?)", userId, teamId).Scan(&exists)
+	return exists
+}

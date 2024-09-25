@@ -79,6 +79,11 @@ func (db *DbContext) AddUserToTeam(ctx *gin.Context) {
 		return
 	}
 
+	if !db.repo.UserInTeam(req.userId, req.teamId) {
+		ctx.String(http.StatusBadRequest, "user is already added to the team")
+		return
+	}
+
 	if err := db.repo.AddUserToTeam(req.userId, req.teamId); err != nil {
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
