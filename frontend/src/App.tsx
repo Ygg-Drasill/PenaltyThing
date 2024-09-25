@@ -61,7 +61,7 @@ function InnerApp() { //TODO: Introduce userSession context where user cookie is
   const [userId, setUserId] = useState(cookies.get("userId"))
   const [currentTeamId, setCurrentTeamId] = useState(cookies.get("teamId"))
   const {data: version} = useVersionServiceGetVersion()
-
+  
   useEffect(() => {
     if (!userId) {
       navigate("/login")
@@ -79,7 +79,7 @@ function InnerApp() { //TODO: Introduce userSession context where user cookie is
         <AppTray />
         <Outlet />
       </Stack>
-      <Typography position={"absolute"} bottom={0} ml={4} color={"background.default"}>v{version}</Typography>
+      {!portrait && <Typography position={"absolute"} bottom={0} ml={4} color={"background.default"}>v{version}</Typography>}
     </AppContextProvider>
   )
 }
