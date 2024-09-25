@@ -18,22 +18,16 @@ import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
 import TeamView from "./components/appViews/TeamView";
 import {
-  useHealthServiceGetHealthDatabasePing,
-  useHealthServiceGetHealthDatabaseStats,
-  useTeamServiceGetTeamsByUserIdKey,
-  useUserServiceGetUserKey,
   useVersionServiceGetVersion,
 } from "./components/openapi/queries";
 import TeamCreatePage from "./components/appViews/teamPages/TeamCreatePage";
 import TeamJoinPage from "./components/appViews/teamPages/TeamJoinPage";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { TeamService, UserService } from "./components/openapi/requests";
-import { useQuery } from "@tanstack/react-query";
 import TeamListPage from "./components/appViews/teamPages/TeamListPage";
 import TeamLawPage from "./components/appViews/specificTeamPages/TeamLawPage";
 import SpecificTeamView from "./components/appViews/SpecificTeamView";
 import TeamMemberListPage from "./components/appViews/specificTeamPages/TeamMemberListPage";
-import { AppContext, AppContextProvider } from "./components/hooks/appContext";
+import { AppContextProvider } from "./components/hooks/appContext";
 import AppTray from "./components/AppTray";
 
 export const cookies = new Cookies();
