@@ -34,24 +34,40 @@ function userInitials(user: UserInfo | undefined) {
 }
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
-  '& .MuiBadge-badge': {
+  "& .MuiBadge-badge": {
     right: 8,
     top: 8,
     border: `2px solid ${theme.palette.background.default}`,
-    padding: '6px 6px',
+    padding: "6px 6px",
     color: theme.palette.error.contrastText,
   },
 }));
 
-function AppTrayButton(props: { to: string; icon: React.ReactElement, notifications: number }) {
+function AppTrayButton(props: {
+  to: string;
+  icon: React.ReactElement;
+  notifications: number;
+}) {
   const location = useLocation();
   const isActive = location.pathname === props.to;
   const bgColor = isActive ? "#23262b" : "background.default";
 
   return (
     <Link component={RouterLink} to={props.to} draggable={false}>
-      <StyledBadge badgeContent={props.notifications.toString()} color="error" invisible={props.notifications < 1}>
-        <Button variant="outlined" color="secondary" sx={{ height: "4rem", bgcolor: bgColor, ":hover": {bgcolor: bgColor}}}>
+      <StyledBadge
+        badgeContent={props.notifications.toString()}
+        color="error"
+        invisible={props.notifications < 1}
+      >
+        <Button
+          variant="outlined"
+          color="secondary"
+          sx={{
+            height: "4rem",
+            bgcolor: bgColor,
+            ":hover": { bgcolor: bgColor },
+          }}
+        >
           {props.icon}
         </Button>
       </StyledBadge>
@@ -62,26 +78,28 @@ function AppTrayButton(props: { to: string; icon: React.ReactElement, notificati
 function AppTray() {
   const appContext = useAppContext();
   const user = appContext.user.data;
-  const userInfoResult = useUserServiceGetUserInfo({id: user?.id}, null, {enabled: !!user?.id})
-  const userInfo = userInfoResult.data
+  const userInfoResult = useUserServiceGetUserInfo({ id: user?.id }, null, {
+    enabled: !!user?.id,
+  });
+  const userInfo = userInfoResult.data;
   const [accountPopperAnchor, setAccountPopperAnchor] =
-  useState<null | HTMLElement>(null);
-  
+    useState<null | HTMLElement>(null);
+
   const handleToggleAccountPopper = (e: React.MouseEvent<HTMLElement>) => {
     setAccountPopperAnchor(accountPopperAnchor ? null : e.currentTarget);
   };
-  
+
   const portrait = window.matchMedia("(orientation: portrait)").matches;
   const accountPopperOpen = Boolean(accountPopperAnchor);
 
   if (userInfoResult.isLoading) {
-    return <CircularProgress />
+    return <CircularProgress />;
   }
 
   if (!userInfoResult.data) {
-    return <Typography>user info not found</Typography>
+    return <Typography>user info not found</Typography>;
   }
-  
+
   return (
     <Paper sx={{ backgroundColor: "background.default" }}>
       <Stack
@@ -90,13 +108,35 @@ function AppTray() {
         direction={portrait ? "row" : "column"}
         justifyContent={"space-between"}
       >
-        <Stack height={"100%"} minWidth={"1rem"} padding={1} gap={1} direction={portrait ? "row" : "column"}>
-          <AppTrayButton to="/app/home" icon={<HouseSharp />} 
-            notifications={appContext.notifications.data?.filter(n => n.type == "INVITATION").length ?? 0}/>
-          <AppTrayButton to="/app/penalties" icon={<RequestQuoteSharp />} 
-            notifications={appContext.notifications.data?.filter(n => n.type == "PENALTY").length ?? 0}/>
-          <AppTrayButton to="/app/teams" icon={<WorkspacesSharp />} 
-            notifications={0}/>
+        <Stack
+          height={"100%"}
+          minWidth={"1rem"}
+          padding={1}
+          gap={1}
+          direction={portrait ? "row" : "column"}
+        >
+          <AppTrayButton
+            to="/app/home"
+            icon={<HouseSharp />}
+            notifications={
+              appContext.notifications.data?.filter(
+                (n) => n.type == "INVITATION",
+              ).length ?? 0
+            }
+          />
+          <AppTrayButton
+            to="/app/penalties"
+            icon={<RequestQuoteSharp />}
+            notifications={
+              appContext.notifications.data?.filter((n) => n.type == "PENALTY")
+                .length ?? 0
+            }
+          />
+          <AppTrayButton
+            to="/app/teams"
+            icon={<WorkspacesSharp />}
+            notifications={0}
+          />
         </Stack>
         <Box
           display={"flex"}

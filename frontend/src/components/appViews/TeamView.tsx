@@ -1,14 +1,14 @@
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import { Button, Link, Stack, Typography } from '@mui/material';
-import { ReactNode } from 'react';
-import { Navigate, Outlet, Link as RouterLink } from 'react-router-dom';
-import AppView from './AppView';
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import { Button, Link, Stack, Typography } from "@mui/material";
+import { ReactNode } from "react";
+import { Navigate, Outlet, Link as RouterLink } from "react-router-dom";
+import AppView from "./AppView";
 
 function TeamView() {
   return (
-    <AppView title={'Team'} barComponent={<TeamViewNavbar />}>
-      <Navigate to='list'></Navigate>
+    <AppView title={"Team"} barComponent={<TeamViewNavbar />}>
+      <Navigate to="list"></Navigate>
       <Outlet />
     </AppView>
   );
@@ -16,16 +16,16 @@ function TeamView() {
 
 function TeamViewNavbar() {
   return (
-    <Stack width={'100%'} direction='row' justifyContent={'flex-end'} gap={4}>
+    <Stack width={"100%"} direction="row" justifyContent={"flex-end"} gap={4}>
       <IconWithText
-        path='/app/teams/create'
+        path="/app/teams/create"
         icon={<AddCircleIcon />}
-        name='Create'
+        name="Create"
       />
       <IconWithText
-        path='/app/teams/join'
+        path="/app/teams/join"
         icon={<GroupAddIcon />}
-        name='Join'
+        name="Join"
       />
     </Stack>
   );

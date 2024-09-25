@@ -25,17 +25,22 @@ export default function LoginPage() {
   const handleLoginSubmission = (e: React.FormEvent) => {
     e.preventDefault();
 
-    authenticationMutation.mutate({
-      request: {
-        email: email,
-        password: password,
-      }},{
+    authenticationMutation.mutate(
+      {
+        request: {
+          email: email,
+          password: password,
+        },
+      },
+      {
         onSuccess: (data) => {
-        cookies.set("userId", data.id, {
-          path: "app/",
-        });
-        navigate("/app/home");
-      }});
+          cookies.set("userId", data.id, {
+            path: "app/",
+          });
+          navigate("/app/home");
+        },
+      },
+    );
   };
 
   return (
