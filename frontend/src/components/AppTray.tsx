@@ -22,7 +22,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import { UserInfo } from "./openapi/requests";
 import useAppContext from "./hooks/appContext";
 import { useUserServiceGetUserInfo } from "./openapi/queries";
@@ -44,10 +44,14 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
 }));
 
 function AppTrayButton(props: { to: string; icon: React.ReactElement, notifications: number }) {
+  const location = useLocation();
+  const isActive = location.pathname === props.to;
+  const bgColor = isActive ? "#23262b" : "background.default";
+
   return (
     <Link component={RouterLink} to={props.to} draggable={false}>
       <StyledBadge badgeContent={props.notifications.toString()} color="error" invisible={props.notifications < 1}>
-        <Button variant="outlined" color="secondary" sx={{ height: "4rem" }}>
+        <Button variant="outlined" color="secondary" sx={{ height: "4rem", bgcolor: bgColor, ":hover": {bgcolor: bgColor}}}>
           {props.icon}
         </Button>
       </StyledBadge>
@@ -56,17 +60,18 @@ function AppTrayButton(props: { to: string; icon: React.ReactElement, notificati
 }
 
 function AppTray() {
-  const appContext = useAppContext()
+  const appContext = useAppContext();
   const user = appContext.user.data;
   const userInfoResult = useUserServiceGetUserInfo({id: user?.id}, null, {enabled: !!user?.id})
   const userInfo = userInfoResult.data
   const [accountPopperAnchor, setAccountPopperAnchor] =
-    useState<null | HTMLElement>(null);
-
+  useState<null | HTMLElement>(null);
+  
   const handleToggleAccountPopper = (e: React.MouseEvent<HTMLElement>) => {
     setAccountPopperAnchor(accountPopperAnchor ? null : e.currentTarget);
   };
-
+  
+  const portrait = window.matchMedia("(orientation: portrait)").matches;
   const accountPopperOpen = Boolean(accountPopperAnchor);
 
   if (userInfoResult.isLoading) {
@@ -82,10 +87,10 @@ function AppTray() {
       <Stack
         height={"100%"}
         boxSizing={"content-box"}
-        direction={"column"}
+        direction={portrait ? "row" : "column"}
         justifyContent={"space-between"}
       >
-        <Stack height={"100%"} minWidth={"1rem"} padding={1} gap={1}>
+        <Stack height={"100%"} minWidth={"1rem"} padding={1} gap={1} direction={portrait ? "row" : "column"}>
           <AppTrayButton to="/app/home" icon={<HouseSharp />} 
             notifications={appContext.notifications.data?.filter(n => n.type == "INVITATION").length ?? 0}/>
           <AppTrayButton to="/app/penalties" icon={<RequestQuoteSharp />} 
