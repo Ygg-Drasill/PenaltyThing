@@ -1,4 +1,4 @@
 #!/bin/bash
 
-swag init -g ./main.go
 swag fmt
+swag init -g ./main.go --parseDependency --parseInternal  --parseDepth 0 -o api/docs

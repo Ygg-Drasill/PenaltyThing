@@ -1,105 +1,151 @@
-import { HouseSharp, RequestQuoteSharp, WorkspacesSharp } from "@mui/icons-material";
+import { HouseSharp, RequestQuoteSharp, WorkspacesSharp } from '@mui/icons-material'
 import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  Fade,
-  IconButton,
-  Link,
-  Paper,
-  Popper,
-  Stack,
-  Typography,
-} from "@mui/material";
-import React from "react";
-import { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
-import { useUserServiceGetUser } from "./openapi/queries";
-import Cookies from "universal-cookie";
-import { Member } from "./openapi/requests";
+	Avatar,
+	Badge,
+	BadgeProps,
+	Box,
+	Button,
+	Card,
+	CircularProgress,
+	ClickAwayListener,
+	Fade,
+	IconButton,
+	Link,
+	Paper,
+	Popper,
+	Stack,
+	styled,
+	Typography,
+} from '@mui/material'
+import React, { useState } from 'react'
+import { Link as RouterLink, useLocation } from 'react-router-dom'
+import { UserInfo } from './openapi/requests'
+import useAppContext from './hooks/appContext'
+import { useUserServiceGetUserInfo } from './openapi/queries'
 
-function userInitials(user: Member) {
-  const firstInitial = user.firstName?.slice(0, 1).toLocaleUpperCase() ?? ""
-  const secondInitial = user.lastName?.slice(0, 1).toLocaleUpperCase() ?? ""
-  return firstInitial + secondInitial
+function userInitials(user: UserInfo | undefined) {
+	const firstInitial = user?.firstName?.slice(0, 1).toLocaleUpperCase() ?? ''
+	const secondInitial = user?.lastName?.slice(0, 1).toLocaleUpperCase() ?? ''
+	return firstInitial + secondInitial
 }
 
-function AppTrayButton(props: { to: string, icon: React.ReactElement }) {
-    return (
-    <Link component={RouterLink} to={props.to}>
-        <Button variant="outlined" color="secondary" sx={{ height: "4rem" }}>
-        {props.icon}
-        </Button>
-    </Link>
-  );
+const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+	'& .MuiBadge-badge': {
+		right: 8,
+		top: 8,
+		border: `2px solid ${theme.palette.background.default}`,
+		padding: '6px 6px',
+		color: theme.palette.error.contrastText,
+	},
+}))
+
+function AppTrayButton(props: { to: string; icon: React.ReactElement; notifications: number }) {
+	const location = useLocation()
+	const isActive = location.pathname === props.to
+	const bgColor = isActive ? '#23262b' : 'background.default'
+
+	return (
+		<Link component={RouterLink} to={props.to} draggable={false}>
+			<StyledBadge
+				badgeContent={props.notifications.toString()}
+				color='error'
+				invisible={props.notifications < 1}
+			>
+				<Button
+					variant='outlined'
+					color='secondary'
+					sx={{
+						height: '4rem',
+						bgcolor: bgColor,
+						':hover': { bgcolor: bgColor },
+					}}
+				>
+					{props.icon}
+				</Button>
+			</StyledBadge>
+		</Link>
+	)
 }
 
 function AppTray() {
-  const cookies = new Cookies()
-  const user = useUserServiceGetUser({id: cookies.get("userId")})
-  const [accountPopperAnchor, setAccountPopperAnchor] =
-    useState<null | HTMLElement>(null);
+	const appContext = useAppContext()
+	const user = appContext.user.data
+	const userInfoResult = useUserServiceGetUserInfo({ id: user?.id }, null, {
+		enabled: !!user?.id,
+	})
+	const userInfo = userInfoResult.data
+	const [accountPopperAnchor, setAccountPopperAnchor] = useState<null | HTMLElement>(null)
 
-  const handleToggleAccountPopper = (e: React.MouseEvent<HTMLElement>) => {
-    setAccountPopperAnchor(accountPopperAnchor ? null : e.currentTarget);
-  };
+	const handleToggleAccountPopper = (e: React.MouseEvent<HTMLElement>) => {
+		setAccountPopperAnchor(accountPopperAnchor ? null : e.currentTarget)
+	}
 
-  const accountPopperOpen = Boolean(accountPopperAnchor);
+	const portrait = window.matchMedia('(orientation: portrait)').matches
+	const accountPopperOpen = Boolean(accountPopperAnchor)
 
-  return (
-    <Paper sx={{ backgroundColor: "background.default" }}>
-      <Stack
-        height={"100%"}
-        boxSizing={"content-box"}
-        direction={"column"}
-        justifyContent={"space-between"}
-      >
-        <Stack height={"100%"} minWidth={"1rem"} padding={1} gap={1}>
-          <AppTrayButton to="/app/home" icon={<HouseSharp />} />
-          <AppTrayButton to="/app/penalties" icon={<RequestQuoteSharp />} />
-          <AppTrayButton to="/app/teams" icon={<WorkspacesSharp />} />
-        </Stack>
-        <Box
-          display={"flex"}
-          padding={1}
-          height={"4rem"}
-          alignItems={"center"}
-          justifyContent={"center"}
-        >
-          <IconButton
-            type="button"
-            color="info"
-            onClick={handleToggleAccountPopper}
-          >
-            <Avatar sx={{ backgroundColor: "secondary.main" }}>{user.data ? userInitials(user.data) : "  "}</Avatar>
-          </IconButton>
-        </Box>
-      </Stack>
+	if (userInfoResult.isLoading) {
+		return <CircularProgress />
+	}
 
+	if (!userInfoResult.data) {
+		return <Typography>user info not found</Typography>
+	}
 
+	return (
+		<Paper sx={{ backgroundColor: 'background.default' }}>
+			<Stack
+				height={'100%'}
+				boxSizing={'content-box'}
+				direction={portrait ? 'row' : 'column'}
+				justifyContent={'space-between'}
+			>
+				<Stack height={'100%'} minWidth={'1rem'} padding={1} gap={1} direction={portrait ? 'row' : 'column'}>
+					<AppTrayButton
+						to='/app/home'
+						icon={<HouseSharp />}
+						notifications={appContext.notifications.data?.filter(n => n.type == 'INVITATION').length ?? 0}
+					/>
+					<AppTrayButton
+						to='/app/penalties'
+						icon={<RequestQuoteSharp />}
+						notifications={appContext.notifications.data?.filter(n => n.type == 'PENALTY').length ?? 0}
+					/>
+					<AppTrayButton to='/app/teams' icon={<WorkspacesSharp />} notifications={0} />
+				</Stack>
+				<Box display={'flex'} padding={1} height={'4rem'} alignItems={'center'} justifyContent={'center'}>
+					<ClickAwayListener onClickAway={() => setAccountPopperAnchor(null)}>
+						<IconButton type='button' color='info' onClick={handleToggleAccountPopper}>
+							<Avatar sx={{ backgroundColor: 'secondary.main' }}>
+								{user ? userInitials(userInfo) : '  '}
+							</Avatar>
+						</IconButton>
+					</ClickAwayListener>
+				</Box>
+			</Stack>
 
-      <Popper
-        open={accountPopperOpen}
-        anchorEl={accountPopperAnchor}
-        placement="right-end"
-        transition
-      >
-        {({ TransitionProps }) => (
-          <Fade {...TransitionProps} timeout={100}>
-            <Card sx={{marginLeft: "2rem"}}>
-                <Stack direction={"column"} padding={2} gap={2}>
-                    <Typography>Account</Typography>
-                    <Link component={RouterLink} to={"/login"}>
-                        <Button variant="contained" color="error">Logout</Button>
-                    </Link>
-                </Stack>
-            </Card>
-          </Fade>
-        )}
-      </Popper>
-    </Paper>
-  );
+			<Popper open={accountPopperOpen} anchorEl={accountPopperAnchor} placement='right-end' transition>
+				{({ TransitionProps }) => (
+					<Fade {...TransitionProps} timeout={100}>
+						<Card sx={{ marginLeft: '2rem' }}>
+							<Stack direction={'column'} padding={2} gap={2}>
+								<Stack direction={'row'} gap={2}>
+									<Typography variant='subtitle1' color={'primary.light'}>
+										Account
+									</Typography>
+									<Link component={RouterLink} to={'/login'}>
+										<Button variant='contained' color='error'>
+											Logout
+										</Button>
+									</Link>
+								</Stack>
+								<Typography variant='subtitle2'>{`${userInfo.firstName} ${userInfo.lastName}`}</Typography>
+							</Stack>
+						</Card>
+					</Fade>
+				)}
+			</Popper>
+		</Paper>
+	)
 }
 
-export default AppTray;
+export default AppTray

@@ -1,0 +1,31 @@
+services:
+  backend:
+    image: ghcr.io/ygg-drasill/penaltything/backend-dev:dev
+    container_name: backend-container
+    env_file:
+      - ./backend/.env
+    networks:
+      - app-network
+
+  frontend:
+    image: ghcr.io/ygg-drasill/penaltything/frontend-dev:dev
+    container_name: frontend-container
+    networks:
+      - app-network
+
+  nginx:
+    build:
+      context: ./nginx
+    image: nginx-image
+    container_name: nginx-container
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

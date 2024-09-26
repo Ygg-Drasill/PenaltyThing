@@ -24,3 +24,13 @@ func (repo *Repository) AddPenaltyToUser(targetId, issuerId, lawId, comment stri
 	repo.db.Save(entry)
 	return entry, nil
 }
+
+func (repo *Repository) GetPenaltiesByUserId(userId string) ([]models.PenaltyEntry, error) {
+	var penalties []models.PenaltyEntry
+	var err error
+	err = repo.db.Where("userId = ?", userId).Find(&penalties).Error
+	if err != nil {
+		return nil, err
+	}
+	return penalties, nil
+}

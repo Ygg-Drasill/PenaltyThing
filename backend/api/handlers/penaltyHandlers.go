@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -30,10 +31,6 @@ func (db *DbContext) AddPenalty(ctx *gin.Context) {
 	if err := ctx.BindJSON(&req); err != nil {
 		fmt.Print(err.Error())
 	}
-	if req.TargetUserId == req.IssuerUserId {
-		ctx.String(http.StatusBadRequest, "The target member must be different to the issuer")
-		return
-	}
 
 	if !db.repo.UserExists(req.IssuerUserId) {
 		ctx.String(http.StatusBadRequest, "Unable to find existing user with given issuer id")
@@ -51,5 +48,24 @@ func (db *DbContext) AddPenalty(ctx *gin.Context) {
 		return
 	}
 
+	db.repo.CreateNotification(req.TargetUserId, models.PENALTY, []byte(newPenaltyEntry.Id))
 	ctx.JSON(http.StatusOK, newPenaltyEntry)
+}
+
+type GetPenaltyHistoryResponse struct {
+	PageNumber     int                 `json:"pageNumber"`
+	PageSize       int                 `json:"pageSize"`
+	TotalCount     int                 `json:"totalCount"`
+	PenaltyEntries models.PenaltyEntry `json:"penaltyEntries"`
+} //	@name	GetPenaltyHistoryResponse
+
+// GetPenaltyHistory
+//
+//	@Id			getPenaltyHistory
+//	@Param		userId	query	string	true	"id"
+//	@Produce	json
+//	@Success	200	{object}	GetPenaltyHistoryResponse
+//	@Router		/penalty/getHistory [get]
+func (db *DbContext) GetPenaltyHistory(ctx *gin.Context) {
+	var req GetPenaltyHistoryResponse
 }
