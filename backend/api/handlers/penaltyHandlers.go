@@ -67,5 +67,5 @@ type GetPenaltyHistoryResponse struct {
 //	@Success	200	{object}	GetPenaltyHistoryResponse
 //	@Router		/penalty/getHistory [get]
 func (db *DbContext) GetPenaltyHistory(ctx *gin.Context) {
-	var req GetPenaltyHistoryResponse
+	//var req GetPenaltyHistoryResponse
 }
