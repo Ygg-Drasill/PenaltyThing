@@ -1,9 +1,16 @@
 import { StyleSheet, Text, View , ImageBackground, Pressable} from "react-native";
 import { Link } from "expo-router";
+import { useHealthServiceGetHealth, useUserServiceAuthenticateUser } from "./openapi/queries";
 
 export default function Page() {
 
   const image = {uri: 'https://wallpapers-clan.com/wp-content/uploads/2023/11/cartoon-forest-path-art-wallpaper.jpg'}
+
+  const test = useUserServiceAuthenticateUser()
+  test.mutate({request:{email:"",password:""}})
+
+
+
   return (
     <View style={styles.container}>
       <ImageBackground source={image} style={styles.image}>

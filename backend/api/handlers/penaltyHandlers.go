@@ -2,9 +2,10 @@ package handlers
 
 import (
 	"fmt"
+	"net/http"
+
 	"github.com/Ygg-Drasill/PenaltyThing/backend/models"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 type AddPenaltyRequest struct {
@@ -67,5 +68,5 @@ type GetPenaltyHistoryResponse struct {
 //	@Success	200	{object}	GetPenaltyHistoryResponse
 //	@Router		/penalty/getHistory [get]
 func (db *DbContext) GetPenaltyHistory(ctx *gin.Context) {
-	var req GetPenaltyHistoryResponse
+	//var req GetPenaltyHistoryResponse
 }

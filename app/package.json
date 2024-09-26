@@ -6,15 +6,20 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "generate-api:base": "openapi-rq -o ./app/openapi -c axios",
+		"generate-api:local": "npm run generate-api:base -- -i ../backend/api/docs/swagger.json --base http://localhost:9000/api/v1",
+		"generate-api:deploy": "npm run generate-api:base -- -i ./docs/swagger.json --base http://api.penaltything.social/api/v1"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
+    "@tanstack/react-query": "^5.29.2",
     "@types/react": "~18.2.45",
-    "expo": "~50.0.14",
+    "axios": "^1.6.8",
+    "expo": "^51.0.34",
     "expo-constants": "~15.4.5",
     "expo-linking": "~6.2.2",
     "expo-router": "~3.4.8",
@@ -24,13 +29,11 @@
     "react-native-paper": "^5.12.3",
     "react-native-safe-area-context": "4.8.2",
     "react-native-screens": "~3.29.0",
-    "typescript": "^5.3.0",
-    "@tanstack/react-query": "^5.29.2",
-    "axios": "^1.6.8"
+    "typescript": "^5.3.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0",
-    "@7nohe/openapi-react-query-codegen": "^1.0.6"
+    "@7nohe/openapi-react-query-codegen": "^1.0.6",
+    "@babel/core": "^7.20.0"
   },
   "private": true
 }
