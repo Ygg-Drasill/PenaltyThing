@@ -13,7 +13,8 @@ import (
 const hashCost = 14
 
 type RegisterUserRequest struct {
-	Name      string `json:"name"`
+	Username  string `json:"username"`
+	Email     string `json:"email"`
 	Password  string `json:"password"`
 	FirstName string `json:"firstName"`
 	LastName  string `json:"lastName"`
@@ -26,7 +27,7 @@ type RegisterUserRequest struct {
 //	@Schemes
 //	@Description	Register new user, given password will be encrypted on backend. This is subject to change
 //	@Tags			user
-//	@Param			request body RegisterUserRequest true "query params"
+//	@Param			request	body	RegisterUserRequest	true	"query params"
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{object}	User
@@ -39,11 +40,27 @@ func (db *DbContext) RegisterUser(ctx *gin.Context) {
 	}
 
 	if len(req.FirstName) == 0 || len(req.LastName) == 0 {
-		ctx.String(http.StatusBadRequest, "Missing fields")
+		ctx.String(http.StatusBadRequest, "First and last name must be provided")
 		return
 	}
-	if len(req.Name) == 0 || len(req.Password) == 0 {
+	if len(req.Username) == 0 || len(req.Password) == 0 {
 		ctx.String(http.StatusBadRequest, "Username and password must be provided")
+		return
+	}
+
+	if len(req.Email) == 0 {
+		ctx.String(http.StatusBadRequest, "Email must be provided")
+		return
+	}
+
+	if !strings.Contains(req.Email, "@") {
+		ctx.String(http.StatusBadRequest, "Email must be provided")
+		return
+	}
+
+	c := strings.Split(req.Email, "@")
+	if len(c) != 2 {
+		ctx.String(http.StatusBadRequest, "Email must be provided")
 		return
 	}
 
@@ -51,7 +68,7 @@ func (db *DbContext) RegisterUser(ctx *gin.Context) {
 	var hash []byte
 	hash, err = bcrypt.GenerateFromPassword([]byte(req.Password), hashCost)
 
-	newUser, err := db.repo.AddUser(req.Name, string(hash), req.FirstName, req.LastName)
+	newUser, err := db.repo.AddUser(req.Username, req.Email, string(hash), req.FirstName, req.LastName)
 	if err != nil {
 		fmt.Println(err)
 		ctx.String(http.StatusInternalServerError, err.Error())
@@ -70,9 +87,9 @@ type GetUserRequest struct {
 //	@Schemes
 //	@Description	get user
 //	@Tags			user
-//	@Param			id query string true "User search by id"
+//	@Param			id	query	string	true	"User search by id"
 //	@Produce		json
-//	@Success		200	{object} UserPublic
+//	@Success		200	{object}	UserPublic
 //	@Router			/user/get [get]
 func (db *DbContext) GetUser(ctx *gin.Context) {
 	var query GetUserRequest
@@ -89,6 +106,37 @@ func (db *DbContext) GetUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, *user.ToUserResponse())
 }
 
+type GetUserInfoRequest struct {
+	Id string `json:"id" form:"id"`
+	//TODO: add user token, to validate authenticity
+} //@name GetUserInfoRequest
+
+// GetUserInfo
+//
+//	@Summary	Get user info
+//	@Id			getUserInfo
+//	@Schemes
+//	@Description	get detailed user info
+//	@Tags			user
+//	@Param			id	query	string	true	"User search by id"
+//	@Produce		json
+//	@Success		200	{object}	UserInfo
+//	@Router			/user/getInfo [get]
+func (db *DbContext) GetUserInfo(ctx *gin.Context) {
+	var query GetUserInfoRequest
+	if res := ctx.ShouldBindQuery(&query); res != nil {
+		ctx.String(http.StatusInternalServerError, res.Error())
+		return
+	}
+
+	user, err := db.repo.GetUserById(query.Id)
+	if err != nil {
+		ctx.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+	ctx.JSON(http.StatusOK, *user.ToUserInfoResponse())
+}
+
 // GetUsers godoc
 //
 //	@Summary		Get all users
@@ -96,7 +144,7 @@ func (db *DbContext) GetUser(ctx *gin.Context) {
 //	@Tags			user
 //	@Accept			json,json-api
 //	@Produce		json,json-api
-//	@Success		200	{object}	[]models.UserPublic
+//	@Success		200	{array}		UserPublic
 //	@Failure		500	{string}	string	"Internal server error"
 //	@Router			/user/all [get]
 func (db *DbContext) GetUsers(g *gin.Context) {
@@ -111,7 +159,7 @@ func (db *DbContext) GetUsers(g *gin.Context) {
 		users = append(users, *user.ToUserResponse())
 	}
 
-	g.JSON(http.StatusOK, gin.H{"users": users})
+	g.JSON(http.StatusOK, users)
 }
 
 type GetUsersBatchRequest struct {
@@ -125,9 +173,9 @@ type GetUsersBatchRequest struct {
 //	@Schemes
 //	@Description	Get public users as batch from list of members
 //	@Tags			user
-//	@Param			ids query string true "id list"
+//	@Param			ids	query	string	true	"id list"
 //	@Produce		json
-//	@Success		200	{array} UserPublic
+//	@Success		200	{array}	UserPublic
 //	@Router			/user/getMemberBatch [get]
 func (db *DbContext) GetUsersMemberBatch(ctx *gin.Context) {
 	var query GetUsersBatchRequest
@@ -152,7 +200,7 @@ func (db *DbContext) GetUsersMemberBatch(ctx *gin.Context) {
 }
 
 type AuthenticateUserRequest struct {
-	Username string `json:"username"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 } //@name AuthenticateUserRequest
 
@@ -163,9 +211,9 @@ type AuthenticateUserRequest struct {
 //	@Schemes
 //	@Description	Authenticate user using username and password
 //	@Tags			user
-//	@Param			request body AuthenticateUserRequest true "User credentials"
+//	@Param			request	body	AuthenticateUserRequest	true	"User credentials"
 //	@Produce		json
-//	@Success		200	{object} UserPublic
+//	@Success		200	{object}	UserPublic
 //	@Router			/user/authenticate [post]
 func (db *DbContext) AuthenticateUser(ctx *gin.Context) {
 	var req AuthenticateUserRequest
@@ -173,11 +221,11 @@ func (db *DbContext) AuthenticateUser(ctx *gin.Context) {
 		ctx.String(http.StatusBadRequest, err.Error())
 	}
 
-	if !authentication.AuthenticatePassword(req.Username, req.Password, db.repo) {
-		ctx.String(http.StatusUnauthorized, "Wrong username or password, please try again")
+	if !authentication.AuthenticatePassword(req.Email, req.Password, db.repo) {
+		ctx.String(http.StatusUnauthorized, "Wrong email or password, please try again")
 	}
 
-	user, err := db.repo.GetUserByUsername(req.Username)
+	user, err := db.repo.GetUserByEmail(req.Email)
 	if err != nil {
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return

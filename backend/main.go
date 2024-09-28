@@ -2,21 +2,33 @@ package main
 
 import (
 	"fmt"
-	"github.com/Ygg-Drasill/PenaltyThing/backend/docs"
-	"github.com/Ygg-Drasill/PenaltyThing/backend/handlers"
-	"github.com/Ygg-Drasill/PenaltyThing/backend/middleware"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/api/docs"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/api/handlers"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/api/middleware"
+	"github.com/Ygg-Drasill/PenaltyThing/backend/initializers"
 	"github.com/Ygg-Drasill/PenaltyThing/backend/repository"
 	"github.com/gin-gonic/gin"
 	_ "github.com/joho/godotenv/autoload"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"log"
 	"os"
 )
 
+var (
+	address = os.Getenv("API_BASE_ADDRESS")
+	version = handlers.NewVersionNumber(0, 0, 1)
+)
+
 const (
-	address  = "localhost:9000"
 	basePath = "/api/v1"
 )
+
+func init() {
+	if err := initializers.LoadSecrets(); err != nil {
+		log.Fatalf("error while loading secrets: %v", err)
+	}
+}
 
 // @title			PenaltyThing API
 // @version		1.0
@@ -30,12 +42,14 @@ func main() {
 	router.Use(middleware.CORSMiddleware())
 	docs.SwaggerInfo.Host = address
 	docs.SwaggerInfo.BasePath = basePath
+	docs.SwaggerInfo.Version = string(version)
 	v1 := router.Group(basePath)
 	{
 		user := v1.Group("/user")
 		{
 			user.GET("/all", dbContext.GetUsers)
 			user.GET("/get", dbContext.GetUser)
+			user.GET("/getInfo", dbContext.GetUserInfo)
 			user.GET("/getMemberBatch", dbContext.GetUsersMemberBatch)
 			user.POST("/register", dbContext.RegisterUser)
 			user.POST("/authenticate", dbContext.AuthenticateUser)
@@ -59,6 +73,30 @@ func main() {
 		{
 			penalty.POST("/add", dbContext.AddPenalty)
 		}
+
+		invitation := v1.Group("/invitation")
+		{
+			invitation.POST("/create", dbContext.CreateInvitation)
+			invitation.POST("/accept", dbContext.AcceptInvitation)
+		}
+
+		notification := v1.Group("/notification")
+		{
+			notification.GET("/getFiltered", dbContext.GetNotifications)
+		}
+
+		health := v1.Group("/health")
+		{
+			health.GET("/", dbContext.GetHealth)
+			health.GET("/ping", handlers.Ping)
+			database := health.Group("/database")
+			{
+				database.GET("/ping", dbContext.PingDatabase)
+				database.GET("/stats", dbContext.GetDatabaseStats)
+			}
+		}
+
+		v1.GET("/version", version.GetVersion)
 	}
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	if err := router.Run(fmt.Sprintf(":%s", os.Getenv("LISTEN_PORT"))); err != nil {

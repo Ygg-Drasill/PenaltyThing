@@ -23,7 +23,7 @@ type CreateTeamRequest struct {
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{object}	Team
-//	@Router			create [post]
+//	@Router			/team/create [post]
 func (db *DbContext) CreateTeam(ctx *gin.Context) {
 	req := CreateTeamRequest{}
 	if err := ctx.BindJSON(&req); err != nil {
@@ -79,6 +79,11 @@ func (db *DbContext) AddUserToTeam(ctx *gin.Context) {
 		return
 	}
 
+	if !db.repo.UserInTeam(req.userId, req.teamId) {
+		ctx.String(http.StatusBadRequest, "user is already added to the team")
+		return
+	}
+
 	if err := db.repo.AddUserToTeam(req.userId, req.teamId); err != nil {
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
@@ -99,7 +104,7 @@ func (db *DbContext) AddUserToTeam(ctx *gin.Context) {
 //	@Router			/team/getByUserId [get]
 func (db *DbContext) GetTeamsByUserId(ctx *gin.Context) {
 	var userId string
-	var teams []models.Team
+	teams := make([]models.Team, 0)
 	var err error
 	userId = ctx.Query("userId")
 	if !db.repo.UserExists(userId) {
@@ -111,6 +116,7 @@ func (db *DbContext) GetTeamsByUserId(ctx *gin.Context) {
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
+
 	ctx.JSON(http.StatusOK, teams)
 }
 
