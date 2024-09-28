@@ -123,6 +123,6 @@ jobs:
           context: .
           file: ./nginx/Dockerfile
           push: true
-
+          build-args: BUILD_ENV=${{ env.ENVIRONMENT }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
