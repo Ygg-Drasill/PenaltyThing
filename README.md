@@ -8,6 +8,12 @@ DB_NAME= //Name for the DB
 
 LISTEN_PORT= //DB port number
 
+### Infisical Part (Can be found under "bigsecret on discord)
+INFISICAL_CLIENT_ID=''
+INFISICAL_CLIENT_SECRET=''
+INFISICAL_WORKSPACE=''
+INFISICAL_ENVIRONMENT=''
+
 ## START BACKEND
 
 `cd backend`
