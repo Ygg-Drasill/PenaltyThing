@@ -69,6 +69,7 @@ export default function RegisterPage() {
 								onChange={e => setFirstName(e.target.value)}
 							></TextField>
 							<TextField
+								required
 								fullWidth
 								id='lastname'
 								label='Last name'
