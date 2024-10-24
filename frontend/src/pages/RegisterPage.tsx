@@ -60,6 +60,7 @@ export default function RegisterPage() {
 					<Stack gap={4}>
 						<Stack direction='row' justifyContent='space-between' gap={4}>
 							<TextField
+								required
 								fullWidth
 								id='firstname'
 								label='First name'
