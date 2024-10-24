@@ -119,22 +119,22 @@ export default function RegisterPage() {
 							</Typography>
 						</Box>
 
-						<Box alignItems={'flex-start'}>
-							<Typography
-								textAlign={'left'}
-								variant='subtitle1'
-								sx={{ color: '' }}
-							>
-								Warning: This site is still under development, we do not guarantee security.
-							</Typography>
-							<Typography
-								textAlign={'left'}
-								variant='subtitle2'
-								sx={{ color: PenaltyThingTheme.palette.text.primary }}
-							>
-								Please do not use your real password, we recommend generating one using your password manager.
-							</Typography>
-						</Box>
+						<Box display="flex" flexDirection="column" alignItems="center">
+						<Typography
+							textAlign={'left'}
+							variant='subtitle1'
+							sx={{ color: '' }}
+						>
+							Warning: This site is still under development; we do not guarantee security.
+						</Typography>
+						<Typography
+							textAlign={'left'}
+							variant='subtitle2'
+							sx={{ color: PenaltyThingTheme.palette.text.primary }}
+						>
+							Please do not use your real password; we recommend generating one using your password manager.
+						</Typography>
+					</Box>
 					</Stack>
 						
 					</Box>
