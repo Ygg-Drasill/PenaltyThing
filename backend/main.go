@@ -16,7 +16,6 @@ import (
 )
 
 var (
-	address = os.Getenv("API_BASE_ADDRESS")
 	version = handlers.NewVersionNumber(0, 0, 1)
 )
 
@@ -32,7 +31,7 @@ func init() {
 
 // @title			PenaltyThing API
 // @version		1.0
-// @contact.name	Tobias Bay
+// @contact.name	Tobias Bay Abe
 // @contact.url	http://penaltything.social/support
 // @contact.email	tab@penaltything.social
 func main() {
@@ -40,7 +39,7 @@ func main() {
 	dbContext := handlers.NewDbContext(repo)
 	router := gin.Default()
 	router.Use(middleware.CORSMiddleware())
-	docs.SwaggerInfo.Host = address
+	docs.SwaggerInfo.Host = os.Getenv("API_BASE_ADDRESS")
 	docs.SwaggerInfo.BasePath = basePath
 	docs.SwaggerInfo.Version = string(version)
 	v1 := router.Group(basePath)
