@@ -22,7 +22,7 @@ type HealthCheck struct {
 //	@Success		200	{object}	HealthCheck
 //	@Failure		500	{string}	error	message
 //	@Router			/health [get]
-func (db *DbContext) GetHealth(ctx *gin.Context) {
+func (db *DBContext) GetHealth(ctx *gin.Context) {
 	startTime := time.Now()
 	_, err := http.Get("http://penaltything.social")
 	if err != nil {
@@ -86,7 +86,7 @@ func Ping(ctx *gin.Context) {
 //	@Success		200	{string}	ping	time	in	milliseconds
 //	@Failure		500	{string}	error	message
 //	@Router			/health/database/ping [get]
-func (db *DbContext) PingDatabase(ctx *gin.Context) {
+func (db *DBContext) PingDatabase(ctx *gin.Context) {
 	startTime := time.Now()
 	err := db.repo.VerifyDatabaseConnection()
 	if err != nil {
@@ -114,7 +114,7 @@ type DBStats struct {
 //	@Success		200	{object}	DBStats
 //	@Failure		500	{string}	error	message
 //	@Router			/health/database/stats [get]
-func (db *DbContext) GetDatabaseStats(ctx *gin.Context) {
+func (db *DBContext) GetDatabaseStats(ctx *gin.Context) {
 	stats, err := db.repo.DatabaseStats()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{

@@ -125,7 +125,7 @@ type GetUserInfoRequest struct {
 //	@Produce		json
 //	@Success		200	{object}	UserInfo
 //	@Router			/user/getInfo [get]
-func (db *DbContext) GetUserInfo(ctx *gin.Context) {
+func (db *DBContext) GetUserInfo(ctx *gin.Context) {
 	var query GetUserInfoRequest
 	if res := ctx.ShouldBindQuery(&query); res != nil {
 		ctx.String(http.StatusInternalServerError, res.Error())
@@ -149,6 +149,7 @@ func (db *DbContext) GetUserInfo(ctx *gin.Context) {
 //	@Produce		json,json-api
 //	@Success		200	{array}		UserPublic
 //	@Failure		500	{string}	string	"Internal server error"
+//	@Security		Bearer
 //	@Router			/user/all [get]
 func (db *DBContext) GetUsers(ctx *gin.Context) {
 	result, err := db.repo.GetUsers()

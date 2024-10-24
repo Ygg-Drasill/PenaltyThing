@@ -1,13 +1,14 @@
 package initializers
 
 import (
+	"context"
 	"fmt"
 	"github.com/infisical/go-sdk"
 	"os"
 )
 
 func LoadSecrets() error {
-	client := infisical.NewInfisicalClient(infisical.Config{})
+	client := infisical.NewInfisicalClient(context.Background(), infisical.Config{})
 
 	_, err := client.Auth().UniversalAuthLogin(os.Getenv("INFISICAL_CLIENT_ID"), os.Getenv("INFISICAL_CLIENT_SECRET"))
 

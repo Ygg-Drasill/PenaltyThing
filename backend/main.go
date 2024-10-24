@@ -30,11 +30,14 @@ func init() {
 	}
 }
 
-// @title			PenaltyThing API
-// @version		1.0
-// @contact.name	Tobias Bay
-// @contact.url	http://penaltything.social/support
-// @contact.email	tab@penaltything.social
+// @title						PenaltyThing API
+// @version					1.0
+// @contact.name				Tobias Bay
+// @contact.url				http://penaltything.social/support
+// @contact.email				tab@penaltything.social
+// @SecurityDefinitions.apiKey	Bearer
+// @in							header
+// @name						Authorization
 func main() {
 	repo := repository.ConnectToDatabase(repository.ConnectionFromEnvironment())
 	dbContext := handlers.NewDbContext(repo)
@@ -47,7 +50,7 @@ func main() {
 	{
 		user := v1.Group("/user")
 		{
-			user.GET("/all", dbContext.GetUsers)
+			user.GET("/all", middleware.AuthenticateUser(*repo), dbContext.GetUsers)
 			user.GET("/get", dbContext.GetUser)
 			user.GET("/getInfo", dbContext.GetUserInfo)
 			user.GET("/getMemberBatch", dbContext.GetUsersMemberBatch)
