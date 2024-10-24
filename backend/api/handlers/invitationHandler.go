@@ -31,6 +31,11 @@ func (db *DbContext) CreateInvitation(ctx *gin.Context) {
 		ctx.String(http.StatusBadRequest, "Bad invitation request")
 	}
 
+	if !db.repo.UserInTeam(request.TargetUserId, request.TeamId) {
+		ctx.String(http.StatusConflict, "user is already member of this team")
+		return
+	}
+
 	invitation, err := db.repo.CreateInvitation(request.SenderUserId, request.TargetUserId, request.TeamId)
 	if err != nil {
 		ctx.String(http.StatusInternalServerError, "Unable to create invitation: "+err.Error())
@@ -85,14 +90,19 @@ func (db *DbContext) AcceptInvitation(ctx *gin.Context) {
 
 	}
 
+	err = db.repo.DeleteInvitation(request.InvitationId)
+	err = db.repo.DeleteNotification(request.NotificationId)
+
+	if !db.repo.UserInTeam(request.UserId, invitation.TeamId) {
+		ctx.String(http.StatusConflict, "user is already member of this team")
+		return
+	}
+
 	err = db.repo.AddUserToTeam(request.UserId, invitation.TeamId)
 	if err != nil {
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
-
-	err = db.repo.DeleteInvitation(request.InvitationId)
-	err = db.repo.DeleteNotification(request.NotificationId)
 
 	if err != nil {
 		ctx.String(http.StatusInternalServerError, err.Error())
