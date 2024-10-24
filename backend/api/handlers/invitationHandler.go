@@ -87,13 +87,12 @@ func (db *DbContext) AcceptInvitation(ctx *gin.Context) {
 	if request.UserId != invitation.TargetUserId {
 		ctx.String(http.StatusBadRequest, "wrong user in invitation")
 		return
-
 	}
 
 	err = db.repo.DeleteInvitation(request.InvitationId)
 	err = db.repo.DeleteNotification(request.NotificationId)
 
-	if !db.repo.UserInTeam(request.UserId, invitation.TeamId) {
+	if db.repo.UserInTeam(request.UserId, invitation.TeamId) {
 		ctx.String(http.StatusConflict, "user is already member of this team")
 		return
 	}
