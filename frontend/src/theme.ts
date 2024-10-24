@@ -28,7 +28,9 @@ export const PenaltyThingTheme = createTheme({
 		success: {
 			main: '#0A8379',
 		},
-		text: {},
+		text: {
+			primary: '#ffffff'
+		},
 	},
 	components: {
 		MuiTextField: {
