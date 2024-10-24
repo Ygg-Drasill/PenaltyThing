@@ -2,6 +2,9 @@ on:
   push:
     branches:
       - "dev"
+  pull_request:
+    branches:
+      - "dev"
 
 env:
   REGISTRY: ghcr.io
@@ -37,6 +40,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/backend-${{ env.ENVIRONMENT }}
+          tags: type=raw,value=latest
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -75,6 +79,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/frontend-${{ env.ENVIRONMENT }}
+          tags: type=raw,value=latest
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -116,6 +121,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/nginx-${{ env.ENVIRONMENT }}
+          tags: type=raw,value=latest
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -123,6 +129,7 @@ jobs:
           context: .
           file: ./nginx/Dockerfile
           push: true
-
+          build-args: |
+            build_env=${{ env.ENVIRONMENT }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

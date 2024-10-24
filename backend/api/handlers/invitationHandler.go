@@ -32,17 +32,20 @@ func (db *DBContext) CreateInvitation(ctx *gin.Context) {
 	}
 
 	invitation, err := db.repo.CreateInvitation(request.SenderUserId, request.TargetUserId, request.TeamId)
-	db.repo.CreateNotification(request.TargetUserId, models.INVITATION, []byte(invitation.Id))
 	if err != nil {
 		ctx.String(http.StatusInternalServerError, "Unable to create invitation: "+err.Error())
+		return
 	}
+
+	db.repo.CreateNotification(request.TargetUserId, models.INVITATION, []byte(invitation.Id))
 
 	ctx.JSON(http.StatusOK, invitation)
 }
 
 type AcceptInvitationRequest struct {
-	UserId       string `json:"userId"`
-	InvitationId string `json:"invitationId"`
+	UserId         string `json:"userId"`
+	InvitationId   string `json:"invitationId"`
+	NotificationId string `json:"notificationId"`
 } //@name AcceptInvitationRequest
 
 // AcceptInvitation
@@ -87,4 +90,13 @@ func (db *DBContext) AcceptInvitation(ctx *gin.Context) {
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
+
+	err = db.repo.DeleteInvitation(request.InvitationId)
+	err = db.repo.DeleteNotification(request.NotificationId)
+
+	if err != nil {
+		ctx.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+	ctx.String(http.StatusOK, "You have been added to the team")
 }

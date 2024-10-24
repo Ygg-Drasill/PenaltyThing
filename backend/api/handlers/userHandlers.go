@@ -109,6 +109,37 @@ func (db *DBContext) GetUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, *user.ToUserResponse())
 }
 
+type GetUserInfoRequest struct {
+	Id string `json:"id" form:"id"`
+	//TODO: add user token, to validate authenticity
+} //@name GetUserInfoRequest
+
+// GetUserInfo
+//
+//	@Summary	Get user info
+//	@Id			getUserInfo
+//	@Schemes
+//	@Description	get detailed user info
+//	@Tags			user
+//	@Param			id	query	string	true	"User search by id"
+//	@Produce		json
+//	@Success		200	{object}	UserInfo
+//	@Router			/user/getInfo [get]
+func (db *DbContext) GetUserInfo(ctx *gin.Context) {
+	var query GetUserInfoRequest
+	if res := ctx.ShouldBindQuery(&query); res != nil {
+		ctx.String(http.StatusInternalServerError, res.Error())
+		return
+	}
+
+	user, err := db.repo.GetUserById(query.Id)
+	if err != nil {
+		ctx.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+	ctx.JSON(http.StatusOK, *user.ToUserInfoResponse())
+}
+
 // GetUsers godoc
 //
 //	@Summary		Get all users
@@ -195,7 +226,7 @@ func (db *DBContext) LoginUser(ctx *gin.Context) {
 	}
 
 	if !authentication.AuthenticatePassword(req.Email, req.Password, db.repo) {
-		ctx.String(http.StatusUnauthorized, "Wrong username or password, please try again")
+		ctx.String(http.StatusUnauthorized, "Wrong email or password, please try again")
 	}
 
 	user, err := db.repo.GetUserByEmail(req.Email)
