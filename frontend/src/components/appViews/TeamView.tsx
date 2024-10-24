@@ -2,7 +2,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle'
 import GroupAddIcon from '@mui/icons-material/GroupAdd'
 import { Button, Link, Stack, Typography } from '@mui/material'
 import { ReactNode } from 'react'
-import { Navigate, Outlet, Link as RouterLink } from 'react-router-dom'
+import { Outlet, Link as RouterLink } from 'react-router-dom'
 import AppView from './AppView'
 
 function TeamView() {

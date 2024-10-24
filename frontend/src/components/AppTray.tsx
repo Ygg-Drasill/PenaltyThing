@@ -1,4 +1,4 @@
-import { HouseSharp, RequestQuoteSharp, WorkspacesSharp } from '@mui/icons-material'
+import { HouseSharp, RequestQuoteSharp, RotateRight, WorkspacesSharp } from '@mui/icons-material'
 import {
 	Avatar,
 	Badge,
@@ -19,9 +19,9 @@ import {
 } from '@mui/material'
 import React, { useState } from 'react'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
-import { UserInfo } from './openapi/requests'
 import useAppContext from './hooks/appContext'
 import { useUserServiceGetUserInfo } from './openapi/queries'
+import { UserInfo } from './openapi/requests'
 
 function userInitials(user: UserInfo | undefined) {
 	const firstInitial = user?.firstName?.slice(0, 1).toLocaleUpperCase() ?? ''
@@ -111,6 +111,8 @@ function AppTray() {
 						notifications={appContext.notifications.data?.filter(n => n.type == 'PENALTY').length ?? 0}
 					/>
 					<AppTrayButton to='/app/teams' icon={<WorkspacesSharp />} notifications={0} />
+					<AppTrayButton to='/app/wheel' icon={<RotateRight />} notifications={0} />
+
 				</Stack>
 				<Box display={'flex'} padding={1} height={'4rem'} alignItems={'center'} justifyContent={'center'}>
 					<ClickAwayListener onClickAway={() => setAccountPopperAnchor(null)}>

@@ -1,25 +1,26 @@
 import './App.css'
 
-import { Navigate, Outlet, Route, BrowserRouter as Router, Routes, useNavigate } from 'react-router-dom'
-import RegisterPage from './pages/RegisterPage'
-import LoginPage from './pages/LoginPage'
 import { Stack, Typography } from '@mui/material'
-import HomeView from './components/appViews/HomeView'
-import AppView from './components/appViews/AppView'
-import PenaltiesView from './components/appViews/PenaltiesView'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { useEffect, useState } from 'react'
+import { Navigate, Outlet, Route, BrowserRouter as Router, Routes, useNavigate } from 'react-router-dom'
 import Cookies from 'universal-cookie'
-import TeamView from './components/appViews/TeamView'
-import { useVersionServiceGetVersion } from './components/openapi/queries'
+import AppTray from './components/AppTray'
+import AppView from './components/appViews/AppView'
+import HomeView from './components/appViews/HomeView'
+import PenaltiesView from './components/appViews/PenaltiesView'
+import TeamLawPage from './components/appViews/specificTeamPages/TeamLawPage'
+import TeamMemberListPage from './components/appViews/specificTeamPages/TeamMemberListPage'
+import SpecificTeamView from './components/appViews/SpecificTeamView'
 import TeamCreatePage from './components/appViews/teamPages/TeamCreatePage'
 import TeamJoinPage from './components/appViews/teamPages/TeamJoinPage'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import TeamListPage from './components/appViews/teamPages/TeamListPage'
-import TeamLawPage from './components/appViews/specificTeamPages/TeamLawPage'
-import SpecificTeamView from './components/appViews/SpecificTeamView'
-import TeamMemberListPage from './components/appViews/specificTeamPages/TeamMemberListPage'
+import TeamView from './components/appViews/TeamView'
+import WheelView from './components/appViews/WheelView'
 import { AppContextProvider } from './components/hooks/appContext'
-import AppTray from './components/AppTray'
+import { useVersionServiceGetVersion } from './components/openapi/queries'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
 
 export const cookies = new Cookies()
 
@@ -38,6 +39,8 @@ function App() {
 							<Route path='join' element={<TeamJoinPage />} />
 							<Route path='list' element={<TeamListPage />} />
 							<Route path='' element={<TeamListPage />} />
+						</Route>
+						<Route path='wheel' element={<WheelView />}>
 						</Route>
 						<Route path='team' element={<SpecificTeamView />}>
 							<Route path='laws' element={<TeamLawPage />} />

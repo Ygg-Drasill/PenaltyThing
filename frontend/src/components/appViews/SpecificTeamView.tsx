@@ -1,12 +1,12 @@
-import BasePage from '../../pages/BasePage'
+import { GavelTwoTone, Home } from '@mui/icons-material'
 import { LinearProgress, Stack } from '@mui/material'
 import { Outlet, useNavigate } from 'react-router-dom'
-import AppView from './AppView'
-import IconLinkWithText from '../IconWithText'
-import { GavelTwoTone, Home } from '@mui/icons-material'
+import BasePage from '../../pages/BasePage'
 import useAppContext from '../hooks/appContext'
 import { TeamContext } from '../hooks/teamContext'
+import IconLinkWithText from '../IconWithText'
 import { useTeamServiceGetTeam } from '../openapi/queries'
+import AppView from './AppView'
 
 function SpecificTeamViewBar() {
 	return (

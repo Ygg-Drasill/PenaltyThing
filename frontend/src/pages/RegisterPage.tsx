@@ -1,10 +1,10 @@
-import { Box, Button, Card, CardContent, Divider, Link, Stack, TextField, Typography } from '@mui/material'
-import BasePage from './BasePage'
-import { useUserServiceRegisterUser } from '../components/openapi/queries'
-import { useState } from 'react'
 import { AnnouncementSharp } from '@mui/icons-material'
+import { Box, Button, Card, CardContent, Divider, Link, Stack, TextField, Typography } from '@mui/material'
+import { useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { cookies } from '../App'
+import { useUserServiceRegisterUser } from '../components/openapi/queries'
+import BasePage from './BasePage'
 
 export default function RegisterPage() {
 	const registerUserMutation = useUserServiceRegisterUser()
@@ -59,7 +59,7 @@ export default function RegisterPage() {
 						<Stack gap={4}>
 							<Stack direction='row' justifyContent='space-between' gap={4}>
 								<TextField
-									fullWidth
+									required
 									id='firstname'
 									label='First name'
 									variant='outlined'
@@ -67,7 +67,7 @@ export default function RegisterPage() {
 									onChange={e => setFirstName(e.target.value)}
 								></TextField>
 								<TextField
-									fullWidth
+									required
 									id='lastname'
 									label='Last name'
 									variant='outlined'

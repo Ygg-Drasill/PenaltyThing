@@ -1,16 +1,16 @@
-import { Autocomplete, Box, Button, Divider, Modal, Stack, SxProps, TextField, Typography } from '@mui/material'
-import PublicUserRow from '../../userDisplay/PublicUserRow'
+import { Autocomplete, Box, Button, Divider, Modal, Stack, TextField, Typography } from '@mui/material'
+import { useState } from 'react'
+import useAppContext from '../../hooks/appContext'
+import useTeamContext from '../../hooks/teamContext'
+import InviteUserModal from '../../modals/InviteUserModal'
+import { ModalBase } from '../../modals/ModalBase'
 import {
 	usePenaltyServiceAddPenalty,
 	useTeamServiceGetTeam,
 	useUserServiceGetUsersMemberBatch,
 } from '../../openapi/queries'
-import useAppContext from '../../hooks/appContext'
 import { Law, UserPublic } from '../../openapi/requests'
-import { useState } from 'react'
-import useTeamContext from '../../hooks/teamContext'
-import { ModalBase } from '../../modals/ModalBase'
-import InviteUserModal from '../../modals/InviteUserModal'
+import PublicUserRow from '../../userDisplay/PublicUserRow'
 
 interface PenaltyModalProps {
 	open: boolean
@@ -122,13 +122,17 @@ function TeamMemberListPage() {
 				<Button onClick={() => setInviteModalOpen(true)}>Add Member</Button>
 			</Stack>
 			<Stack gap={2}>
-				{members.map(member => (
+			{members.map(member => {
+				console.log(member.id); // Log the member ID here
+
+				return (
 					<PublicUserRow
 						key={member.id}
 						user={member}
-						actionButton={<PenaltyButton onCLick={() => onSelectMember(member)} />}
+						actionButton={<PenaltyButton onClick={() => onSelectMember(member)} />}
 					/>
-				))}
+				);
+			})}
 			</Stack>
 			<PenaltyModal
 				open={penaltyModalOpen}
