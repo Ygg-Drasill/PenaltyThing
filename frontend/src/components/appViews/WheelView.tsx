@@ -1,4 +1,4 @@
-import { Container, FormControl, InputLabel, Select, Typography } from '@mui/material';
+import { Container, FormControl, InputLabel, MenuItem, Select, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import { ISpinWheelProps, SpinWheel } from 'spin-wheel-game'; // Adjust the import for SpinWheel
 import useAppContext from '../hooks/appContext';
@@ -16,11 +16,22 @@ const segments = [
 function WheelView() {
     return (
         <AppView title={'Spinning Wheel'}>
-            <ListTeams />
-            <WheelSpinning/>
+            <Stack direction={'column'} gap={2} sx={{
+                justifyContent: "center",
+                alignItems: "center",
+            }}>
+                <ListTeams />
+                <WheelSpinning/>
+            </Stack>
         </AppView>
     );
 }
+
+function CalculateWheelSize() {
+    return window.innerWidth / 3;
+}
+const screenWidth = CalculateWheelSize();
+console.log(screenWidth)
 
 function WheelSpinning() {
     const handleSpinFinish = (result: string) => {
@@ -34,7 +45,7 @@ function WheelSpinning() {
         contrastColor: 'white',
         buttonText: 'Spin',
         isOnlyOnce: false,
-        size: 200,
+        size: screenWidth,
         upDuration: 100,
         downDuration: 600,
         fontFamily: 'Arial',
@@ -52,6 +63,7 @@ function TeamMemberListPage() {
 	const [penaltyModalOpen, setPenaltyModalOpen] = useState(false)
 	const [inviteModalOpen, setInviteModalOpen] = useState(false)
 	const [selectedMember, setSelectedMember] = useState<UserPublic>()
+    
 	const { data: currentTeam } = useTeamServiceGetTeam({
 		id: appContext.currentTeamId ?? '',
 	})
@@ -70,6 +82,7 @@ function TeamMemberListPage() {
 	if (!members) {
 		return <Typography>No members found</Typography>
 	}
+        
 }
 function ListTeams() {
     return (
@@ -78,17 +91,15 @@ function ListTeams() {
             <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Age</InputLabel>
             <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={"test"}
-            label="Age"
-            //onChange={handleChange}
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                //value={age}
+                label="Age"
+                //onChange={handleChange}
             >
-                { /*
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                */ }
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem>
             </Select>
             </FormControl>
         </Container>
