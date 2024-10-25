@@ -16,7 +16,6 @@ import (
 )
 
 var (
-	address = os.Getenv("API_BASE_ADDRESS")
 	version = handlers.NewVersionNumber(0, 0, 1)
 )
 
@@ -40,7 +39,7 @@ func main() {
 	dbContext := handlers.NewDbContext(repo)
 	router := gin.Default()
 	router.Use(middleware.CORSMiddleware())
-	docs.SwaggerInfo.Host = address
+	docs.SwaggerInfo.Host = os.Getenv("API_BASE_ADDRESS")
 	docs.SwaggerInfo.BasePath = basePath
 	docs.SwaggerInfo.Version = string(version)
 	v1 := router.Group(basePath)

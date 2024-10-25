@@ -2,6 +2,9 @@ on:
   push:
     branches:
       - "dev"
+  pull_request:
+    branches:
+      - "dev"
 
 env:
   REGISTRY: ghcr.io
@@ -44,7 +47,7 @@ jobs:
         with:
           context: .
           file: ./backend/Dockerfile
-          push: true
+          push: ${{ github.event_name == 'push' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -83,7 +86,7 @@ jobs:
         with:
           context: .
           file: ./frontend/Dockerfile
-          push: true
+          push: ${{ github.event_name == 'push' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -125,7 +128,7 @@ jobs:
         with:
           context: .
           file: ./nginx/Dockerfile
-          push: true
+          push: ${{ github.event_name == 'push' }}
           build-args: |
             build_env=${{ env.ENVIRONMENT }}
           tags: ${{ steps.meta.outputs.tags }}
