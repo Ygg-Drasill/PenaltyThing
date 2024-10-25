@@ -1,10 +1,11 @@
 import { Box, Button, Card, CardContent, Divider, Link, Stack, TextField, Typography } from '@mui/material'
-import BasePage from './BasePage'
-import { useUserServiceRegisterUser } from '../components/openapi/queries'
 import { useState } from 'react'
-import { AnnouncementSharp } from '@mui/icons-material'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { cookies } from '../App'
+import { useUserServiceRegisterUser } from '../components/openapi/queries'
+import { PenaltyThingTheme } from '../theme'
+import BasePage from './BasePage'
+
 
 export default function RegisterPage() {
 	const registerUserMutation = useUserServiceRegisterUser()
@@ -53,93 +54,94 @@ export default function RegisterPage() {
 			<Typography color={'primary'} variant='h5' mb={2}>
 				Register
 			</Typography>
-			<Card>
+			<Card sx={{ borderRadius: 3, width: '100%' }}>
 				<CardContent>
 					<Box component='form' noValidate autoComplete='off' onSubmit={registerSubmissionHandler}>
-						<Stack gap={4}>
-							<Stack direction='row' justifyContent='space-between' gap={4}>
-								<TextField
-									fullWidth
-									id='firstname'
-									label='First name'
-									variant='outlined'
-									value={firstName}
-									onChange={e => setFirstName(e.target.value)}
-								></TextField>
-								<TextField
-									fullWidth
-									id='lastname'
-									label='Last name'
-									variant='outlined'
-									value={lastName}
-									onChange={e => setLastName(e.target.value)}
-								></TextField>
-							</Stack>
+					<Stack gap={4}>
+						<Stack direction='row' justifyContent='space-between' gap={4}>
 							<TextField
 								required
-								id='name'
-								label='Username'
+								fullWidth
+								id='firstname'
+								label='First name'
 								variant='outlined'
-								onChange={e => setUsername(e.target.value)}
+								value={firstName}
+								onChange={e => setFirstName(e.target.value)}
 							></TextField>
 							<TextField
 								required
-								id='email'
-								label='Email'
+								fullWidth
+								id='lastname'
+								label='Last name'
 								variant='outlined'
-								onChange={e => setEmail(e.target.value)}
+								value={lastName}
+								onChange={e => setLastName(e.target.value)}
 							></TextField>
-							<TextField
-								required
-								id='password'
-								label='Password'
-								variant='outlined'
-								type='password'
-								onChange={e => setPassword(e.target.value)}
-							></TextField>
-							<TextField
-								required
-								id='password-confirm'
-								label='Confirm password'
-								variant='outlined'
-								type='password'
-								onChange={e => setPasswordConfirm(e.target.value)}
-							></TextField>
-							<Stack direction={'row'} justifyContent={'center'} gap={2}>
-								<Button type='submit' color='success' variant='outlined'>
-									Register
-								</Button>
-								<Box alignItems={'flex-start'}>
-									<Typography
-										textAlign={'left'}
-										variant='subtitle1'
-										sx={{ color: 'background.default' }}
-									>
-										<AnnouncementSharp sx={{ marginRight: 1, color: 'warning.light' }} />
-										Warning: This site is still under development, we do not guarantee security.
-									</Typography>
-									<Typography
-										textAlign={'left'}
-										variant='subtitle2'
-										sx={{ color: 'background.default' }}
-									>
-										Please do not use your real password, we recommend generating one using your
-										password manager.
-									</Typography>
-								</Box>
-							</Stack>
 						</Stack>
+						<TextField
+							required
+							id='name'
+							label='Username'
+							variant='outlined'
+							onChange={e => setUsername(e.target.value)}
+						></TextField>
+						<TextField
+							required
+							id='email'
+							label='Email'
+							variant='outlined'
+							onChange={e => setEmail(e.target.value)}
+						></TextField>
+						<TextField
+							required
+							id='password'
+							label='Password'
+							variant='outlined'
+							type='password'
+							onChange={e => setPassword(e.target.value)}
+						></TextField>
+						<TextField
+							required
+							id='password-confirm'
+							label='Confirm password'
+							variant='outlined'
+							type='password'
+							onChange={e => setPasswordConfirm(e.target.value)}
+						></TextField>
+						
+						<Box display="flex" flexDirection="column" alignItems="center" gap={2}>
+							<Button type='submit' color='success' variant='contained'>
+								Register
+							</Button>
+							<Typography variant='body1' sx={{ color: PenaltyThingTheme.palette.text.primary }}>
+								Already have an account?{' '}
+								<Link color={'info.main'} component={RouterLink} to={'/login'}>
+									Login
+								</Link>
+							</Typography>
+						</Box>
+
+						<Box display="flex" flexDirection="column" alignItems="center">
+						<Typography
+							textAlign={'left'}
+							variant='subtitle1'
+							sx={{ color: '' }}
+						>
+							Warning: This site is still under development; we do not guarantee security.
+						</Typography>
+						<Typography
+							textAlign={'left'}
+							variant='subtitle2'
+							sx={{ color: PenaltyThingTheme.palette.text.primary }}
+						>
+							Please do not use your real password; we recommend generating one using your password manager.
+						</Typography>
+					</Box>
+					</Stack>
+						
 					</Box>
 				</CardContent>
 				<Divider />
-				<CardContent>
-					<Typography variant='body1' color='textSecondary'>
-						Already have an account?{' '}
-						<Link color={'info.main'} component={RouterLink} to={'/login'}>
-							Login
-						</Link>
-					</Typography>
-				</CardContent>
 			</Card>
 		</BasePage>
 	)
