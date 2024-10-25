@@ -48,7 +48,7 @@ func (repo *Repository) UpdateLaw(law models.Law) error {
 }
 
 func (repo *Repository) DeleteLawById(lawId string) error {
-	res := repo.db.Delete(&models.Law{}, lawId)
+	res := repo.db.Delete(&models.Law{Id: lawId})
 	if res.Error != nil {
 		return res.Error
 	}
