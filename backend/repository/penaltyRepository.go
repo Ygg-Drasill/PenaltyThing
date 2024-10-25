@@ -34,3 +34,13 @@ func (repo *Repository) GetPenaltiesByUserId(userId string) ([]models.PenaltyEnt
 	}
 	return penalties, nil
 }
+
+func (repo *Repository) GetPenaltiesById(ids []string) ([]models.PenaltyEntry, error) {
+	var penalties []models.PenaltyEntry
+	var err error
+	err = repo.db.Find(&penalties, ids).Error
+	if err != nil {
+		return nil, err
+	}
+	return penalties, nil
+}

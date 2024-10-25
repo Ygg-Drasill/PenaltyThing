@@ -81,7 +81,7 @@ func main() {
 
 		notification := v1.Group("/notification")
 		{
-			notification.GET("/getFiltered", dbContext.GetNotifications)
+			notification.GET("/getFiltered", dbContext.GetNotificationsFiltered)
 		}
 
 		health := v1.Group("/health")

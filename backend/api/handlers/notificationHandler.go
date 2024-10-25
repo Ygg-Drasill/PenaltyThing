@@ -24,7 +24,7 @@ type GetFilteredNotificationsRequest struct {
 //	@Produce		json
 //	@Success		200	{array}	Notification
 //	@Router			/notification/getFiltered [get]
-func (db *DbContext) GetNotifications(ctx *gin.Context) {
+func (db *DbContext) GetNotificationsFiltered(ctx *gin.Context) {
 	var request GetFilteredNotificationsRequest
 	err := ctx.ShouldBindQuery(&request)
 	if err != nil {
