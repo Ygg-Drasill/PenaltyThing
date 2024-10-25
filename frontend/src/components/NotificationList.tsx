@@ -1,8 +1,9 @@
 import { Button, CircularProgress, IconButton, LinearProgress, Stack, Typography } from '@mui/material'
-import useAppContext from './hooks/appContext'
+import useAppContext, { AppContext } from './hooks/appContext'
 import { useInvitationServiceAcceptInvitation } from './openapi/queries'
 import { Check, Clear } from '@mui/icons-material'
 import { Notification } from './openapi/requests'
+import { useQueryClient } from '@tanstack/react-query'
 
 function bytesToString(bytes: number[]): string {
 	const str = atob(bytes.toString())
@@ -11,15 +12,22 @@ function bytesToString(bytes: number[]): string {
 
 function InvitationNotification(props: { notification: Notification }) {
 	const acceptInvitation = useInvitationServiceAcceptInvitation()
-
+	const client = useQueryClient()
 	const onClickAccept = () => {
-		acceptInvitation.mutate({
-			request: {
-				invitationId: bytesToString(props.notification.data),
-				userId: props.notification.receiverId,
-				notificationId: props.notification.id,
+		acceptInvitation.mutate(
+			{
+				request: {
+					invitationId: bytesToString(props.notification.data),
+					userId: props.notification.receiverId,
+					notificationId: props.notification.id,
+				},
 			},
-		})
+			{
+				onSuccess: () => {
+					client.invalidateQueries({ queryKey: ['NotificationServiceGetFiltered'] })
+				},
+			},
+		)
 	}
 
 	const onClickClear = () => {}

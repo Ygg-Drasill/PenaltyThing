@@ -30,7 +30,7 @@ func (repo *Repository) GetInvitationById(id string) (*models.Invitation, error)
 }
 
 func (repo *Repository) DeleteInvitation(id string) error {
-	res := repo.db.Delete(&models.Invitation{}, id)
+	res := repo.db.Delete(&models.Invitation{Id: id})
 	if res.Error != nil {
 		return res.Error
 	}
