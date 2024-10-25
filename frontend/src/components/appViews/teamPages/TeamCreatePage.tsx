@@ -25,9 +25,7 @@ function TeamCreatePage() {
             },
             {
                 onSuccess: (data) => {
-                    const newTeamId = data.id;
-
-                    appContext.setCurrentTeamId(newTeamId);
+                    appContext.setCurrentTeamId(data.id);
 
                     queryClient.invalidateQueries({
                         queryKey: [useTeamServiceGetTeamsByUserIdKey],
