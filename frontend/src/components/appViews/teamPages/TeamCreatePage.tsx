@@ -1,12 +1,15 @@
 import { Box, Button, CircularProgress, Stack, TextField } from '@mui/material'
-import { useTeamServiceCreateTeam, useTeamServiceGetTeamsByUserIdKey } from '../../openapi/queries'
 import { useState } from 'react'
-import useAppContext from '../../hooks/appContext'
+import { useNavigate } from 'react-router-dom'
 import { queryClient } from '../../../queryClient'
+import useAppContext from '../../hooks/appContext'
+import { useTeamServiceCreateTeam, useTeamServiceGetTeamsByUserIdKey } from '../../openapi/queries'
+
 function TeamCreatePage() {
 	const [teamName, setTeamName] = useState('')
 	const createTeamMutation = useTeamServiceCreateTeam()
 	const appContext = useAppContext()
+	const navigate = useNavigate()
 
 	const handleTeamCreateSubmit = (e: React.FormEvent) => {
 		e.preventDefault()
@@ -25,8 +28,9 @@ function TeamCreatePage() {
 					queryClient.invalidateQueries({
 						queryKey: [useTeamServiceGetTeamsByUserIdKey],
 					})
+					navigate('/app/teams')
 				},
-			},
+			}
 		)
 	}
 
@@ -40,7 +44,7 @@ function TeamCreatePage() {
 					onChange={e => setTeamName(e.currentTarget.value)}
 				/>
 				<Button type='submit' color='success'>
-					Create{createTeamMutation.isPending && <CircularProgress />}
+					Create {createTeamMutation.isPending && <CircularProgress />}
 				</Button>
 			</Stack>
 		</Box>
