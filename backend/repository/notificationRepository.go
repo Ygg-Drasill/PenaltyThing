@@ -32,7 +32,7 @@ func (repo *Repository) GetNotificationsByUserId(userId string) ([]models.Notifi
 }
 
 func (repo *Repository) DeleteNotification(id string) error {
-	res := repo.db.Delete(&models.Notification{}, id)
+	res := repo.db.Delete(&models.Notification{Id: id})
 	if res.Error != nil {
 		return res.Error
 	}
