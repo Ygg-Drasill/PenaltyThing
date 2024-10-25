@@ -25,18 +25,14 @@ function TeamCreatePage() {
             },
             {
                 onSuccess: (data) => {
-                    // Assuming the response contains the new team's ID
-                    const newTeamId = data.id; // Change this based on your actual response structure
+                    const newTeamId = data.id;
 
-                    // Update the current team ID in the app context
                     appContext.setCurrentTeamId(newTeamId);
 
-                    // Invalidate queries to update the teams list
                     queryClient.invalidateQueries({
                         queryKey: [useTeamServiceGetTeamsByUserIdKey],
                     });
 
-                    // Redirect to the specific team page using the new team's ID
                     navigate(`/app/team`);
                 },
             }
