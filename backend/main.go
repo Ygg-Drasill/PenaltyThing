@@ -31,7 +31,7 @@ func init() {
 
 // @title			PenaltyThing API
 // @version		1.0
-// @contact.name	Tobias Bay Abe
+// @contact.name	Tobias Bay
 // @contact.url	http://penaltything.social/support
 // @contact.email	tab@penaltything.social
 func main() {
