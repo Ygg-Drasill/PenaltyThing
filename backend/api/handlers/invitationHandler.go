@@ -19,10 +19,10 @@ type CreateInvitationRequest struct {
 //	@Schemes
 //	@Description	create invitation
 //	@Tags			invitation
-//	@Param			request body CreateInvitationRequest true "query params"
+//	@Param			request	body	CreateInvitationRequest	true	"query params"
 //	@Accept			json
 //	@Produce		json
-//	@Success		200 {string} success
+//	@Success		200	{string}	success
 //	@Router			/invitation/create [post]
 func (db *DbContext) CreateInvitation(ctx *gin.Context) {
 	var request CreateInvitationRequest
@@ -42,6 +42,26 @@ func (db *DbContext) CreateInvitation(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, invitation)
 }
 
+// GetInvitationInfo
+//
+//	@Id			info
+//	@Summary	get info about an invitation
+//	@Schemes
+//	@Tags		invitation
+//	@Param		id	query		string	true	"id of the invitation"
+//	@Success	200	{object}	models.InvitationInfo
+//	@Router		/invitation/info [get]
+func (db *DbContext) GetInvitationInfo(ctx *gin.Context) {
+	id := ctx.Query("id")
+	info, err := db.repo.GetInvitationInfo(id)
+	if err != nil {
+		ctx.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	ctx.JSON(http.StatusOK, info)
+}
+
 type AcceptInvitationRequest struct {
 	UserId         string `json:"userId"`
 	InvitationId   string `json:"invitationId"`
@@ -55,10 +75,8 @@ type AcceptInvitationRequest struct {
 //	@Schemes
 //	@Description	accept invitation
 //	@Tags			invitation
-//	@Param			request body AcceptInvitationRequest true "query params"
-//	@Accept			json
-//	@Produce		json
-//	@Success		200 {string} success
+//	@Param			request	body		AcceptInvitationRequest	true	"query params"
+//	@Success		200		{string}	success
 //	@Router			/invitation/accept [post]
 func (db *DbContext) AcceptInvitation(ctx *gin.Context) {
 	var request *AcceptInvitationRequest
@@ -92,7 +110,7 @@ func (db *DbContext) AcceptInvitation(ctx *gin.Context) {
 	}
 
 	err = db.repo.DeleteInvitation(request.InvitationId)
-	err = db.repo.DeleteNotification(request.NotificationId)
+	_, err = db.repo.DeleteNotifications([]string{request.NotificationId})
 
 	if err != nil {
 		ctx.String(http.StatusInternalServerError, err.Error())

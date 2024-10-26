@@ -36,3 +36,20 @@ func (repo *Repository) DeleteInvitation(id string) error {
 	}
 	return nil
 }
+
+func (repo *Repository) GetInvitationInfo(invitationId string) (*models.InvitationInfo, error) {
+	var invitationInfo models.InvitationInfo
+	err := repo.db.Raw(`SELECT
+    "invitation"."id" AS "invitation_id",
+    "team"."name" AS "team_name",
+    "usr"."username" AS "sender_username"
+FROM "invitations" "invitation"
+INNER JOIN "teams" "team" ON "invitation"."team_id" = "team"."id"
+INNER JOIN "users" "usr" ON "invitation"."sender_user_id" = "usr"."id"
+WHERE "invitation"."id" = ?`, invitationId).Scan(&invitationInfo).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &invitationInfo, nil
+}
