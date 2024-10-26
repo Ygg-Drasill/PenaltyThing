@@ -9,7 +9,7 @@ import (
 
 type GetFilteredNotificationsRequest struct {
 	UserId string                    `json:"userId" form:"userId"`
-	Filter []models.NotificationType `json:"filter" form:"filter"`
+	Filter []models.NotificationType `json:"filter"`
 } //@Name GetFilteredNotificationsRequest
 
 // GetNotificationsFiltered
@@ -23,7 +23,7 @@ type GetFilteredNotificationsRequest struct {
 //	@Param			filter	query	[]string	false	"filter list"
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{array}		Notification
+//	@Success		200	{array}	Notification
 //	@Router			/notification/getFiltered [get]
 func (db *DbContext) GetNotificationsFiltered(ctx *gin.Context) {
 	var request GetFilteredNotificationsRequest
@@ -61,6 +61,7 @@ func (db *DbContext) DismissNotification(ctx *gin.Context) {
 		if deletedNotifications != int64(len(idList)) {
 
 		}
+
 		if err != nil {
 			ctx.String(http.StatusInternalServerError, err.Error())
 			return
