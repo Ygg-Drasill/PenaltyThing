@@ -2,6 +2,7 @@ import { createContext, ReactNode, SetStateAction, useContext } from 'react'
 import { UserPublic, Team, Notification } from '../openapi/requests'
 import {
 	useNotificationServiceGetFiltered,
+	useNotificationServiceGetFilteredKey,
 	useTeamServiceGetTeamsByUserId,
 	useUserServiceGetUser,
 } from '../openapi/queries'

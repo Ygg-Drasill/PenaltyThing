@@ -5,6 +5,7 @@ import (
 	"github.com/Ygg-Drasill/PenaltyThing/backend/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"net/url"
 	"os"
 )
@@ -38,8 +39,10 @@ func ConnectionFromEnvironment() string {
 	return connectionString
 }
 
-func ConnectToDatabase(dsn string) *Repository {
-	db, err := gorm.Open(postgres.Open(dsn))
+func ConnectToDatabase(dsn string, logger logger.Interface) *Repository {
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+		Logger: logger,
+	})
 	if err != nil {
 		panic(err)
 	}
