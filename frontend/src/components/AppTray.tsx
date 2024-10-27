@@ -19,9 +19,9 @@ import {
 } from '@mui/material'
 import React, { useState } from 'react'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
-import { UserInfo } from './openapi/requests'
 import useAppContext from './hooks/appContext'
 import { useUserServiceGetUserInfo } from './openapi/queries'
+import { UserInfo } from './openapi/requests'
 
 function userInitials(user: UserInfo | undefined) {
 	const firstInitial = user?.firstName?.slice(0, 1).toLocaleUpperCase() ?? ''
@@ -69,6 +69,7 @@ function AppTrayButton(props: { to: string; icon: React.ReactElement; notificati
 
 function AppTray() {
 	const appContext = useAppContext()
+	
 	const user = appContext.user.data
 	const userInfoResult = useUserServiceGetUserInfo({ id: user?.id }, null, {
 		enabled: !!user?.id,
@@ -110,7 +111,10 @@ function AppTray() {
 						icon={<RequestQuoteSharp />}
 						notifications={appContext.notifications.data?.filter(n => n.type == 'PENALTY').length ?? 0}
 					/>
-					<AppTrayButton to='/app/teams' icon={<WorkspacesSharp />} notifications={0} />
+					<AppTrayButton 
+						to={appContext.currentTeamId == null ? '/app/teams' : '/app/team'}
+						icon={<WorkspacesSharp />} 
+						notifications={0} />
 				</Stack>
 				<Box display={'flex'} padding={1} height={'4rem'} alignItems={'center'} justifyContent={'center'}>
 					<ClickAwayListener onClickAway={() => setAccountPopperAnchor(null)}>

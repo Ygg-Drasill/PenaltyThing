@@ -1,9 +1,9 @@
-import { SetStateAction, useState } from 'react'
-import useAppContext from '../../hooks/appContext'
 import { Button, LinearProgress, Link, Stack, Typography } from '@mui/material'
-import { Team } from '../../openapi/requests'
+import { SetStateAction } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { cookies } from '../../../App'
+import useAppContext from '../../hooks/appContext'
+import { Team } from '../../openapi/requests'
 
 function TeamListPage() {
 	const appContext = useAppContext()
@@ -19,7 +19,7 @@ function TeamListPage() {
 	return (
 		<Stack gap={1} mt={4} mx={2}>
 			{appContext.teams.data.map(team => (
-				<TeamListItem team={team} setTeamId={appContext.setCurrentTeamId} />
+				<TeamListItem team={team.id} setTeamId={appContext.setCurrentTeamId} />
 			))}
 		</Stack>
 	)
