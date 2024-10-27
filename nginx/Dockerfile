@@ -10,4 +10,9 @@ COPY ./nginx/sites-available/ /etc/nginx/conf.d/
 
 COPY --from=frontend_image /usr/share/nginx/html/ /usr/share/nginx/html/
 
+# Install Certbot
+RUN apk add --no-cache certbot certbot-nginx
+
+RUN mkdir -p /var/www/certbot
+
 LABEL org.opencontainers.image.source=https://github.com/Ygg-Drasill/PenaltyThing
