@@ -62,12 +62,15 @@ type GetPenaltyHistoryResponse struct {
 
 // Get
 //
-//	@Id			get
-//	@Param		ids	query	string	true	"ids"
-//	@Success	200	{array}	PenaltyEntry
-//	@Router		/penalty/get [get]
+//	@Id	get
+//	@Schemes
+//	@Description	Get one or more penalty
+//	@Tags			penalty
+//	@Param			id	query	string	true	"id"
+//	@Success		200	{array}	PenaltyEntry
+//	@Router			/penalty/get [get]
 func (db *DbContext) Get(ctx *gin.Context) {
-	ids := ctx.Param("ids")
+	ids := ctx.Query("id")
 	idList := strings.Split(ids, ",")
 	penaltyEntriesResult, err := db.repo.GetPenaltiesById(idList)
 	if err != nil {
@@ -79,6 +82,7 @@ func (db *DbContext) Get(ctx *gin.Context) {
 // GetPenaltyHistory
 //
 //	@Id			getPenaltyHistory
+//	@Tags		penalty
 //	@Param		userId	query	string	true	"id"
 //	@Produce	json
 //	@Success	200	{object}	GetPenaltyHistoryResponse
