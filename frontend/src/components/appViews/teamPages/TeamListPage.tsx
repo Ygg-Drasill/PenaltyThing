@@ -19,7 +19,7 @@ function TeamListPage() {
 	return (
 		<Stack gap={1} mt={4} mx={2}>
 			{appContext.teams.data.map(team => (
-				<TeamListItem team={team.id} setTeamId={appContext.setCurrentTeamId} />
+				<TeamListItem key={team.id} team={team} setTeamId={appContext.setCurrentTeamId} />
 			))}
 		</Stack>
 	)
