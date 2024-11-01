@@ -3,7 +3,7 @@ import { LinearProgress, Stack } from '@mui/material'
 import { Outlet, useNavigate } from 'react-router-dom'
 import AppView from './AppView'
 import IconLinkWithText from '../IconWithText'
-import { GavelTwoTone, Home } from '@mui/icons-material'
+import { GavelTwoTone, Home , BarChart} from '@mui/icons-material'
 import useAppContext from '../hooks/appContext'
 import { TeamContext } from '../hooks/teamContext'
 import { useTeamServiceGetTeam } from '../openapi/queries'
@@ -11,6 +11,7 @@ import { useTeamServiceGetTeam } from '../openapi/queries'
 function SpecificTeamViewBar() {
 	return (
 		<Stack direction='row' gap={4}>
+			<IconLinkWithText path={'/app/team/Stats'} icon={<BarChart />} name='Stats' />
 			<IconLinkWithText path={'/app/team/laws'} icon={<GavelTwoTone />} name='Laws' />
 			<IconLinkWithText path={'/app/team'} icon={<Home />} name='' />
 		</Stack>
