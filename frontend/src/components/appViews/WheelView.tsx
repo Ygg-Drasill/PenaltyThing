@@ -1,10 +1,12 @@
-import { Container, FormControl, InputLabel, MenuItem, Select, Stack, Typography } from '@mui/material';
-import { useState } from 'react';
-import { ISpinWheelProps, SpinWheel } from 'spin-wheel-game'; // Adjust the import for SpinWheel
+import { Button, Container, FormControl, InputLabel, MenuItem, Link as MuiLink, Select, Stack, Typography } from '@mui/material';
+import { SetStateAction } from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+
+import { ISpinWheelProps, SpinWheel } from 'spin-wheel-game';
+import { cookies } from '../../App';
+import { PenaltyThingTheme } from '../../theme';
 import useAppContext from '../hooks/appContext';
-import useTeamContext from '../hooks/teamContext';
-import { useTeamServiceGetTeam, useUserServiceGetUsersMemberBatch } from '../openapi/queries';
-import { UserPublic } from '../openapi/requests';
+import { Team } from '../openapi/requests';
 import AppView from './AppView';
 
 const segments = [
@@ -14,96 +16,104 @@ const segments = [
 ];
 
 function WheelView() {
-    return (
-        <AppView title={'Spinning Wheel'}>
-            <Stack direction={'column'} gap={2} sx={{
-                justifyContent: "center",
-                alignItems: "center",
-            }}>
-                <ListTeams />
-                <WheelSpinning/>
-            </Stack>
-        </AppView>
-    );
+  const appContext = useAppContext();
+
+  return (
+    <AppView title={'Spinning Wheel'}>
+      <Stack
+        direction={'column'}
+        gap={2}
+        sx={{
+          justifyContent: "center",
+          alignItems: "center",
+          padding: 4,
+          backgroundColor: PenaltyThingTheme.palette.background.default,
+          borderRadius: 2,
+          boxShadow: 2,
+        }}
+      >
+        <ListTeams />
+        <WheelSpinning />
+      </Stack>
+    </AppView>
+  );
 }
 
 function CalculateWheelSize() {
-    return window.innerWidth / 3;
+  return window.innerWidth / 5;
 }
+
 const screenWidth = CalculateWheelSize();
-console.log(screenWidth)
+console.log(screenWidth);
 
 function WheelSpinning() {
-    const handleSpinFinish = (result: string) => {
-        console.log(`Spun to: ${result}`);
-    };
+  const handleSpinFinish = (result: string) => {
+    console.log(`Spun to: ${result}`);
+  };
 
-    const spinWheelProps: ISpinWheelProps = {
-        segments,
-        onFinished: handleSpinFinish,
-        primaryColor: 'black',
-        contrastColor: 'white',
-        buttonText: 'Spin',
-        isOnlyOnce: false,
-        size: screenWidth,
-        upDuration: 100,
-        downDuration: 600,
-        fontFamily: 'Arial',
-        arrowLocation: 'top',
-        showTextOnSpin: false,
-        isSpinSound: true,
-    };
+  const spinWheelProps: ISpinWheelProps = {
+    segments,
+    onFinished: handleSpinFinish,
+    primaryColor: 'black',
+    contrastColor: 'white',
+    buttonText: 'Spin',
+    isOnlyOnce: false,
+    size: screenWidth,
+    upDuration: 100,
+    downDuration: 600,
+    fontFamily: 'Arial',
+    arrowLocation: 'top',
+    showTextOnSpin: false,
+    isSpinSound: true,
+  };
 
-    return <SpinWheel {...spinWheelProps} />;
+  return <SpinWheel {...spinWheelProps} />;
 }
 
-function TeamMemberListPage() {
-	const appContext = useAppContext()
-	const teamContext = useTeamContext()
-	const [penaltyModalOpen, setPenaltyModalOpen] = useState(false)
-	const [inviteModalOpen, setInviteModalOpen] = useState(false)
-	const [selectedMember, setSelectedMember] = useState<UserPublic>()
-    
-	const { data: currentTeam } = useTeamServiceGetTeam({
-		id: appContext.currentTeamId ?? '',
-	})
-	const { data: members } = useUserServiceGetUsersMemberBatch({
-        ids:
-            currentTeam?.members
-                ?.map(m => m.id)
-                .filter(id => id != undefined)
-                .join(',') ?? ''
-    });
-    
-    members.forEach(member => {
-        console.log(member.username)
-    })
+function TeamListItem(props: { team: Team; setTeamId: React.Dispatch<SetStateAction<string>> }) {
+  const navigate = useNavigate();
+  const teamOnClick = () => {
+    cookies.set('teamId', props.team.id ?? '');
+    props.setTeamId(props.team.id ?? '');
+    navigate('/app/team');
+  };
 
-	if (!members) {
-		return <Typography>No members found</Typography>
-	}
-        
+  return (
+    <MuiLink component={RouterLink} to={'/app/team'} draggable={false}>
+      <Button onClick={teamOnClick} fullWidth sx={{ justifyContent: 'start', textTransform: 'none' }}>
+        <Typography sx={{ color: PenaltyThingTheme.palette.text.primary }}>
+          {props.team.name ?? 'name not found'}
+        </Typography>
+      </Button>
+    </MuiLink>
+  );
 }
+
 function ListTeams() {
-    return (
+  const appContext = useAppContext();
 
-        <Container>
-            <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Age</InputLabel>
-            <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                //value={age}
-                label="Age"
-                //onChange={handleChange}
-            >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
-            </FormControl>
-        </Container>
-    )
+  return (
+    <Container>
+      <FormControl fullWidth>
+        <InputLabel id="getTeam">Age</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          label="Age"
+        >
+          {appContext.teams.data && appContext.teams.data.length > 0 ? (
+            appContext.teams.data.map(team => (
+              <MenuItem key={team.id}>
+                {team.name}
+              </MenuItem>
+            ))
+          ) : (
+            <Typography>No teams available.</Typography>
+          )}
+        </Select>
+      </FormControl>
+    </Container>
+  );
 }
 
 export default WheelView;
