@@ -5,6 +5,7 @@ import (
 	"github.com/Ygg-Drasill/PenaltyThing/backend/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strings"
 )
 
 type AddPenaltyRequest struct {
@@ -59,9 +60,29 @@ type GetPenaltyHistoryResponse struct {
 	PenaltyEntries models.PenaltyEntry `json:"penaltyEntries"`
 } //	@name	GetPenaltyHistoryResponse
 
+// Get
+//
+//	@Id	get
+//	@Schemes
+//	@Description	Get one or more penalty
+//	@Tags			penalty
+//	@Param			id	query	string	true	"id"
+//	@Success		200	{array}	PenaltyEntry
+//	@Router			/penalty/get [get]
+func (db *DbContext) Get(ctx *gin.Context) {
+	ids := ctx.Query("id")
+	idList := strings.Split(ids, ",")
+	penaltyEntriesResult, err := db.repo.GetPenaltiesById(idList)
+	if err != nil {
+		ctx.String(http.StatusInternalServerError, err.Error())
+	}
+	ctx.JSON(http.StatusOK, penaltyEntriesResult)
+}
+
 // GetPenaltyHistory
 //
 //	@Id			getPenaltyHistory
+//	@Tags		penalty
 //	@Param		userId	query	string	true	"id"
 //	@Produce	json
 //	@Success	200	{object}	GetPenaltyHistoryResponse

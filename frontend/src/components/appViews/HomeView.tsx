@@ -2,8 +2,7 @@ import { Button, LinearProgress, Link, Stack, Typography } from '@mui/material'
 import AppView from './AppView'
 import { Link as RouterLink } from 'react-router-dom'
 import useAppContext from '../hooks/appContext'
-import NotificationList from '../NotificationList'
-import InvitationNotificationList from '../NotificationList'
+import InvitationNotificationList from '../notificationLists/InvitationNotificationList'
 
 function HomeView() {
 	const appContext = useAppContext()
@@ -26,7 +25,6 @@ function HomeView() {
 
 	return (
 		<AppView title='Home'>
-			<Typography>Home</Typography>
 			<InvitationNotificationList />
 		</AppView>
 	)

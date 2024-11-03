@@ -1,9 +1,10 @@
-import { SetStateAction, useState } from 'react'
-import useAppContext from '../../hooks/appContext'
 import { Button, LinearProgress, Link, Stack, Typography } from '@mui/material'
-import { Team } from '../../openapi/requests'
+import { SetStateAction } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { cookies } from '../../../App'
+import { PenaltyThingTheme } from '../../../theme'
+import useAppContext from '../../hooks/appContext'
+import { Team } from '../../openapi/requests'
 
 function TeamListPage() {
 	const appContext = useAppContext()
@@ -36,7 +37,8 @@ function TeamListItem(props: { team: Team; setTeamId: React.Dispatch<SetStateAct
 	return (
 		<Link component={RouterLink} to={'/app/team'} draggable={false}>
 			<Button onClick={teamOnClick} fullWidth sx={{ justifyContent: 'start', textTransform: 'none' }}>
-				<Typography color={'primary'}>{props.team.name ?? 'name not found'}</Typography>
+				<Typography sx={{ color: PenaltyThingTheme.palette.text.primary }}
+				>{props.team.name ?? 'name not found'}</Typography>
 			</Button>
 		</Link>
 	)

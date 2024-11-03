@@ -11,8 +11,10 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"gorm.io/gorm/logger"
 	"log"
 	"os"
+	"time"
 )
 
 var (
@@ -35,7 +37,18 @@ func init() {
 // @contact.url	http://penaltything.social/support
 // @contact.email	tab@penaltything.social
 func main() {
-	repo := repository.ConnectToDatabase(repository.ConnectionFromEnvironment())
+	mainLogger := logger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+		logger.Config{
+			SlowThreshold:             time.Second, // Slow SQL threshold
+			LogLevel:                  logger.Info, // Log level
+			IgnoreRecordNotFoundError: true,        // Ignore ErrRecordNotFound error for logger
+			ParameterizedQueries:      false,       // Don't include params in the SQL log
+			Colorful:                  false,       // Disable color
+		},
+	)
+
+	repo := repository.ConnectToDatabase(repository.ConnectionFromEnvironment(), mainLogger)
 	dbContext := handlers.NewDbContext(repo)
 	router := gin.Default()
 	router.Use(middleware.CORSMiddleware())
@@ -71,17 +84,20 @@ func main() {
 		penalty := v1.Group("/penalty")
 		{
 			penalty.POST("/add", dbContext.AddPenalty)
+			penalty.GET("/get", dbContext.Get)
 		}
 
 		invitation := v1.Group("/invitation")
 		{
+			invitation.GET("info", dbContext.GetInvitationInfo)
 			invitation.POST("/create", dbContext.CreateInvitation)
 			invitation.POST("/accept", dbContext.AcceptInvitation)
 		}
 
 		notification := v1.Group("/notification")
 		{
-			notification.GET("/getFiltered", dbContext.GetNotifications)
+			notification.GET("/getFiltered", dbContext.GetNotificationsFiltered)
+			notification.DELETE("/dismiss", dbContext.DismissNotification)
 		}
 
 		health := v1.Group("/health")

@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material'
 import AppView from './AppView'
-import { PenaltyNotificationList } from '../NotificationList'
+import PenaltyNotificationList from '../notificationLists/PenaltyNotificationList'
 
 function PenaltiesView() {
 	return (
